@@ -47,8 +47,8 @@ public class Person implements ReadOnlyPerson {
             this.homepage = new SimpleObjectProperty<>(new Homepage(
                     GOOGLE_SEARCH_URL_PREFIX + name.fullName.replaceAll(" ", "+")
                     + GOOGLE_SEARCH_URL_SUFFIX));
-        } catch (IllegalValueException e) {
-            e.printStackTrace();
+        } catch (IllegalValueException ive) {
+            ive.printStackTrace();
         }
     }
 
