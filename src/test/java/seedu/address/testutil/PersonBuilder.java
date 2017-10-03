@@ -1,10 +1,14 @@
 package seedu.address.testutil;
 
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_PREFIX;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_SUFFIX;
+
 import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -51,6 +55,9 @@ public class PersonBuilder {
     public PersonBuilder withName(String name) {
         try {
             this.person.setName(new Name(name));
+            this.person.setHomepage(new Homepage(
+                    GOOGLE_SEARCH_URL_PREFIX + name.replaceAll(" ", "+")
+                            + GOOGLE_SEARCH_URL_SUFFIX));
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("name is expected to be unique.");
         }
