@@ -22,6 +22,7 @@ public interface ReadOnlyPerson {
     Address getAddress();
     ObjectProperty<UniqueTagList> tagProperty();
     Set<Tag> getTags();
+    ObjectProperty<Homepage> homepageProperty();
     Homepage getHomepage();
 
     /**
@@ -33,7 +34,8 @@ public interface ReadOnlyPerson {
                 && other.getName().equals(this.getName()) // state checks here onwards
                 && other.getPhone().equals(this.getPhone())
                 && other.getEmail().equals(this.getEmail())
-                && other.getAddress().equals(this.getAddress()));
+                && other.getAddress().equals(this.getAddress()))
+                && other.getHomepage().equals(this.getHomepage());
     }
 
     /**
@@ -48,6 +50,8 @@ public interface ReadOnlyPerson {
                 .append(getEmail())
                 .append(" Address: ")
                 .append(getAddress())
+                .append(" Homepage: ")
+                .append(getHomepage())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();

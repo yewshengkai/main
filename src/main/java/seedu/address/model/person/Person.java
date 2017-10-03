@@ -49,11 +49,25 @@ public class Person implements ReadOnlyPerson {
     }
 
     /**
+     * Overloaded constructor for the setting of homepage
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Homepage homepage) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = new SimpleObjectProperty<>(name);
+        this.phone = new SimpleObjectProperty<>(phone);
+        this.email = new SimpleObjectProperty<>(email);
+        this.address = new SimpleObjectProperty<>(address);
+        // protect internal tags from changes in the arg list
+        this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        this.homepage = new SimpleObjectProperty<>(homepage);
+    }
+
+    /**
      * Creates a copy of the given ReadOnlyPerson.
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
-                source.getTags());
+                source.getTags(), source.getHomepage());
     }
 
     public void setName(Name name) {
