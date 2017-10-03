@@ -30,7 +30,7 @@ public class XmlAdaptedPerson {
     private String email;
     @XmlElement(required = true)
     private String address;
-    @XmlElement(required = true)
+    @XmlElement
     private String homepage;
 
     @XmlElement
@@ -75,6 +75,9 @@ public class XmlAdaptedPerson {
         final Email email = new Email(this.email);
         final Address address = new Address(this.address);
         final Set<Tag> tags = new HashSet<>(personTags);
+        if(this.homepage == null) {
+            return new Person(name, phone, email, address, tags);
+        }
         final Homepage homepage = new Homepage(this.homepage);
         return new Person(name, phone, email, address, tags, homepage);
     }
