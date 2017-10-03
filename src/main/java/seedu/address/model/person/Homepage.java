@@ -2,18 +2,20 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 
 public class Homepage {
     public static final String MESSAGE_HOMEPAGE_CONSTRAINTS =
             "Person homepage should be a valid URL";
-    public static final String HOMEPAGE_VALIDATION_REGEX = "^(http|https)://[-a-zA-Z0-9+&@#/%?=~_|,!:.;]*[-a-zA-Z0-9+@#/%=&_|]";
     public final String value;
 
     /**
      * Validates given homepage.
      *
-     * @throws IllegalValueException if given email address string is invalid.
+     * @throws IllegalValueException if given homepage string is invalid.
      */
     public Homepage(String homepage) throws IllegalValueException {
         requireNonNull(homepage);
@@ -28,7 +30,12 @@ public class Homepage {
      * Returns if a given string is a valid person email.
      */
     public static boolean isValidHomepage(String test) {
-        return test.matches(HOMEPAGE_VALIDATION_REGEX);
+        try {
+            URL url = new URL(test);
+        } catch (MalformedURLException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
