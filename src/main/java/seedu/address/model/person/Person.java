@@ -41,7 +41,8 @@ public class Person implements ReadOnlyPerson {
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         try {
-            this.homepage = new SimpleObjectProperty<>(new Homepage(GOOGLE_SEARCH_URL_PREFIX + name.fullName.replaceAll(" ", "+")
+            this.homepage = new SimpleObjectProperty<>(new Homepage(
+                    GOOGLE_SEARCH_URL_PREFIX + name.fullName.replaceAll(" ", "+")
                     + GOOGLE_SEARCH_URL_SUFFIX));
         } catch (IllegalValueException e) {
             e.printStackTrace();
