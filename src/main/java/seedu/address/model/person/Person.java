@@ -2,6 +2,8 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_PREFIX;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_SUFFIX;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -9,6 +11,7 @@ import java.util.Set;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -22,6 +25,7 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Phone> phone;
     private ObjectProperty<Email> email;
     private ObjectProperty<Address> address;
+    private ObjectProperty<Homepage> homepage;
 
     private ObjectProperty<UniqueTagList> tags;
 
@@ -36,6 +40,12 @@ public class Person implements ReadOnlyPerson {
         this.address = new SimpleObjectProperty<>(address);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        try {
+            this.homepage = new SimpleObjectProperty<>(new Homepage(GOOGLE_SEARCH_URL_PREFIX + name.fullName.replaceAll(" ", "+")
+                    + GOOGLE_SEARCH_URL_SUFFIX));
+        } catch (IllegalValueException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -95,6 +105,19 @@ public class Person implements ReadOnlyPerson {
     @Override
     public ObjectProperty<Address> addressProperty() {
         return address;
+    }
+
+    public void setHomepage(Homepage homepage) {
+        this.homepage.set(requireNonNull(homepage));
+    }
+
+    @Override
+    public Homepage getHomepage() {
+        return homepage.get();
+    }
+
+    public ObjectProperty<Homepage> homepageProperty() {
+        return homepage;
     }
 
     @Override

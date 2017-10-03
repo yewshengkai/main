@@ -7,8 +7,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Homepage {
     public static final String MESSAGE_HOMEPAGE_CONSTRAINTS =
             "Person homepage should be a valid URL";
-    public static final String HOMEPAGE_VALIDATION_REGEX =
-            "^(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$";
+    public static final String HOMEPAGE_VALIDATION_REGEX = "^(http|https)://[-a-zA-Z0-9+&@#/%?=~_|,!:.;]*[-a-zA-Z0-9+@#/%=&_|]";
     public final String value;
 
     /**
