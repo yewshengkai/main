@@ -105,8 +105,13 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedReadOnlyPerson)
             throws DuplicatePersonException, PersonNotFoundException {
         requireNonNull(editedReadOnlyPerson);
+        Person editedPerson;
 
-        Person editedPerson = new Person(editedReadOnlyPerson);
+        if(editedReadOnlyPerson.isHomepageManuallySet()) {
+            editedPerson = new Person(editedReadOnlyPerson, editedReadOnlyPerson.getHomepage());
+        } else {
+            editedPerson = new Person(editedReadOnlyPerson);
+        }
         syncMasterTagListWith(editedPerson);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any person

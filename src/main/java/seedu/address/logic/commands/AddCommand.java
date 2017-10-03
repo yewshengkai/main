@@ -43,7 +43,11 @@ public class AddCommand extends UndoableCommand {
      * Creates an AddCommand to add the specified {@code ReadOnlyPerson}
      */
     public AddCommand(ReadOnlyPerson person) {
-        toAdd = new Person(person);
+        if(person.isHomepageManuallySet()) {
+            toAdd = new Person(person, person.getHomepage());
+        } else {
+            toAdd = new Person(person);
+        }
     }
 
     @Override

@@ -27,6 +27,8 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Address> address;
     private ObjectProperty<Homepage> homepage;
 
+    private boolean isHomepageManuallySet;
+
     private ObjectProperty<UniqueTagList> tags;
 
     /**
@@ -38,6 +40,7 @@ public class Person implements ReadOnlyPerson {
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
+        this.isHomepageManuallySet = false;
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         try {
@@ -58,6 +61,7 @@ public class Person implements ReadOnlyPerson {
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
+        this.isHomepageManuallySet = true;
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.homepage = new SimpleObjectProperty<>(homepage);
@@ -68,7 +72,16 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
-                source.getTags(), source.getHomepage());
+                source.getTags());
+    }
+
+    /**
+     * Overloaded method to include the homepage
+     * Creates a copy of the given ReadOnlyPerson.
+     */
+    public Person(ReadOnlyPerson source, Homepage homepage) {
+        this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
+                source.getTags(), homepage);
     }
 
     public void setName(Name name) {
@@ -129,6 +142,11 @@ public class Person implements ReadOnlyPerson {
     @Override
     public Homepage getHomepage() {
         return homepage.get();
+    }
+
+    @Override
+    public boolean isHomepageManuallySet() {
+        return isHomepageManuallySet;
     }
 
     public ObjectProperty<Homepage> homepageProperty() {

@@ -24,6 +24,7 @@ public interface ReadOnlyPerson {
     Set<Tag> getTags();
     ObjectProperty<Homepage> homepageProperty();
     Homepage getHomepage();
+    boolean isHomepageManuallySet();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
@@ -49,8 +50,6 @@ public interface ReadOnlyPerson {
                 .append(getEmail())
                 .append(" Address: ")
                 .append(getAddress())
-                .append(" Homepage: ")
-                .append(getHomepage())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
