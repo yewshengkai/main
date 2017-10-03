@@ -84,7 +84,12 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @throws DuplicatePersonException if an equivalent person already exists.
      */
     public void addPerson(ReadOnlyPerson p) throws DuplicatePersonException {
-        Person newPerson = new Person(p);
+        Person newPerson;
+        if(p.isHomepageManuallySet()) {
+            newPerson = new Person(p, p.getHomepage());
+        } else {
+            newPerson = new Person(p);
+        }
         syncMasterTagListWith(newPerson);
         // TODO: the tags master list will be updated even though the below line fails.
         // This can cause the tags master list to have additional tags that are not tagged to any person
