@@ -162,7 +162,7 @@ public class EditCommandParserTest {
         descriptor = new EditPersonDescriptorBuilder().withAddress(VALID_ADDRESS_AMY).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
-        
+
         // homepage
         userInput = targetIndex.getOneBased() + HOMEPAGE_DESC_AMY;
         descriptor = new EditPersonDescriptorBuilder().withHomepage(VALID_HOMEPAGE_AMY).build();

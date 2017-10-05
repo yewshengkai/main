@@ -60,7 +60,7 @@ public class AddCommandTest {
 
         getAddCommandForPerson(validPerson, modelStub).execute();
     }
-    
+
     @Test
     public void execute_person_homepageGeneratedSuccessful() {
         Person validPerson = new PersonBuilder().build();
@@ -68,7 +68,7 @@ public class AddCommandTest {
                 .fullName.replaceAll(" ", "+") + GOOGLE_SEARCH_URL_SUFFIX;
         String customHomepage = "http://www.google.com";
         Person validPersonWithHomepage = new PersonBuilder().withHomepage(customHomepage).build();
-        
+
         assertEquals(defaultHomepage, validPerson.getHomepage().value);
         assertEquals(customHomepage, validPersonWithHomepage.getHomepage().value);
     }
