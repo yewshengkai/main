@@ -10,6 +10,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Homepage {
     public static final String MESSAGE_HOMEPAGE_CONSTRAINTS =
             "Person homepage should be a valid URL";
+    public static final String RESET_HOMEPAGE = "404";
     public final String value;
 
     /**
@@ -30,7 +31,7 @@ public class Homepage {
      * For sole use by {@code ParserUtil} to reset homepage
      */
     public Homepage() {
-        this.value = null;
+        this.value = RESET_HOMEPAGE;
     }
 
     /**
@@ -53,8 +54,8 @@ public class Homepage {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Email // instanceof handles nulls
-                && this.value.equals(((Email) other).value)); // state check
+                || (other instanceof Homepage // instanceof handles nulls
+                && this.value.equals(((Homepage) other).value)); // state check
     }
 
     @Override
