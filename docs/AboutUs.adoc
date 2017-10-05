@@ -4,53 +4,45 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :imagesDir: images
 :stylesDir: stylesheets
 
-AddressBook - Level 4 was developed by the https://se-edu.github.io/docs/Team.html[se-edu] team. +
-The dummy content given below serves as a placeholder to be used by future forks of the project. +
+image::iungo-logo2.png[width="128", alight="left"]
+/ˈjun.ɡoː/, [ˈjʊŋ.ɡoː] +
+_verb_ - latin for _connect_
+
+iungo is built on a fork of https://github.com/nus-cs2103-AY1718S1/addressbook-level4[AddressBook -
+Level
+ 4],
+which was developed by the https://se-edu.github.io/docs/Team.html[se-edu] team. +
 {empty} +
 We are a team based in the http://www.comp.nus.edu.sg[School of Computing, National University of Singapore].
 
+// TODO: Finalize team roles
 == Project Team
 
-=== John Doe
-image::damithc.jpg[width="150", align="left"]
-{empty}[http://www.comp.nus.edu.sg/~damithch[homepage]] [https://github.com/damithc[github]] [<<johndoe#, portfolio>>]
-
-Role: Project Advisor
-
-'''
-
-=== John Roe
-image::lejolly.jpg[width="150", align="left"]
-{empty}[http://github.com/lejolly[github]] [<<johndoe#, portfolio>>]
-
-Role: Team Lead +
-Responsibilities: UI
-
-'''
-
-=== Johnny Doe
-image::yijinl.jpg[width="150", align="left"]
-{empty}[http://github.com/yijinl[github]] [<<johndoe#, portfolio>>]
+=== Lau Kar Rui
+image::karrui.jpg[width="150", align="left"]
+{empty}[https://github.com/karrui[github]]
 
 Role: Developer +
-Responsibilities: Data
+Responsibilities: Logic
 
 '''
 
-=== Johnny Roe
-image::m133225.jpg[width="150", align="left"]
-{empty}[http://github.com/m133225[github]] [<<johndoe#, portfolio>>]
-
-Role: Developer +
-Responsibilities: Dev Ops + Threading
-
-'''
-
-=== Benson Meier
-image::yl_coder.jpg[width="150", align="left"]
-{empty}[http://github.com/yl-coder[github]] [<<johndoe#, portfolio>>]
+// TODO: Update to a higher resolution profile picture
+=== Yew Sheng Kai
+image::yewshengkai.png[width="150", align="left"]
+{empty}[http://github.com/yewshengkai[github]]
 
 Role: Developer +
 Responsibilities: UI
+
+'''
+
+// TODO: Add profile picture
+=== Basyir B Othman
+image::basyir.jpg[width="150", align="left"]
+{empty}[http://github.com/basyiro[github]]
+
+Role: Developer +
+Responsibilities: Model
 
 '''
