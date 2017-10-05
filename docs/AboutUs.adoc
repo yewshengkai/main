@@ -4,8 +4,11 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :imagesDir: images
 :stylesDir: stylesheets
 
-// TODO: Think of a name for our application
-AddressBook - Level 4 is built on a fork of https://github.com/nus-cs2103-AY1718S1/addressbook-level4[AddressBook -
+image::iungo-logo.png[width="128", alight="left"]
+/ˈjun.ɡoː/, [ˈjʊŋ.ɡoː] +
+_verb_ - latin for _connect_
+
+iungo is built on a fork of https://github.com/nus-cs2103-AY1718S1/addressbook-level4[AddressBook -
 Level
  4],
 which was developed by the https://se-edu.github.io/docs/Team.html[se-edu] team. +
