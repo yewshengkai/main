@@ -112,6 +112,18 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Homepage} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withHomepage(String homepage) {
+        try {
+            this.person.setHomepage(new Homepage(homepage));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("email is expected to be unique.");
+        }
+        return this;
+    }
+
     public Person build() {
         return this.person;
     }
