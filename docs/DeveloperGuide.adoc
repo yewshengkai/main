@@ -723,15 +723,55 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |user |add a new person |
+|`* * *` |user |add a new person | add a new person
 
 |`* * *` |user |delete a person |remove entries that I no longer need
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
+|`* * *` |user |undo my commands |undo commands done in error
+
+|`* * *` |user |redo my commands |redo undone commands
+
+|`* * *` | user |be able to set the link:#homepage[homepage] for a contact | able to customize the details of the
+contact
+
+|`* * *` |user |link:#tag[tag] contacts |I can find people with the same tags easily in a listing
+
+|`* * *` |user |add remarks to contact |store additional information about the contact
+
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
+|`* *` |user |use shorthand aliases for commands|execute commands more conveniently
+
+|`* *` |user with many frequently used contacts |mark specific contacts as a "link:#favourite[Favourite]" |find my
+favourite contacts easily
+
+|`* *` |user |view my recently searched contacts |refer to who I searched recently
+
+|`* *` |user |add birthdays to contacts |see the birthday of my contact
+
+|`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
+
+|`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
+
+|`* *` |user |search my contacts with other information other than name |find contacts just by knowing other information
+
+|`* *` |security conscious user |lock the application with a password |view my address book only with a password,
+increasing security
+
 |`*` |user with many persons in the address book |sort persons by name |locate a person easily
+
+|`*` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
+|locate a contact
+without their full names
+
+|`*` |user |share contacts |I can share my contacts with other people
+
+|`*` |user who likes customization|change the theme of the application |customize the theme to my liking
+
+
+
 |=======================================================================
 
 {More to be added}
@@ -781,6 +821,34 @@ Use case resumes at step 2.
 [appendix]
 == Glossary
 
+[[autocomplete]]
+Autocomplete
+
+....
+A function that completes words or strings without the user needing to type them in full
+....
+
+[[command-line-interface]]
+Command Line Interface
+
+....
+A user interface to a computer's operating system or an application in which the user responds to a visual prompt by typing in a command on a specified line, receives a response back from the system, and then enters another command, and so forth
+....
+
+[[favourite]]
+Favourites
+
+....
+A collection of contacts that the user have marked as frequently used such that it can be listed via a command
+....
+
+[[homepage]]
+Homepage
+
+....
+A web page set as the default page loaded when a contact is selected
+....
+
 [[mainstream-os]]
 Mainstream OS
 
@@ -793,6 +861,15 @@ Private contact detail
 
 ....
 A contact detail that is not meant to be shared with others
+....
+
+
+
+[[tag]]
+Tag
+
+....
+A label attached to a contact, allowing the user to search for all users with the same tag
 ....
 
 [appendix]
