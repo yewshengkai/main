@@ -4,7 +4,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :imagesDir: images
 :stylesDir: stylesheets
 
-image::iungo-logo.png[width="128", alight="left"]
+image::iungo-logo2.png[width="128", alight="left"]
 /ˈjun.ɡoː/, [ˈjʊŋ.ɡoː] +
 _verb_ - latin for _connect_
 
@@ -29,7 +29,7 @@ Responsibilities: Logic
 
 // TODO: Update to a higher resolution profile picture
 === Yew Sheng Kai
-image::shengkai.png[width="150", align="left"]
+image::yewshengkai.png[width="150", align="left"]
 {empty}[http://github.com/yewshengkai[github]]
 
 Role: Developer +
