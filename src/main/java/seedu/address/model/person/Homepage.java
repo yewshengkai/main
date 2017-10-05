@@ -7,6 +7,10 @@ import java.net.URL;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
+/**
+ * Represents a Person's homepage in the address book.
+ * Guarantees: immutable; is valid as declared in {@link #isValidHomepage(String)}
+ */
 public class Homepage {
     public static final String MESSAGE_HOMEPAGE_CONSTRAINTS =
             "Person homepage should be a valid URL";

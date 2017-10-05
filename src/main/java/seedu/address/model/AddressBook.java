@@ -85,7 +85,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void addPerson(ReadOnlyPerson p) throws DuplicatePersonException {
         Person newPerson;
-        if(p.isHomepageManuallySet()) {
+        if (p.isHomepageManuallySet()) {
             newPerson = new Person(p, p.getHomepage());
         } else {
             newPerson = new Person(p);
@@ -112,7 +112,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(editedReadOnlyPerson);
         Person editedPerson;
 
-        if(editedReadOnlyPerson.isHomepageManuallySet()) {
+        if (editedReadOnlyPerson.isHomepageManuallySet()) {
             editedPerson = new Person(editedReadOnlyPerson, editedReadOnlyPerson.getHomepage());
         } else {
             editedPerson = new Person(editedReadOnlyPerson);

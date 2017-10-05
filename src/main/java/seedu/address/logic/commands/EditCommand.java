@@ -108,11 +108,11 @@ public class EditCommand extends UndoableCommand {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
 
-        if(updatedHomepage.value.equals(RESET_HOMEPAGE)) {
+        if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
         }
 
-        if(personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
+        if (personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedHomepage);
         } else {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
@@ -164,7 +164,8 @@ public class EditCommand extends UndoableCommand {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.tags, this.homepage);
+            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.tags,
+                                               this.homepage);
         }
 
         public void setName(Name name) {

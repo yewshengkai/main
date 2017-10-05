@@ -51,7 +51,8 @@ public class EditCommandParser implements Parser<EditCommand> {
             ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE)).ifPresent(editPersonDescriptor::setPhone);
             ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL)).ifPresent(editPersonDescriptor::setEmail);
             ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS)).ifPresent(editPersonDescriptor::setAddress);
-            ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).ifPresent(editPersonDescriptor::setHomepage);
+            ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).ifPresent(
+                    editPersonDescriptor::setHomepage);
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);

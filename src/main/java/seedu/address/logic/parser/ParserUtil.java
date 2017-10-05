@@ -87,7 +87,7 @@ public class ParserUtil {
     public static Optional<Homepage> parseHomepage(Optional<String> homepage) throws IllegalValueException {
         requireNonNull(homepage);
         if (homepage.isPresent()) {
-            if(homepage.get().equals("")) {
+            if (homepage.get().equals("")) {
                 return Optional.of(new Homepage());
             } else {
                 return Optional.of(new Homepage(homepage.get()));
