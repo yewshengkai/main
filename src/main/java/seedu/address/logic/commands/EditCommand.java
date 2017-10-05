@@ -106,10 +106,12 @@ public class EditCommand extends UndoableCommand {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
+        
+        if(updatedHomepage.value == null) {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        }
 
-        if(personToEdit.isHomepageManuallySet()) {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedHomepage);
-        } else if(!(originalHomepage.toString().equals(updatedHomepage.toString()))) {
+        if(personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedHomepage);
         } else {
             return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
@@ -231,7 +233,8 @@ public class EditCommand extends UndoableCommand {
                     && getPhone().equals(e.getPhone())
                     && getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
-                    && getTags().equals(e.getTags());
+                    && getTags().equals(e.getTags())
+                    && getHomepage().equals(e.getHomepage());
         }
     }
 }

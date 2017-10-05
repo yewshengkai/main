@@ -27,6 +27,13 @@ public class Homepage {
     }
 
     /**
+     * For sole use by {@code ParserUtil} to reset homepage
+     */
+    public Homepage() {
+        this.value = null;
+    }
+
+    /**
      * Returns if a given string is a valid person email.
      */
     public static boolean isValidHomepage(String test) {
