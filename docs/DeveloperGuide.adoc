@@ -733,9 +733,10 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |redo my commands |redo undone commands
 
-|`* * *` | user |be able to set the homepage for a contact | able to customize the details of the contact
+|`* * *` | user |be able to set the link:#homepage[homepage] for a contact | able to customize the details of the
+contact
 
-|`* * *` |user |tag contacts |I can find people with the same tags easily in a listing
+|`* * *` |user |link:#tag[tag] contacts |I can find people with the same tags easily in a listing
 
 |`* * *` |user |add remarks to contact |store additional information about the contact
 
@@ -743,8 +744,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |use shorthand aliases for commands|execute commands more conveniently
 
-|`* *` |user with many frequently used contacts |mark specific contacts as a "Favourite" |find my favourite contacts
-easily
+|`* *` |user with many frequently used contacts |mark specific contacts as a "link:#favourite[Favourite]" |find my
+favourite contacts easily
 
 |`* *` |user |view my recently searched contacts |refer to who I searched recently
 
@@ -761,7 +762,8 @@ increasing security
 
 |`*` |user with many persons in the address book |sort persons by name |locate a person easily
 
-|`*` |user with many persons in the address book |have autocomplete search in the find command |locate a contact
+|`*` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
+|locate a contact
 without their full names
 
 |`*` |user |share contacts |I can share my contacts with other people
@@ -819,6 +821,34 @@ Use case resumes at step 2.
 [appendix]
 == Glossary
 
+[[autocomplete]]
+Autocomplete
+
+....
+A function that completes words or strings without the user needing to type them in full
+....
+
+[[command-line-interface]]
+Command Line Interface
+
+....
+A user interface to a computer's operating system or an application in which the user responds to a visual prompt by typing in a command on a specified line, receives a response back from the system, and then enters another command, and so forth
+....
+
+[[favourite]]
+Favourites
+
+....
+A collection of contacts that the user have marked as frequently used such that it can be listed via a command
+....
+
+[[homepage]]
+Homepage
+
+....
+A web page set as the default page loaded when a contact is selected
+....
+
 [[mainstream-os]]
 Mainstream OS
 
@@ -831,6 +861,15 @@ Private contact detail
 
 ....
 A contact detail that is not meant to be shared with others
+....
+
+
+
+[[tag]]
+Tag
+
+....
+A label attached to a contact, allowing the user to search for all users with the same tag
 ....
 
 [appendix]
