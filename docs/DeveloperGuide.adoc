@@ -1176,6 +1176,26 @@ Homepage
 A web page set as the default page loaded when a contact is selected
 ....
 
+[[mainstream-os]]
+Mainstream OS
+
+....
+Windows, Linux, Unix, MacOS X
+....
+
+[[private-contact-detail]]
+Private contact detail
+
+....
+A contact detail that is not meant to be shared with others
+....
+
+[[tag]]
+Tag
+
+....
+Marking a contact with a specified keyword so as to facilitate easy listing or search of contacts with the keyword
+....
 
 [appendix]
 == Product Survey
