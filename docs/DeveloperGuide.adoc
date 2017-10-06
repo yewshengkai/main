@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= iungo - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -10,9 +10,9 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103AUG2017-F11-B3/iungo/tree/master
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team F11-B3`      Since: `Oct 2017`      Licence: `MIT`
 
 == Setting up
 
@@ -723,15 +723,55 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |user |add a new person |
+|`* * *` |user |add a new person | add a new person
 
 |`* * *` |user |delete a person |remove entries that I no longer need
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
+|`* * *` |user |undo my commands |undo commands done in error
+
+|`* * *` |user |redo my commands |redo undone commands
+
+|`* * *` | user |be able to set the link:#homepage[homepage] for a contact | able to customize the details of the
+contact
+
+|`* * *` |user |link:#tag[tag] contacts |I can find people with the same tags easily in a listing
+
+|`* * *` |user |add remarks to contact |store additional information about the contact
+
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
+|`* *` |user |use shorthand aliases for commands|execute commands more conveniently
+
+|`* *` |user with many frequently used contacts |mark specific contacts as a "link:#favourite[Favourite]" |find my
+favourite contacts easily
+
+|`* *` |user |view my recently searched contacts |refer to who I searched recently
+
+|`* *` |user |add birthdays to contacts |see the birthday of my contact
+
+|`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
+
+|`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
+
+|`* *` |user |search my contacts with other information other than name |find contacts just by knowing other information
+
+|`* *` |security conscious user |lock the application with a password |view my address book only with a password,
+increasing security
+
 |`*` |user with many persons in the address book |sort persons by name |locate a person easily
+
+|`*` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
+|locate a contact
+without their full names
+
+|`*` |user |share contacts |I can share my contacts with other people
+
+|`*` |user who likes customization|change the theme of the application |customize the theme to my liking
+
+
+
 |=======================================================================
 
 {More to be added}
@@ -742,14 +782,72 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 (For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Add contacts
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Adds a contact to AddressBook.
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User request and add a contact.
+2.  AddressBook add the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Format of the given details is invalid.
++
+[none]
+** 1a1.AddressBook shows an error message.
++
+Use case ends.
+
+* 1b. The contact already exist.
++
+[none]
+** 1b1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 2a. AddressBook exceeded storage capacity.
++
+[none]
+** 1a1.AddressBook shows an error message.
++
+Use case ends.
+
+[discrete]
+=== Use case: Clear contacts
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Clears all entries from AddressBook.
+
+*MSS*
+
+1.  User request and clear AddressBook.
+2.  AddressBook clear all entries.
++
+Use case ends.
+
+[discrete]
+=== Use case: Delete contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified contact will be removed from the AddressBook.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete a specific contact in the list.
+4.  AddressBook delete the contact.
 +
 Use case ends.
 
@@ -766,6 +864,275 @@ Use case ends.
 ** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Edit contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Existing contact will be updated.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and update a contact.
+4.  AddressBook update the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. Format of the given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Find contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified contact will be listed.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and find a contact.
+4.  AddressBook list the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: List contacts
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* All entries will be listed.
+
+*MSS*
+
+1.  User request and list all contacts.
+2.  AddressBook shows a list of contacts.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Help
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* User guide will be displayed.
+
+*MSS*
+
+1.  User request help.
+2.  AddressBook open user guide in a new window.
++
+Use case ends.
+
+[discrete]
+=== Use case: Select contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and select a contact.
+4.  AddressBook select the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: History
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* List all entered commands.
+
+*MSS*
+
+1.  User request to show history.
+2.  AddressBook shows a list of entered commands.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The history is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Undo
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Restores AddressBook to the previous state.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete the contacts.
+4.  AddressBook delete the contacts.
+5.  User requests to clear the contacts.
+6.  AddressBook clear all contacts.
+7.  User requests to undo.
+8.  AddressBook reverse the previous clear command.
+9.  User requests to undo.
+10.  AddressBook reverse the previous delete command.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 6a. The list is empty.
++
+Use case ends.
+
+* 8a. No undoable commands.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 10a. No undoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Redo
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Reverse the most recent undo command.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete the contacts.
+4.  AddressBook delete the contacts.
+5.  User requests to clear the contacts.
+6.  AddressBook clear all contacts.
+7.  User requests to undo.
+8.  AddressBook reverse the previous clear command.
+9.  User requests to undo.
+10.  AddressBook reverse the previous delete command.
+11.  User request to redo.
+12.  AddressBook delete the contact.
+13.  User request to redo.
+14.  AddressBook clear all entries.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 6a. The list is empty.
++
+Use case ends.
+
+* 8a. No undoable commands.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 10a. No undoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+* 12a. No redoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+* 14a. No redoable commands.
++
+Use case resume at step 2.
+Use case ends.
 
 {More to be added}
 
