@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +46,11 @@ public class UniquePersonList implements Iterable<Person> {
         if (contains(toAdd)) {
             throw new DuplicatePersonException();
         }
-        internalList.add(new Person(toAdd));
+        if (toAdd.isHomepageManuallySet()) {
+            internalList.add(new Person(toAdd, toAdd.getHomepage()));
+        } else {
+            internalList.add(new Person(toAdd));
+        }
     }
 
     /**
@@ -66,8 +71,11 @@ public class UniquePersonList implements Iterable<Person> {
         if (!target.equals(editedPerson) && internalList.contains(editedPerson)) {
             throw new DuplicatePersonException();
         }
-
-        internalList.set(index, new Person(editedPerson));
+        if (editedPerson.isHomepageManuallySet()) {
+            internalList.set(index, new Person(editedPerson, editedPerson.getHomepage()));
+        } else {
+            internalList.set(index, new Person(editedPerson));
+        }
     }
 
     /**
@@ -91,7 +99,11 @@ public class UniquePersonList implements Iterable<Person> {
     public void setPersons(List<? extends ReadOnlyPerson> persons) throws DuplicatePersonException {
         final UniquePersonList replacement = new UniquePersonList();
         for (final ReadOnlyPerson person : persons) {
-            replacement.add(new Person(person));
+            if (person.isHomepageManuallySet()) {
+                replacement.add(new Person(person, person.getHomepage()));
+            } else {
+                replacement.add(new Person(person));
+            }
         }
         setPersons(replacement);
     }

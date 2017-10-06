@@ -22,6 +22,9 @@ public interface ReadOnlyPerson {
     Address getAddress();
     ObjectProperty<UniqueTagList> tagProperty();
     Set<Tag> getTags();
+    ObjectProperty<Homepage> homepageProperty();
+    Homepage getHomepage();
+    boolean isHomepageManuallySet();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
@@ -51,5 +54,4 @@ public interface ReadOnlyPerson {
         getTags().forEach(builder::append);
         return builder.toString();
     }
-
 }

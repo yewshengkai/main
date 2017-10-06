@@ -45,6 +45,8 @@ public class PersonCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label homepage;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
@@ -75,6 +77,7 @@ public class PersonCard extends UiPart<Region> {
             tags.getChildren().clear();
             initTags(person);
         });
+        homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
     }
 
     /**
