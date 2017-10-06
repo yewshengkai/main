@@ -1179,7 +1179,6 @@ Use case ends.
     .  GUI should not have bright colours to reduce strain on eyes.
     .  GUI should have toggling sizes for those with differing eyesight capabilities.
     .  Should keep a log of user actions done (to allow them to keep track of their own actions).
-    
 
 {More to be added}
 
