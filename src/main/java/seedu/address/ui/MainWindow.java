@@ -18,6 +18,7 @@ import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ShowAboutRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
@@ -32,7 +33,7 @@ public class MainWindow extends UiPart<Region> {
     private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
-    private static final int MIN_WIDTH = 450;
+    private static final int MIN_WIDTH = 650;
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -55,6 +56,9 @@ public class MainWindow extends UiPart<Region> {
     private MenuItem helpMenuItem;
 
     @FXML
+    private MenuItem aboutMenuItem;
+
+    @FXML
     private StackPane personListPanelPlaceholder;
 
     @FXML
@@ -62,6 +66,7 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML);
@@ -89,7 +94,9 @@ public class MainWindow extends UiPart<Region> {
     }
 
     private void setAccelerators() {
+
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
+        setAccelerator(aboutMenuItem, KeyCombination.valueOf("F9"));
     }
 
     /**
@@ -192,6 +199,15 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
+    /**
+     * Opens the about window.
+     */
+    @FXML
+    public void handleAbout() {
+        AboutWindow aboutWindow = new AboutWindow();
+        aboutWindow.show();
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -216,5 +232,11 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    @Subscribe
+    private void handleShowAboutEvent(ShowAboutRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleAbout();
     }
 }
