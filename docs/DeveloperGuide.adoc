@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= iungo - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -10,9 +10,9 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103AUG2017-F11-B3/iungo/tree/master
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team F11-B3`      Since: `Oct 2017`      Licence: `MIT`
 
 == Setting up
 
@@ -782,14 +782,72 @@ without their full names
 (For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Add contacts
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Adds a contact to AddressBook.
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User request and add a contact.
+2.  AddressBook add the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Format of the given details is invalid.
++
+[none]
+** 1a1.AddressBook shows an error message.
++
+Use case ends.
+
+* 1b. The contact already exist.
++
+[none]
+** 1b1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 2a. AddressBook exceeded storage capacity.
++
+[none]
+** 1a1.AddressBook shows an error message.
++
+Use case ends.
+
+[discrete]
+=== Use case: Clear contacts
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Clears all entries from AddressBook.
+
+*MSS*
+
+1.  User request and clear AddressBook.
+2.  AddressBook clear all entries.
++
+Use case ends.
+
+[discrete]
+=== Use case: Delete contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified contact will be removed from the AddressBook.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete a specific contact in the list.
+4.  AddressBook delete the contact.
 +
 Use case ends.
 
@@ -806,6 +864,275 @@ Use case ends.
 ** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Edit contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Existing contact will be updated.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and update a contact.
+4.  AddressBook update the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. Format of the given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Find contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified contact will be listed.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and find a contact.
+4.  AddressBook list the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: List contacts
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* All entries will be listed.
+
+*MSS*
+
+1.  User request and list all contacts.
+2.  AddressBook shows a list of contacts.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Help
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* User guide will be displayed.
+
+*MSS*
+
+1.  User request help.
+2.  AddressBook open user guide in a new window.
++
+Use case ends.
+
+[discrete]
+=== Use case: Select contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and select a contact.
+4.  AddressBook select the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: History
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* List all entered commands.
+
+*MSS*
+
+1.  User request to show history.
+2.  AddressBook shows a list of entered commands.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The history is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Undo
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Restores AddressBook to the previous state.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete the contacts.
+4.  AddressBook delete the contacts.
+5.  User requests to clear the contacts.
+6.  AddressBook clear all contacts.
+7.  User requests to undo.
+8.  AddressBook reverse the previous clear command.
+9.  User requests to undo.
+10.  AddressBook reverse the previous delete command.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 6a. The list is empty.
++
+Use case ends.
+
+* 8a. No undoable commands.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 10a. No undoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Redo
+
+*Preconditions:* User is logged in.
+
+*Guarantees:* Reverse the most recent undo command.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete the contacts.
+4.  AddressBook delete the contacts.
+5.  User requests to clear the contacts.
+6.  AddressBook clear all contacts.
+7.  User requests to undo.
+8.  AddressBook reverse the previous clear command.
+9.  User requests to undo.
+10.  AddressBook reverse the previous delete command.
+11.  User request to redo.
+12.  AddressBook delete the contact.
+13.  User request to redo.
+14.  AddressBook clear all entries.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 6a. The list is empty.
++
+Use case ends.
+
+* 8a. No undoable commands.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 10a. No undoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+* 12a. No redoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+* 14a. No redoable commands.
++
+Use case resume at step 2.
+Use case ends.
 
 {More to be added}
 
@@ -821,34 +1148,6 @@ Use case resumes at step 2.
 [appendix]
 == Glossary
 
-[[autocomplete]]
-Autocomplete
-
-....
-A function that completes words or strings without the user needing to type them in full
-....
-
-[[command-line-interface]]
-Command Line Interface
-
-....
-A user interface to a computer's operating system or an application in which the user responds to a visual prompt by typing in a command on a specified line, receives a response back from the system, and then enters another command, and so forth
-....
-
-[[favourite]]
-Favourites
-
-....
-A collection of contacts that the user have marked as frequently used such that it can be listed via a command
-....
-
-[[homepage]]
-Homepage
-
-....
-A web page set as the default page loaded when a contact is selected
-....
-
 [[mainstream-os]]
 Mainstream OS
 
@@ -861,15 +1160,6 @@ Private contact detail
 
 ....
 A contact detail that is not meant to be shared with others
-....
-
-
-
-[[tag]]
-Tag
-
-....
-A label attached to a contact, allowing the user to search for all users with the same tag
 ....
 
 [appendix]
