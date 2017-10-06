@@ -772,11 +772,47 @@ Use case resumes at step 2.
 [appendix]
 == Non Functional Requirements
 
-.  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
-.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+- Constraints
+    .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 
-{More to be added}
+- Quality 
+    .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+    .  System should be usable by a novice who has never used a search engine before
+    .  User guide should be comprehensive (easily understood)
+    
+- Performance
+    .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+    .  Search should deliver results within 2 seconds.
+
+- Reliability
+    .  Mean time to recovery: first thing to update to not keep users waiting and changing to another product. Assures users it is only a lapse and the app is reliable.
+    .  Mean time between failures: 1 hour.
+
+- Recoverability
+    .  Should auto-save information after user is idling for 5 seconds.
+    .  Should be able to stores information in event of crash / internet cut-off.
+
+- Robustness
+    .  Should keeping essence of original design whenever making updates. (keeps users who have not used the application in a long time be able to use the application although they may not know the difference in updates)
+    .  Be able to use old versions of the application although there is a new update.
+
+- Usability
+    .  Should enable spell-check
+    .  Should work with other languages and not restricted to English.
+    .  Should allow users to use Emojis within the application.
+
+- Documentation
+    . Easily locatable 'Help?' section
+    
+- Notes about project scope
+    .  The application is not required to have voice recognition of inputs.    
+    
+- Any other noteworthy points    
+    .  GUI should be appealing to adults and younger generation.
+    .  GUI should not have bright colours to reduce strain on eyes.
+    .  GUI should have toggling sizes for those with differing eyesight capabilities.
+    .  Should keep a log of user actions done (to allow them to keep track of their own actions).
+    
 
 [appendix]
 == Glossary
