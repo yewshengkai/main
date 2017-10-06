@@ -1142,11 +1142,11 @@ Use case ends.
 - Constraints
     .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 
-- Quality 
+- Quality
     .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
     .  System should be usable by a novice who has never used a search engine before
     .  User guide should be comprehensive (easily understood)
-    
+
 - Performance
     .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
     .  Search should deliver results within 2 seconds.
@@ -1170,16 +1170,17 @@ Use case ends.
 
 - Documentation
     . Easily locatable 'Help?' section
-    
+
 - Notes about project scope
-    .  The application is not required to have voice recognition of inputs.    
-    
-- Any other noteworthy points    
+    .  The application is not required to have voice recognition of inputs.
+
+- Any other noteworthy points
     .  GUI should be appealing to adults and younger generation.
     .  GUI should not have bright colours to reduce strain on eyes.
     .  GUI should have toggling sizes for those with differing eyesight capabilities.
     .  Should keep a log of user actions done (to allow them to keep track of their own actions).
     
+
 {More to be added}
 
 [appendix]
