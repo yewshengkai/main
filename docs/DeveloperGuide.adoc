@@ -738,7 +738,13 @@ contact
 
 |`* * *` |user |link:#tag[tag] contacts |I can find people with the same tags easily in a listing
 
-|`* * *` |user |add remarks to contact |store additional information about the contact
+|`* * *` |user with many persons in the address book |sort persons by name |locate a person easily
+
+|`* *` |user |add remarks to contact |store additional information about the contact
+
+|`* *` |user |add profile picture to contact |I can easily find the contact visually
+
+|`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
@@ -760,11 +766,10 @@ favourite contacts easily
 |`* *` |security conscious user |lock the application with a password |view my address book only with a password,
 increasing security
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
-
 |`*` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
-|locate a contact
-without their full names
+|locate a contact without their full names
+
+|`*` |user |see list of upcoming birthdays | I can see at a glance if there are upcoming birthdays
 
 |`*` |user |share contacts |I can share my contacts with other people
 
