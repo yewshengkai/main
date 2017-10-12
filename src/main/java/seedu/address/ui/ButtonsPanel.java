@@ -20,10 +20,10 @@ public class ButtonsPanel extends UiPart<Region> {
     private Button addButton;
 
     @FXML
-    private Button editButton;
+    private Button deleteButton;
 
     @FXML
-    private Button deleteButton;
+    private Button editButton;
 
     @FXML
     private Button clearButton;
@@ -44,12 +44,13 @@ public class ButtonsPanel extends UiPart<Region> {
     }
 
     public void setButtonsImage() {
-        //addButton.setGraphic(new ImageView("/images/addIcon"));
-       // deleteButton.setGraphic(new ImageView("/images/addIcon"));
-        //editButton.setGraphic(new ImageView("/images/addIcon"));
-        //clearButton.setGraphic(new ImageView("/images/addIcon"));
-        //redoButton.setGraphic(new ImageView("/images/addIcon"));
-        //undoButton.setGraphic(new ImageView("/images/addIcon"));
+        addButton.setGraphic(new ImageView("/images/buttons/addIcon.png"));
+        deleteButton.setGraphic(new ImageView("/images/buttons/deleteIcon.png"));
+        editButton.setGraphic(new ImageView("/images/buttons/editIcon.png"));
+        clearButton.setGraphic(new ImageView("/images/buttons/clearIcon.png"));
+        redoButton.setGraphic(new ImageView("/images/buttons/redoIcon.png"));
+        undoButton.setGraphic(new ImageView("/images/buttons/undoIcon.png"));
+        refreshButton.setGraphic(new ImageView("/images/buttons/refreshIcon.png"));
     }
 
 }
