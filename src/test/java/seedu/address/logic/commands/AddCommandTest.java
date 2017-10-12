@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_PREFIX;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_SUFFIX;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +59,18 @@ public class AddCommandTest {
         thrown.expectMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
 
         getAddCommandForPerson(validPerson, modelStub).execute();
+    }
+
+    @Test
+    public void execute_person_homepageGeneratedSuccessful() {
+        Person validPerson = new PersonBuilder().build();
+        String defaultHomepage  = GOOGLE_SEARCH_URL_PREFIX + validPerson.getName()
+                .fullName.replaceAll(" ", "+") + GOOGLE_SEARCH_URL_SUFFIX;
+        String customHomepage = "http://www.google.com";
+        Person validPersonWithHomepage = new PersonBuilder().withHomepage(customHomepage).build();
+
+        assertEquals(defaultHomepage, validPerson.getHomepage().value);
+        assertEquals(customHomepage, validPersonWithHomepage.getHomepage().value);
     }
 
     @Test

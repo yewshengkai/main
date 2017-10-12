@@ -2,6 +2,8 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_PREFIX;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_SUFFIX;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -9,6 +11,7 @@ import java.util.Set;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -22,6 +25,9 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Phone> phone;
     private ObjectProperty<Email> email;
     private ObjectProperty<Address> address;
+    private ObjectProperty<Homepage> homepage;
+
+    private boolean isHomepageManuallySet;
 
     private ObjectProperty<UniqueTagList> tags;
 
@@ -34,8 +40,31 @@ public class Person implements ReadOnlyPerson {
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
+        this.isHomepageManuallySet = false;
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        try {
+            this.homepage = new SimpleObjectProperty<>(new Homepage(
+                    GOOGLE_SEARCH_URL_PREFIX + name.fullName.replaceAll(" ", "+")
+                    + GOOGLE_SEARCH_URL_SUFFIX));
+        } catch (IllegalValueException ive) {
+            ive.printStackTrace();
+        }
+    }
+
+    /**
+     * Overloaded constructor for the setting of homepage
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Homepage homepage) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = new SimpleObjectProperty<>(name);
+        this.phone = new SimpleObjectProperty<>(phone);
+        this.email = new SimpleObjectProperty<>(email);
+        this.address = new SimpleObjectProperty<>(address);
+        this.isHomepageManuallySet = true;
+        // protect internal tags from changes in the arg list
+        this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        this.homepage = new SimpleObjectProperty<>(homepage);
     }
 
     /**
@@ -44,6 +73,15 @@ public class Person implements ReadOnlyPerson {
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
                 source.getTags());
+    }
+
+    /**
+     * Overloaded method to include the homepage
+     * Creates a copy of the given ReadOnlyPerson.
+     */
+    public Person(ReadOnlyPerson source, Homepage homepage) {
+        this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
+                source.getTags(), homepage);
     }
 
     public void setName(Name name) {
@@ -95,6 +133,24 @@ public class Person implements ReadOnlyPerson {
     @Override
     public ObjectProperty<Address> addressProperty() {
         return address;
+    }
+
+    public void setHomepage(Homepage homepage) {
+        this.homepage.set(requireNonNull(homepage));
+    }
+
+    @Override
+    public Homepage getHomepage() {
+        return homepage.get();
+    }
+
+    @Override
+    public boolean isHomepageManuallySet() {
+        return isHomepageManuallySet;
+    }
+
+    public ObjectProperty<Homepage> homepageProperty() {
+        return homepage;
     }
 
     @Override

@@ -12,6 +12,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -77,6 +78,23 @@ public class ParserUtil {
     public static Optional<Email> parseEmail(Optional<String> email) throws IllegalValueException {
         requireNonNull(email);
         return email.isPresent() ? Optional.of(new Email(email.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> homepage} into an {@code Optional<Homepage>} if {@code homepage} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Homepage> parseHomepage(Optional<String> homepage) throws IllegalValueException {
+        requireNonNull(homepage);
+        if (homepage.isPresent()) {
+            if (homepage.get().equals("")) {
+                return Optional.of(new Homepage());
+            } else {
+                return Optional.of(new Homepage(homepage.get()));
+            }
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
