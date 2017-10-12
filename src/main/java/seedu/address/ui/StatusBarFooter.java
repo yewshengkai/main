@@ -30,7 +30,7 @@ public class StatusBarFooter extends UiPart<Region> {
      * will require passing down the clock reference all the way from MainApp,
      * but it should be easier once we have factories/DI frameworks.
      */
-    private static Clock clock = Clock.systemDefaultZone();;
+    private static Clock clock = Clock.systemDefaultZone();
 
     private static final String FXML = "StatusBarFooter.fxml";
 
