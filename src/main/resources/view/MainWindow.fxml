@@ -18,10 +18,10 @@
 
     <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Open" />
+            <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open" />
             <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Open Recent" />
             <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Save" />
-            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Save as.." />
+            <MenuItem mnemonicParsing="false" onAction="#handleSaveAs" text="Save as.." />
             <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Import" />
             <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
         </Menu>

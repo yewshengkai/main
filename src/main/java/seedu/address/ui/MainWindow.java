@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -13,6 +15,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
@@ -233,6 +236,59 @@ public class MainWindow extends UiPart<Region> {
     private void handleExit() {
         raise(new ExitAppRequestEvent());
     }
+
+    /**
+     * Open a file
+     */
+    @FXML
+    private void handleOpen() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open resource file...");
+        fileChooser.showOpenDialog(primaryStage);
+    }
+
+    /**
+     * Save file as specific format
+     */
+    @FXML
+    private void handleSaveAs() {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx");
+        FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("XML Data (*.xml)", "*.xml");
+        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+
+        fileChooser.getExtensionFilters().add(excelFilter);
+        fileChooser.getExtensionFilters().add(pdfFilter);
+        fileChooser.getExtensionFilters().add(xmlFilter);
+        fileChooser.getExtensionFilters().add(textFilter);
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setTitle("Save as..");
+        fileChooser.setInitialFileName("iungoAB");
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            String content = "Prep_data_save_to_excel";
+            SaveFile(content, file);
+        }
+    }
+
+    /**
+     * Save file to specific format
+     */
+    private void SaveFile(String content, File file) {
+        try {
+            FileWriter fileWriter = null;
+            fileWriter = new FileWriter(file);
+            fileWriter.write(content);
+            fileWriter.close();
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
+    }
+
 
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;
