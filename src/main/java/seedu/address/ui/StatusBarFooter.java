@@ -30,9 +30,9 @@ public class StatusBarFooter extends UiPart<Region> {
      * will require passing down the clock reference all the way from MainApp,
      * but it should be easier once we have factories/DI frameworks.
      */
-    private static Clock clock = Clock.systemDefaultZone();
+    private static Clock clock;
 
-    private static final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
+    private final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
 
     private static final String FXML = "StatusBarFooter.fxml";
 
@@ -60,7 +60,8 @@ public class StatusBarFooter extends UiPart<Region> {
      * Returns the clock currently in use.
      */
     public static Clock getClock() {
-        return clock;
+        clock = Clock.systemDefaultZone();
+        return  clock;
     }
 
     private void setSaveLocation(String location) {
@@ -73,7 +74,7 @@ public class StatusBarFooter extends UiPart<Region> {
 
     @Subscribe
     public void handleAddressBookChangedEvent(AddressBookChangedEvent abce) {
-        long now = clock.millis();
+        long now = getClock().millis();
         String lastUpdated = new Date(now).toString();
         logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Setting last updated status to " + lastUpdated));
         setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
