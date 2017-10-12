@@ -811,6 +811,7 @@ Use case ends.
 ** 1b1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
++
 Use case ends.
 
 * 2a. AddressBook exceeded storage capacity.
@@ -864,6 +865,7 @@ Use case ends.
 ** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
++
 Use case ends.
 
 [discrete]
@@ -896,7 +898,29 @@ Use case ends.
 ** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
++
 Use case ends.
++
+
+* 3b.  User types `/t` to delete tags.
++
+[none]
+** 3b1. Tags are removed from the contact.
++
+Use case resumes at step 4.
++
+Use case ends.
++
+
+* 3c. User types `/h` to reset homepage.
++
+[none]
+** 3c1. Homepage is set back to the default (A Google Search of contact name).
++
+Use case resumes at step 4.
++
+Use case ends.
+
 
 [discrete]
 === Use case: Find contacts
@@ -928,6 +952,7 @@ Use case ends.
 ** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
++
 Use case ends.
 
 [discrete]
