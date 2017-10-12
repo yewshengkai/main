@@ -159,7 +159,8 @@ public class MainWindow extends UiPart<Region> {
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath());
+        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath(),
+                logic.getFilteredPersonList().size());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(logic);
@@ -271,14 +272,22 @@ public class MainWindow extends UiPart<Region> {
 
         if (file != null) {
             String content = "Prep_data_save_to_excel";
-            SaveFile(content, file);
+            try {
+                FileWriter fileWriter = null;
+                fileWriter = new FileWriter(file);
+                fileWriter.write(content);
+                fileWriter.close();
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
+            //SaveFile(content, file);
         }
     }
 
     /**
      * Save file to specific format
      */
-    private void SaveFile(String content, File file) {
+    /*private void SaveFile(String content, File file) {
         try {
             FileWriter fileWriter = null;
             fileWriter = new FileWriter(file);
@@ -287,7 +296,7 @@ public class MainWindow extends UiPart<Region> {
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
-    }
+    }*/
 
 
     public PersonListPanel getPersonListPanel() {
