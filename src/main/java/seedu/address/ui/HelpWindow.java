@@ -41,8 +41,7 @@ public class HelpWindow extends UiPart<Region> {
         browser.getEngine().load(userGuideUrl);
     }
 
-    private void setHelpWindowSize()
-    {
+    private void setHelpWindowSize() {
         dialogStage.setMinHeight(MIN_HEIGHT);
         dialogStage.setMinWidth(MIN_WIDTH);
     }

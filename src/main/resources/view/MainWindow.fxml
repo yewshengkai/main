@@ -2,8 +2,6 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -12,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@DarkTheme.css" />
         <URL value="@Extensions.css" />
@@ -39,51 +37,17 @@
     </MenuBar>
     <VBox>
         <children>
-            <HBox>
-                <children>
-                    <Button minHeight="5.0" minWidth="30.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Add">
-                        <HBox.margin>
-                            <Insets right="5.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Button layoutX="10.0" layoutY="10.0" minHeight="30.0" minWidth="90.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Edit">
-                        <HBox.margin>
-                            <Insets right="5.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Button layoutX="85.0" layoutY="10.0" minHeight="30.0" minWidth="90.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Delete">
-                        <HBox.margin>
-                            <Insets right="5.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Button layoutX="205.0" layoutY="15.0" minHeight="30.0" mnemonicParsing="false" prefHeight="30.0" text="↶">
-                        <HBox.margin>
-                            <Insets right="5.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Button layoutX="300.0" layoutY="15.0" minHeight="30.0" mnemonicParsing="false" prefHeight="30.0" text="↷">
-                        <HBox.margin>
-                            <Insets right="5.0" />
-                        </HBox.margin>
-                    </Button>
-                    <Button layoutX="361.0" layoutY="15.0" minHeight="30.0" mnemonicParsing="false" prefHeight="30.0" text="⟲">
-                        <HBox.margin>
-                            <Insets />
-                        </HBox.margin>
-                    </Button>
-                </children>
-                <opaqueInsets>
-                    <Insets />
-                </opaqueInsets>
-                <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                </padding>
-            </HBox>
+         <HBox fx:id="buttonsPanel" minHeight="30.0" prefHeight="30.0">
+            <children>
+               <StackPane fx:id="buttonsPanelPlaceholder" alignment="CENTER_LEFT" styleClass="pane-with-border" HBox.hgrow="ALWAYS" />
+               <StackPane fx:id="searchPlaceHolder" prefHeight="150.0" prefWidth="200.0" styleClass="pane-with-border" />
+            </children>
+         </HBox>
 
             <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4, 0.5">
-                <VBox minWidth="150.0" prefWidth="150.0" SplitPane.resizableWithParent="false">
+                <VBox fx:id="groupList" minWidth="150.0" prefWidth="150.0" SplitPane.resizableWithParent="false">
                     <children>
-                        <ListView VBox.vgrow="ALWAYS" />
+                  <StackPane fx:id="groupListPanelPlaceholder" VBox.vgrow="ALWAYS" />
                     </children>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -52,8 +52,8 @@ public class XmlSerializableAddressBook implements ReadOnlyAddressBook {
                 e.printStackTrace();
                 return null;
             }
-            //TODO: better error handling
             catch (Exception a) {
+                //TODO: better error handling
                 a.printStackTrace();
                 return null;
             }
@@ -71,8 +71,8 @@ public class XmlSerializableAddressBook implements ReadOnlyAddressBook {
                 e.printStackTrace();
                 return null;
             }
-            //TODO: better error handling
             catch (Exception a) {
+                //TODO: better error handling
                 a.printStackTrace();
                 return null;
             }

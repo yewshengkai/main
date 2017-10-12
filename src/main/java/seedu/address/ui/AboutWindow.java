@@ -40,8 +40,7 @@ public class AboutWindow extends UiPart<Region> {
         browser.getEngine().load(userGuideUrl);
     }
 
-    private void setAboutWindowSize()
-    {
+    private void setAboutWindowSize() {
         dialogStage.setMinHeight(MIN_HEIGHT);
         dialogStage.setMinWidth(MIN_WIDTH);
     }

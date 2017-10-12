@@ -25,15 +25,16 @@ public class StatusBarFooter extends UiPart<Region> {
     /**
      * Used to generate time stamps.
      *
+     * TODO: change clock to an instance variable.
      * We leave it as a static variable because manual dependency injection
      * will require passing down the clock reference all the way from MainApp,
      * but it should be easier once we have factories/DI frameworks.
      */
-    private static Clock clock;
-
-    private final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
+    private static Clock clock = Clock.systemDefaultZone();;
 
     private static final String FXML = "StatusBarFooter.fxml";
+
+    private final Logger logger = LogsCenter.getLogger(StatusBarFooter.class);
 
     @FXML
     private StatusBar syncStatus;
@@ -59,8 +60,7 @@ public class StatusBarFooter extends UiPart<Region> {
      * Returns the clock currently in use.
      */
     public static Clock getClock() {
-        clock = Clock.systemDefaultZone();
-        return  clock;
+        return clock;
     }
 
     private void setSaveLocation(String location) {
@@ -73,7 +73,7 @@ public class StatusBarFooter extends UiPart<Region> {
 
     @Subscribe
     public void handleAddressBookChangedEvent(AddressBookChangedEvent abce) {
-        long now = getClock().millis();
+        long now = clock.millis();
         String lastUpdated = new Date(now).toString();
         logger.info(LogsCenter.getEventHandlingLogMessage(abce, "Setting last updated status to " + lastUpdated));
         setSyncStatus(String.format(SYNC_STATUS_UPDATED, lastUpdated));
