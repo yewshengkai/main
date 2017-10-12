@@ -12,8 +12,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
  * Guarantees: immutable; is valid as declared in {@link #isValidHomepage(String)}
  */
 public class Homepage {
-    public static final String MESSAGE_HOMEPAGE_CONSTRAINTS =
-            "Person homepage should be a valid URL";
+    public static final String MESSAGE_HOMEPAGE_CONSTRAINTS = "Person homepage should be a valid URL";
     public static final String RESET_HOMEPAGE = "404";
     public final String value;
 
@@ -39,11 +38,11 @@ public class Homepage {
     }
 
     /**
-     * Returns if a given string is a valid person email.
+     * Returns if a given string is a valid person homepage.
      */
     public static boolean isValidHomepage(String test) {
         try {
-            URL url = new URL(test);
+            new URL(test);
         } catch (MalformedURLException e) {
             return false;
         }
