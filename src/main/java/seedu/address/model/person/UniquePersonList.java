@@ -115,6 +115,10 @@ public class UniquePersonList implements Iterable<Person> {
         return FXCollections.unmodifiableObservableList(mappedList);
     }
 
+    public void sort() {
+        internalList.sort((person1, person2) -> (person1.getName().fullName.compareTo(person2.getName().fullName)));
+    }
+
     @Override
     public Iterator<Person> iterator() {
         return internalList.iterator();

@@ -1,11 +1,9 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
-
 /**
  * Sorts all persons in the address book by alphabetical order of contact's name and lists to the user.
  */
-public class SortCommand extends Command {
+public class SortCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "sort";
 
@@ -15,8 +13,8 @@ public class SortCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Sorted all persons";
 
     @Override
-    public CommandResult execute() {
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    public CommandResult executeUndoableCommand() {
+        model.sortContactList();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
