@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@DarkTheme.css" />
         <URL value="@Extensions.css" />
@@ -45,7 +45,7 @@
          </HBox>
 
             <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4, 0.5">
-                <VBox fx:id="groupList" minWidth="150.0" prefWidth="150.0" SplitPane.resizableWithParent="false">
+                <VBox fx:id="groupList" SplitPane.resizableWithParent="false">
                     <children>
                   <StackPane fx:id="groupListPanelPlaceholder" VBox.vgrow="ALWAYS" />
                     </children>

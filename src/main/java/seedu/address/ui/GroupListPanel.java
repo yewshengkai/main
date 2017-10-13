@@ -24,6 +24,8 @@ public class GroupListPanel extends UiPart<Region> {
     private static final String FXML = "GroupListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(GroupListPanel.class);
 
+    //@TODO Group left list view
+
     @FXML
     private ListView<PersonCard> groupListView;
 
