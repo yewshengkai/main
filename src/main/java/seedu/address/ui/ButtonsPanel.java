@@ -44,13 +44,13 @@ public class ButtonsPanel extends UiPart<Region> {
     }
 
     public void setButtonsImage() {
-        addButton.setGraphic(new ImageView("/images/buttons/addIcon.png"));
-        deleteButton.setGraphic(new ImageView("/images/buttons/deleteIcon.png"));
-        editButton.setGraphic(new ImageView("/images/buttons/editIcon.png"));
-        clearButton.setGraphic(new ImageView("/images/buttons/clearIcon.png"));
-        redoButton.setGraphic(new ImageView("/images/buttons/redoIcon.png"));
-        undoButton.setGraphic(new ImageView("/images/buttons/undoIcon.png"));
-        refreshButton.setGraphic(new ImageView("/images/buttons/refreshIcon.png"));
+        addButton.setGraphic(new ImageView("/docs/images/addIcon.png"));
+        deleteButton.setGraphic(new ImageView("/docs/images/deleteIcon.png"));
+        editButton.setGraphic(new ImageView("/docs/images/editIcon.png"));
+        clearButton.setGraphic(new ImageView("/docs/images/clearIcon.png"));
+        redoButton.setGraphic(new ImageView("/docs/images/redoIcon.png"));
+        undoButton.setGraphic(new ImageView("/docs/images/undoIcon.png"));
+        refreshButton.setGraphic(new ImageView("/docs/images/refreshIcon.png"));
     }
 
 }
