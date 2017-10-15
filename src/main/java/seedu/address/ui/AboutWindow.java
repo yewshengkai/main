@@ -21,6 +21,8 @@ public class AboutWindow extends UiPart<Region> {
     private static final String ICON = "/images/info_icon.png";
     private static final String FXML = "AboutWindow.fxml";
     private static final String TITLE = "About";
+    private static final int MIN_HEIGHT = 600;
+    private static final int MIN_WIDTH = 650;
 
     @FXML
     private WebView browser;
@@ -32,11 +34,15 @@ public class AboutWindow extends UiPart<Region> {
         Scene scene = new Scene(getRoot());
         //Null passed as the parent stage to make it non-modal.
         dialogStage = createDialogStage(TITLE, null, scene);
-        dialogStage.setMaximized(true); //TODO: set a more appropriate initial size
         FxViewUtil.setStageIcon(dialogStage, ICON);
-
+        setAboutWindowSize();
         String userGuideUrl = getClass().getResource(USERGUIDE_FILE_PATH).toString();
         browser.getEngine().load(userGuideUrl);
+    }
+
+    private void setAboutWindowSize() {
+        dialogStage.setMinHeight(MIN_HEIGHT);
+        dialogStage.setMinWidth(MIN_WIDTH);
     }
 
     /**
