@@ -81,6 +81,12 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    @Override
+    public void sortContactList(boolean isDescendingSort) {
+        addressBook.sortAddressBook(isDescendingSort);
+        indicateAddressBookChanged();
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -96,11 +102,6 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
-    }
-
-    @Override
-    public void sortContactList(boolean isDescendingSort) {
-        addressBook.sortAddressBook(isDescendingSort);
     }
 
     @Override
