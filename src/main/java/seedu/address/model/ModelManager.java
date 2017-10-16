@@ -99,8 +99,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void sortContactList() {
-        addressBook.sortAddressBook();
+    public void sortContactList(boolean isDescendingSort) {
+        addressBook.sortAddressBook(isDescendingSort);
     }
 
     @Override

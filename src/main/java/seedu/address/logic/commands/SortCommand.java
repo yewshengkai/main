@@ -12,9 +12,16 @@ public class SortCommand extends UndoableCommand {
 
     public static final String MESSAGE_SUCCESS = "Sorted all persons";
 
+    private final boolean isDescendingSort;
+
+    public SortCommand(boolean isDescendingSort) {
+        this.isDescendingSort = isDescendingSort;
+    }
+
+
     @Override
     public CommandResult executeUndoableCommand() {
-        model.sortContactList();
+        model.sortContactList(isDescendingSort);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

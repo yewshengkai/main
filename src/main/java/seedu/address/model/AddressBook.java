@@ -124,8 +124,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.setPerson(target, editedPerson);
     }
 
-    public void sortAddressBook() {
-        persons.sort();
+    public void sortAddressBook(boolean isDescendingSort) {
+        persons.sort(isDescendingSort);
     }
 
     /**

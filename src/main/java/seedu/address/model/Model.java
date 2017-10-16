@@ -48,6 +48,6 @@ public interface Model {
     /**
      * Sorts the current person list in model.
      */
-    void sortContactList();
+    void sortContactList(boolean isDescendingSort);
 
 }
