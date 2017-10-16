@@ -149,7 +149,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void sortContactList() {
+        public void sortContactList(boolean isDescendingSort) {
             fail("This method should not be called.");
         }
     }
