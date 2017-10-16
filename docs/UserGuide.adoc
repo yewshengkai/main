@@ -74,6 +74,15 @@ Examples:
 Shows a list of all persons in the address book. +
 Format: `list`
 
+=== Sorting the contact list : `sort`
+
+Sorts the contact list in either [a]scending or [d]escending order and shows the list. +
+Format: `sort [a / d]`
+
+****
+* The parameters are OPTIONAL. `sort` on its own will default to a sort in ascending order.
+****
+
 === Editing a person : `edit`
 
 Edits an existing person in the address book. +
