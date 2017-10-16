@@ -115,8 +115,11 @@ public class UniquePersonList implements Iterable<Person> {
         return FXCollections.unmodifiableObservableList(mappedList);
     }
 
+    /**
+     * Sorts the internal list in either ascending or descending order depending on parameter.
+     */
     public void sort(boolean isDescendingSort) {
-        if(isDescendingSort) {
+        if (isDescendingSort) {
             internalList.sort((person1, person2) -> (person2.getName().fullName.compareTo(person1.getName().fullName)));
         } else {
             internalList.sort((person1, person2) -> (person1.getName().fullName.compareTo(person2.getName().fullName)));

@@ -117,13 +117,13 @@ public class ParserUtil {
     public static boolean parseSort(String sortOrder) throws IllegalValueException {
         sortOrder = sortOrder.trim();
         switch (sortOrder) {
-            case "":
-            case "a":
-                return false;
-            case "d":
-                return true;
-            default:
-                throw new IllegalValueException(MESSAGE_INVALID_ARG);
+        case "":
+        case "a":
+            return false;
+        case "d":
+            return true;
+        default:
+            throw new IllegalValueException(MESSAGE_INVALID_ARG);
         }
     }
 }
