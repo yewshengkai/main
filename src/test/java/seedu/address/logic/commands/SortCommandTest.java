@@ -4,7 +4,6 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalPersons.getTypicalDescendingOrderAddressBook;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
@@ -18,8 +17,8 @@ import seedu.address.model.UserPrefs;
  */
 public class SortCommandTest {
 
-    private static final boolean DESCENDING = true;
-    private static final boolean ASCENDING = false;
+    public static final boolean DESCENDING = true;
+    public static final boolean ASCENDING = false;
 
     private Model model;
 
