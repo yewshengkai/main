@@ -43,8 +43,6 @@ include::../UserGuide.adoc[tag=add]
 ---
 #Start of Extract [from: User Guide]#
 
-include::../UserGuide.adoc[tag=sort]
-
 #End of Extract#
 
 ---
