@@ -5,6 +5,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 image:https://travis-ci.org/CS2103AUG2017-F11-B3/main.svg?branch=master["Build Status", link="https://travis-ci.org/CS2103AUG2017-F11-B3/main"]
 https://ci.appveyor.com/project/karrui/iungo/[image:https://ci.appveyor.com/api/projects/status/v48dd7x6xo44nr7l/branch/master?svg=true[Build status]]
 https://coveralls.io/repos/github/CS2103AUG2017-F11-B3/main/badge.svg?branch=master[image:https://coveralls.io/repos/github/CS2103AUG2017-F11-B3/main/badge.svg?branch=master[Coverage Status]]
+image:https://api.codacy.com/project/badge/Grade/e3e1a616ab2f47a7836dea6c8c7125e3["Codacy code quality", link="https://www.codacy.com/app/karrui/main?utm_source=github.com&utm_medium=referral&utm_content=CS2103AUG2017-F11-B3/main&utm_campaign=Badge_Grade"]
 
 image::docs/images/iungo-logo2.png[width="128", alight="left"]
 iungo aims to be an addressbook software for command-line aficionados. If you hate using the mouse for every small action, this application is for you!
