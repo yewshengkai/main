@@ -115,8 +115,8 @@ public class ParserUtil {
      * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
      */
     public static boolean parseSort(String sortOrder) throws IllegalValueException {
-        sortOrder = sortOrder.trim();
-        switch (sortOrder) {
+        String trimmedSortParameter = sortOrder.trim();
+        switch (trimmedSortParameter) {
         case "":
         case "a":
             return false;
