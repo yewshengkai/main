@@ -112,7 +112,7 @@ public class ParserUtil {
 
     /**
      * Parses {@code sortOrder} into a {@code boolean} and returns it.
-     * @throws IllegalValueException if the specified index is invalid (not non-zero unsigned integer).
+     * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
      */
     public static boolean parseSort(String sortOrder) throws IllegalValueException {
         sortOrder = sortOrder.trim();
