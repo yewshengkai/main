@@ -30,7 +30,7 @@ Responsibilities: Logic
 // TODO: Update to a higher resolution profile picture
 === Yew Sheng Kai
 image::yewshengkai.png[width="150", align="left"]
-{empty}[http://github.com/yewshengkai[github]]
+{empty}[http://github.com/yewshengkai[github]][<<yewshengkai#, portfolio>>]
 
 Role: Developer +
 Responsibilities: UI
