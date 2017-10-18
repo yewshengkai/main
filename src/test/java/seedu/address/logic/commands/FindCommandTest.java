@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
@@ -113,6 +115,13 @@ public class FindCommandTest {
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
     }
 
+    @Test
+    public void execute_multipleKeywords_multiplePhoneFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_PHONE, "95352563 9482224 9482427");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+    }
+
     /**
      * Parses {@code userInput} into a {@code FindCommand}.
      */
@@ -150,6 +159,7 @@ public class FindCommandTest {
                     FindCommand.COMMAND_WORD_TAG, Arrays.asList(userInput.split("\\s+"))));
             command6.setData(model, new CommandHistory(), new UndoRedoStack());
             return command6;
+
         default:
             break;
         }
