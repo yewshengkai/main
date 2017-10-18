@@ -39,6 +39,7 @@ public class personContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
             case FindCommand.COMMAND_WORD_TAG:
                 return keywords.stream()
                         .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getTags().toString().replaceAll("['\\[\\]']",""), keyword));
+
         }
         return false;
     }

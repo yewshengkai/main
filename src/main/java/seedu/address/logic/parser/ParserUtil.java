@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -107,5 +109,16 @@ public class ParserUtil {
             tagSet.add(new Tag(tagName));
         }
         return tagSet;
+    }
+
+    public static ArrayList<String> parseAllDetail(Collection<String> detail) throws IllegalValueException {
+        requireNonNull(detail);
+        ArrayList<String> detailList = new ArrayList<String>();
+        String []detailString = detail.toString().split("\\s+");
+        for (String string : detailString)
+        {
+            detailList.add(string.replaceAll("['\\[\\]']",""));
+        }
+        return detailList;
     }
 }
