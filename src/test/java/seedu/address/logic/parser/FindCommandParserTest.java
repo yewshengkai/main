@@ -25,22 +25,23 @@ public class FindCommandParserTest {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new personContainsKeywordsPredicate(
-                        FindCommand.COMMAND_WORD, Arrays.asList("Alice", "Bob")));
+                        FindCommand.COMMAND_WORD, Arrays.asList("Alice", "Bob"), false));
         assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
 
         FindCommand expectedAddressFindCommand =
                 new FindCommand(new personContainsKeywordsPredicate(
-                        FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList("wall", "michegan")));
+                        FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList("wall", "michegan"), false));
         assertParseSuccess(parser, "wall michegan", expectedAddressFindCommand);
 
         FindCommand expectedEmailFindCommand =
                 new FindCommand(new personContainsKeywordsPredicate(
-                        FindCommand.COMMAND_WORD_EMAIL, Arrays.asList("heinz@example.com", "werner@example.com")));
+                        FindCommand.COMMAND_WORD_EMAIL, Arrays.asList(
+                                "heinz@example.com", "werner@example.com"), false));
         assertParseSuccess(parser, "heinz@example.com werner@example.com", expectedEmailFindCommand);
 
         FindCommand expectedPhoneFindCommand =
                 new FindCommand(new personContainsKeywordsPredicate(
-                        FindCommand.COMMAND_WORD_PHONE, Arrays.asList("95352563", "9482224")));
+                        FindCommand.COMMAND_WORD_PHONE, Arrays.asList("95352563", "9482224"), false));
         assertParseSuccess(parser, "95352563 9482224", expectedPhoneFindCommand);
 
 

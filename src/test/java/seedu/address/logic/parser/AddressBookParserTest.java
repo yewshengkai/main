@@ -98,12 +98,12 @@ public class AddressBookParserTest {
         FindCommand command = (FindCommand) parser.parseCommand(
                 FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new personContainsKeywordsPredicate(
-                FindCommand.COMMAND_WORD, keywords)), command);
+                FindCommand.COMMAND_WORD, keywords, false)), command);
 
         FindCommand aliasCommand = (FindCommand) parser.parseCommand(
                 FindCommand.COMMAND_ALIAS + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new personContainsKeywordsPredicate(
-                FindCommand.COMMAND_WORD, keywords)), aliasCommand);
+                FindCommand.COMMAND_WORD, keywords, false)), aliasCommand);
     }
 
     @Test

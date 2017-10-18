@@ -115,7 +115,8 @@ public class ParserUtil {
     /**
      * Parses {@code Collection<String> tags} into a {@code ArrayList<String>}.
      */
-    public static ArrayList<String> parseAllDetail(Collection<String> detail, String commandType) throws IllegalValueException {
+    public static ArrayList<String> parseAllDetail(Collection<String> detail, String commandType)
+            throws IllegalValueException {
         requireNonNull(detail);
         ArrayList<String> detailList = new ArrayList<String>();
         String []detailString = detail.toString().split("\\s+");
@@ -123,23 +124,17 @@ public class ParserUtil {
             string = string.replaceAll("['\\[\\]']", "");
             if (commandType.equals(FindCommand.COMMAND_WORD_ADDRESS) && !Address.isValidAddress(string)) {
                 throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
-            }
-            else  if (commandType.equals(FindCommand.COMMAND_WORD_EMAIL) && !Email.isValidEmail(string)) {
+            } else if (commandType.equals(FindCommand.COMMAND_WORD_EMAIL) && !Email.isValidEmail(string)) {
                 throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
-            }
-            else  if (commandType.equals(FindCommand.COMMAND_WORD_PHONE) && !Phone.isValidPhone(string)) {
+            } else if (commandType.equals(FindCommand.COMMAND_WORD_PHONE) && !Phone.isValidPhone(string)) {
                 throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
-            }
-            else  if (commandType.equals(FindCommand.COMMAND_WORD_HOMEPAGE) && !Homepage.isValidHomepage(string)) {
+            } else if (commandType.equals(FindCommand.COMMAND_WORD_HOMEPAGE) && !Homepage.isValidHomepage(string)) {
                 throw new IllegalValueException(Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
-            }
-            else  if (commandType.equals(FindCommand.COMMAND_WORD_TAG) && !Tag.isValidTagName(string)) {
+            } else if (commandType.equals(FindCommand.COMMAND_WORD_TAG) && !Tag.isValidTagName(string)) {
                 throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
-            }
-            else {
+            } else {
                 detailList.add(string);
             }
-
         }
         return detailList;
     }

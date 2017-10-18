@@ -116,7 +116,7 @@ public class CommandTestUtil {
         ReadOnlyPerson person = model.getAddressBook().getPersonList().get(0);
         final String[] splitName = person.getName().fullName.split("\\s+");
         model.updateFilteredPersonList(new personContainsKeywordsPredicate(
-                FindCommand.COMMAND_WORD, Arrays.asList(splitName[0])));
+                FindCommand.COMMAND_WORD, Arrays.asList(splitName[0]), false));
 
         assert model.getFilteredPersonList().size() == 1;
     }

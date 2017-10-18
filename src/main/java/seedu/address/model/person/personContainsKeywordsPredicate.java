@@ -28,7 +28,7 @@ public class personContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
         case FindCommand.COMMAND_WORD:
             return keywords.stream()
                     .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
-                            person.getName().fullName, keyword, isCaseIgnored)) ;
+                            person.getName().fullName, keyword, isCaseIgnored));
         case FindCommand.COMMAND_WORD_ADDRESS:
             return keywords.stream()
                     .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(

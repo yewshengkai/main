@@ -53,7 +53,7 @@ public class ModelManagerTest {
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new personContainsKeywordsPredicate(
-                FindCommand.COMMAND_WORD, Arrays.asList(keywords)));
+                FindCommand.COMMAND_WORD, Arrays.asList(keywords), false));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
