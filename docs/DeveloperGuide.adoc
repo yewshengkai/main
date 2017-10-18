@@ -748,6 +748,8 @@ contact
 
 |`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
 
+|`* *` |user |export address book to other format | I can print out the address book and view it with better program
+
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
 |`* *` |user |use shorthand aliases for commands|execute commands more conveniently
@@ -762,8 +764,6 @@ favourite contacts easily
 |`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
 
 |`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
-
-|`* *` |user |search my contacts with other information other than name |find contacts just by knowing other information
 
 |`* *` |security conscious user |lock the application with a password |view my address book only with a password,
 increasing security
