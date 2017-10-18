@@ -36,7 +36,7 @@ public class MainWindow extends UiPart<Region> {
     private static final String ICON = "/images/iungo-logo.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
-    private static final int MIN_WIDTH = 650;
+    private static final int MIN_WIDTH = 740;
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -46,7 +46,6 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
-    private ButtonsPanel buttonsPanel;
     private Config config;
     private UserPrefs prefs;
 
@@ -64,9 +63,6 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane personListPanelPlaceholder;
-
-    @FXML
-    private StackPane buttonsPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -145,9 +141,6 @@ public class MainWindow extends UiPart<Region> {
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-
-        buttonsPanel = new ButtonsPanel();
-        buttonsPanelPlaceholder.getChildren().add(buttonsPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());

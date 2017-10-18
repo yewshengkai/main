@@ -6,17 +6,16 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
-        <URL value="@DarkTheme.css" />
+        <URL value="@BlueTheme.css" />
         <URL value="@Extensions.css" />
     </stylesheets>
 
-    <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+    <MenuBar fx:id="menuBar" minHeight="30.0" prefHeight="25.0" VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
             <MenuItem mnemonicParsing="false" onAction="#handleExport" text="Export" />
@@ -29,36 +28,30 @@
     </MenuBar>
     <VBox>
         <children>
-         <HBox fx:id="buttonsPanel" minHeight="30.0" prefHeight="30.0">
-            <children>
-               <StackPane fx:id="buttonsPanelPlaceholder" alignment="CENTER_LEFT" styleClass="pane-with-border" HBox.hgrow="ALWAYS" />
-               <StackPane fx:id="searchPlaceHolder" prefHeight="150.0" prefWidth="200.0" styleClass="pane-with-border" />
-            </children>
-         </HBox>
 
             <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4">
                 <VBox fx:id="personList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                     </padding>
                     <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS" />
                 </VBox>
-                <VBox minWidth="340.0">
+                <VBox maxHeight="1040.0" minWidth="340.0">
                     <children>
 
-                        <StackPane fx:id="browserPlaceholder">
+                        <StackPane fx:id="browserPlaceholder" VBox.vgrow="ALWAYS">
                             <padding>
                                 <Insets bottom="10" left="10" right="10" top="10" />
                             </padding>
                         </StackPane>
-
+         
                         <StackPane fx:id="commandBoxPlaceholder" styleClass="pane-with-border">
                             <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                             </padding>
                         </StackPane>
-
-                        <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="100" prefHeight="100" styleClass="pane-with-border">
+         
+                                 <StackPane fx:id="resultDisplayPlaceholder" minHeight="100.0" styleClass="pane-with-border" VBox.vgrow="ALWAYS">
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding>
