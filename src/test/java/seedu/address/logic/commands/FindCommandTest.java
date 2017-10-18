@@ -60,26 +60,101 @@ public class FindCommandTest {
     @Test
     public void execute_zeroKeywords_noPersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(" ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD," ");
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_zeroKeywords_noAddressFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_ADDRESS," ");
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_zeroKeywords_noEmailFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_EMAIL," ");
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_zeroKeywords_noHomepageFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_HOMEPAGE," ");
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_zeroKeywords_noPhoneFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_PHONE," ");
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_zeroKeywords_noTagFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_TAG," ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_multipleKeywords_multiplePersonsFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
-        FindCommand command = prepareCommand("Kurz Elle Kunz");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD, "Kurz Elle Kunz");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+    }
+
+    @Test
+    public void execute_multipleKeywords_multipleEmailFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_EMAIL, "heinz@example.com werner@example.com lydia@example.com");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
     }
 
     /**
      * Parses {@code userInput} into a {@code FindCommand}.
      */
-    private FindCommand prepareCommand(String userInput) {
-        FindCommand command =
-                new FindCommand(new personContainsKeywordsPredicate(
-                        FindCommand.COMMAND_WORD, Arrays.asList(userInput.split("\\s+"))));
-        command.setData(model, new CommandHistory(), new UndoRedoStack());
-        return command;
+    private FindCommand prepareCommand(String commandPrefix, String userInput) {
+
+        switch (commandPrefix){
+
+        case FindCommand.COMMAND_WORD:
+            FindCommand command = new FindCommand(new personContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD, Arrays.asList(userInput.split("\\s+"))));
+            command.setData(model, new CommandHistory(), new UndoRedoStack());
+            return command;
+        case FindCommand.COMMAND_WORD_ADDRESS:
+            FindCommand command2 = new FindCommand(new personContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList(userInput.split("\\s+"))));
+            command2.setData(model, new CommandHistory(), new UndoRedoStack());
+            return command2;
+        case FindCommand.COMMAND_WORD_EMAIL:
+            FindCommand command3 = new FindCommand(new personContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_EMAIL, Arrays.asList(userInput.split("\\s+"))));
+            command3.setData(model, new CommandHistory(), new UndoRedoStack());
+            return command3;
+        case FindCommand.COMMAND_WORD_HOMEPAGE:
+            FindCommand command4 = new FindCommand(new personContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_HOMEPAGE, Arrays.asList(userInput.split("\\s+"))));
+            command4.setData(model, new CommandHistory(), new UndoRedoStack());
+            return command4;
+        case FindCommand.COMMAND_WORD_PHONE:
+            FindCommand command5 = new FindCommand(new personContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_PHONE, Arrays.asList(userInput.split("\\s+"))));
+            command5.setData(model, new CommandHistory(), new UndoRedoStack());
+            return command5;
+        case FindCommand.COMMAND_WORD_TAG:
+            FindCommand command6 = new FindCommand(new personContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_TAG, Arrays.asList(userInput.split("\\s+"))));
+            command6.setData(model, new CommandHistory(), new UndoRedoStack());
+            return command6;
+        default:
+            break;
+        }
+
+        return null;
     }
 
     /**
