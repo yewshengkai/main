@@ -28,8 +28,27 @@ public class FindCommandParserTest {
                         FindCommand.COMMAND_WORD, Arrays.asList("Alice", "Bob")));
         assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
 
+        FindCommand expectedAddressFindCommand =
+                new FindCommand(new personContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList("wall", "michegan")));
+        assertParseSuccess(parser, "wall michegan", expectedAddressFindCommand);
+
+        FindCommand expectedEmailFindCommand =
+                new FindCommand(new personContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_EMAIL, Arrays.asList("heinz@example.com", "werner@example.com")));
+        assertParseSuccess(parser, "heinz@example.com werner@example.com", expectedEmailFindCommand);
+
+        FindCommand expectedPhoneFindCommand =
+                new FindCommand(new personContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_PHONE, Arrays.asList("95352563", "9482224")));
+        assertParseSuccess(parser, "95352563 9482224", expectedPhoneFindCommand);
+
+
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+        assertParseSuccess(parser, " \n wall \n \t michegan  \t", expectedAddressFindCommand);
+        assertParseSuccess(parser, " \n heinz@example.com \n \t werner@example.com  \t", expectedEmailFindCommand);
+        assertParseSuccess(parser, " \n 95352563 \n \t 9482224  \t", expectedPhoneFindCommand);
     }
 
 }
