@@ -49,10 +49,26 @@ public class personContainsKeywordsPredicateTest {
                 FindCommand.COMMAND_WORD, Collections.singletonList("Alice"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
 
+        personContainsKeywordsPredicate predicate2 = new personContainsKeywordsPredicate(
+                FindCommand.COMMAND_WORD_ADDRESS, Collections.singletonList("Jurong"));
+        assertTrue(predicate2.test(new PersonBuilder().withAddress("123, Jurong West Ave 6, #08-111").build()));
+
+        personContainsKeywordsPredicate predicate3 = new personContainsKeywordsPredicate(
+                FindCommand.COMMAND_WORD_EMAIL, Collections.singletonList("alice@example.com"));
+        assertTrue(predicate3.test(new PersonBuilder().withEmail("alice@example.com").build()));
+
+        personContainsKeywordsPredicate predicate4 = new personContainsKeywordsPredicate(
+                FindCommand.COMMAND_WORD_PHONE, Collections.singletonList("85355255"));
+        assertTrue(predicate4.test(new PersonBuilder().withPhone("85355255").build()));
+
         // Multiple keywords
         predicate = new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD, Arrays.asList("Alice", "Bob"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
 
+        predicate = new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList("Jurong", "West"));
+        assertTrue(predicate.test(new PersonBuilder().withAddress("123, Jurong West Ave 6, #08-111").build()));
+
+        //@TODO: More test case to be added..
         // Only one matching keyword
         predicate = new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD, Arrays.asList("Bob", "Carol"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
