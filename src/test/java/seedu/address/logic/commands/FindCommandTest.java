@@ -21,8 +21,8 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.personContainsKeywordsPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -32,10 +32,10 @@ public class FindCommandTest {
 
     @Test
     public void equals() {
-        NameContainsKeywordsPredicate firstPredicate =
-                new NameContainsKeywordsPredicate(Collections.singletonList("first"));
-        NameContainsKeywordsPredicate secondPredicate =
-                new NameContainsKeywordsPredicate(Collections.singletonList("second"));
+        personContainsKeywordsPredicate firstPredicate =
+                new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD, Collections.singletonList("first"));
+        personContainsKeywordsPredicate secondPredicate =
+                new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD, Collections.singletonList("second"));
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
@@ -76,7 +76,8 @@ public class FindCommandTest {
      */
     private FindCommand prepareCommand(String userInput) {
         FindCommand command =
-                new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+"))));
+                new FindCommand(new personContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD, Arrays.asList(userInput.split("\\s+"))));
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
