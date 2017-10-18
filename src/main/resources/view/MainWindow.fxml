@@ -36,15 +36,7 @@
             </children>
          </HBox>
 
-            <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4, 0.5">
-                <VBox fx:id="groupList" SplitPane.resizableWithParent="false">
-                    <children>
-                  <StackPane fx:id="groupListPanelPlaceholder" VBox.vgrow="ALWAYS" />
-                    </children>
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </padding>
-                </VBox>
+            <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4">
                 <VBox fx:id="personList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

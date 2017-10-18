@@ -46,7 +46,6 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
-    private GroupListPanel groupListPanel;
     private ButtonsPanel buttonsPanel;
     private Config config;
     private UserPrefs prefs;
@@ -65,9 +64,6 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane personListPanelPlaceholder;
-
-    @FXML
-    private StackPane groupListPanelPlaceholder;
 
     @FXML
     private StackPane buttonsPanelPlaceholder;
@@ -149,9 +145,6 @@ public class MainWindow extends UiPart<Region> {
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-
-        groupListPanel = new GroupListPanel(logic.getFilteredPersonList());
-        groupListPanelPlaceholder.getChildren().add(groupListPanel.getRoot());
 
         buttonsPanel = new ButtonsPanel();
         buttonsPanelPlaceholder.getChildren().add(buttonsPanel.getRoot());
