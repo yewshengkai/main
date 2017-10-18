@@ -242,9 +242,9 @@ public class MainWindow extends UiPart<Region> {
      * Open a file
      */
     @FXML
-    private void handleOpen() {
+    private void handleImport() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open resource file...");
+        fileChooser.setTitle("Import from...");
         fileChooser.showOpenDialog(primaryStage);
     }
 
@@ -252,7 +252,7 @@ public class MainWindow extends UiPart<Region> {
      * Save file as specific format
      */
     @FXML
-    private void handleSaveAs() {
+    private void handleExport() {
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx");
@@ -266,7 +266,7 @@ public class MainWindow extends UiPart<Region> {
         fileChooser.getExtensionFilters().add(textFilter);
 
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setTitle("Save as..");
+        fileChooser.setTitle("Export to..");
         fileChooser.setInitialFileName("iungoAB");
         File file = fileChooser.showSaveDialog(primaryStage);
 
