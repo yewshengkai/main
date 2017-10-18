@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
@@ -62,42 +60,42 @@ public class FindCommandTest {
     @Test
     public void execute_zeroKeywords_noPersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD," ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD, " ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_zeroKeywords_noAddressFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_ADDRESS," ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_ADDRESS, " ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_zeroKeywords_noEmailFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_EMAIL," ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_EMAIL, " ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_zeroKeywords_noHomepageFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_HOMEPAGE," ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_HOMEPAGE, " ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_zeroKeywords_noPhoneFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_PHONE," ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_PHONE, " ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_zeroKeywords_noTagFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_TAG," ");
+        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_TAG, " ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
@@ -119,7 +117,8 @@ public class FindCommandTest {
     @Test
     public void execute_multipleKeywords_multipleEmailFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
-        FindCommand command = prepareCommand(FindCommand.COMMAND_WORD_EMAIL, "heinz@example.com werner@example.com lydia@example.com");
+        FindCommand command = prepareCommand(
+                FindCommand.COMMAND_WORD_EMAIL, "heinz@example.com werner@example.com lydia@example.com");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
     }
 
@@ -135,7 +134,7 @@ public class FindCommandTest {
      */
     private FindCommand prepareCommand(String commandPrefix, String userInput) {
 
-        switch (commandPrefix){
+        switch (commandPrefix) {
 
         case FindCommand.COMMAND_WORD:
             FindCommand command = new FindCommand(new personContainsKeywordsPredicate(

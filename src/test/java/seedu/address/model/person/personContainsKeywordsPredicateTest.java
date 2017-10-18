@@ -65,7 +65,8 @@ public class personContainsKeywordsPredicateTest {
         predicate = new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD, Arrays.asList("Alice", "Bob"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
 
-        predicate = new personContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList("Jurong", "West"));
+        predicate = new personContainsKeywordsPredicate(
+                FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList("Jurong", "West"));
         assertTrue(predicate.test(new PersonBuilder().withAddress("123, Jurong West Ave 6, #08-111").build()));
 
         //@TODO: More test case to be added..
