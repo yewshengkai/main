@@ -998,6 +998,38 @@ Use case resumes at step 2.
 Use case ends.
 
 [discrete]
+=== Use case: Give a contact Remark
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and give a contact remark.
+4.  AddressBook update the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
 === Use case: History
 
 *Preconditions:* User is logged in.
