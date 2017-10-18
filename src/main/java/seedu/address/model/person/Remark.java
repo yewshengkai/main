@@ -6,16 +6,16 @@ import static java.util.Objects.requireNonNull;
  * Represents a Person's Groups in the address book.
  * Guarantees: immutable; is always valid
  */
-public class Groups {
+public class Remark {
 
-    public static final String MESSAGE_GROUPS_CONSTRAINTS =
-            "Person Groups can take any values, can even be blank";
+    public static final String MESSAGE_REMARK_CONSTRAINTS =
+            "Person remark can take any values, can even be blank";
 
     public final String value;
 
-    public Groups(String groups) {
-        requireNonNull(groups);
-        this.value = groups;
+    public Remark(String remark) {
+        requireNonNull(remark);
+        this.value = remark;
     }
 
     @Override
@@ -26,8 +26,8 @@ public class Groups {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Groups // instanceof handles nulls
-                && this.value.equals(((Groups) other).value)); // state check
+                || (other instanceof Remark // instanceof handles nulls
+                && this.value.equals(((Remark) other).value)); // state check
     }
 
     @Override

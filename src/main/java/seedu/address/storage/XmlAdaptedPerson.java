@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
-import seedu.address.model.person.Groups;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -34,7 +34,7 @@ public class XmlAdaptedPerson {
     @XmlElement
     private String homepage;
     @XmlElement(required = true)
-    private String groups;
+    private String remark;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -56,7 +56,7 @@ public class XmlAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
-        groups = source.getGroups().value;
+        remark = source.getRemark().value;
         if (source.isHomepageManuallySet()) {
             homepage = source.getHomepage().value;
         }
@@ -80,12 +80,12 @@ public class XmlAdaptedPerson {
         final Phone phone = new Phone(this.phone);
         final Email email = new Email(this.email);
         final Address address = new Address(this.address);
-        final Groups groups = new Groups(this.groups);
+        final Remark remark = new Remark(this.remark);
         final Set<Tag> tags = new HashSet<>(personTags);
         if (this.homepage == null) {
-            return new Person(name, phone, email, address, groups, tags);
+            return new Person(name, phone, email, address, remark, tags);
         }
         final Homepage homepage = new Homepage(this.homepage);
-        return new Person(name, phone, email, address, groups, tags, homepage);
+        return new Person(name, phone, email, address, remark, tags, homepage);
     }
 }

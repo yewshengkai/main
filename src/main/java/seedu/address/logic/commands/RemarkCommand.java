@@ -1,54 +1,54 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_GROUPS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 
 import java.util.List;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.person.Groups;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
- * Changes the group of an existing person in the address book.
+ * Changes the remark of an existing person in the address book.
  */
-public class GroupCommand extends UndoableCommand {
+public class RemarkCommand extends UndoableCommand {
 
-    public static final String COMMAND_WORD = "group";
-    public static final String COMMAND_ALIAS = "g";
-    public static final String MESSAGE_SUCCESS = "Group success!";
+    public static final String COMMAND_WORD = "remark";
+    public static final String COMMAND_ALIAS = "re";
+    public static final String MESSAGE_SUCCESS = "Remark success!";
     public static final String MESSAGE_FAILURE = "No more commands to redo!";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the group of the person identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the remark of the person identified "
             + "by the index number used in the last person listing. "
-            + "Existing group will be overwritten by the input.\n"
+            + "Existing remark will be overwritten by the input.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + PREFIX_GROUPS + "[GROUP]\n"
+            + PREFIX_REMARK + "[REMARK]\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_GROUPS + "Family";
+            + PREFIX_REMARK + "Family";
 
-    public static final String MESSAGE_ADD_GROUPS_SUCCESS = "Added groups to Person: %1$s";
-    public static final String MESSAGE_DELETE_GROUPS_SUCCESS = "Removed groups from Person: %1$s";
+    public static final String MESSAGE_ADD_REMARK_SUCCESS = "Added remark to Person: %1$s";
+    public static final String MESSAGE_DELETE_REMARK_SUCCESS = "Removed remark from Person: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
 
     private final Index index;
-    private final Groups groups;
+    private final Remark remark;
 
     /**
-     * @param index  of the person in the filtered person list to edit the groups
-     * @param groups of the person
+     * @param index  of the person in the filtered person list to edit the remarks
+     * @param remark of the person
      */
-    public GroupCommand(Index index, Groups groups) {
+    public RemarkCommand(Index index, Remark remark) {
         requireNonNull(index);
-        requireNonNull(groups);
+        requireNonNull(remark);
 
         this.index = index;
-        this.groups = groups;
+        this.remark = remark;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class GroupCommand extends UndoableCommand {
 
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), groups, personToEdit.getTags());
+                personToEdit.getAddress(), remark, personToEdit.getTags());
 
         try {
             model.updatePerson(personToEdit, editedPerson);
@@ -77,13 +77,13 @@ public class GroupCommand extends UndoableCommand {
     }
 
     /**
-     * Success message if group added or deleted
+     * Success message if remark added or deleted
      */
     private String generateSuccessMessage(ReadOnlyPerson personToEdit) {
-        if (!groups.value.isEmpty()) {
-            return String.format(MESSAGE_ADD_GROUPS_SUCCESS, personToEdit);
+        if (!remark.value.isEmpty()) {
+            return String.format(MESSAGE_ADD_REMARK_SUCCESS, personToEdit);
         } else {
-            return String.format(MESSAGE_DELETE_GROUPS_SUCCESS, personToEdit);
+            return String.format(MESSAGE_DELETE_REMARK_SUCCESS, personToEdit);
         }
     }
 
@@ -95,13 +95,13 @@ public class GroupCommand extends UndoableCommand {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof GroupCommand)) {
+        if (!(other instanceof RemarkCommand)) {
             return false;
         }
 
         // state check
-        GroupCommand e = (GroupCommand) other;
+        RemarkCommand e = (RemarkCommand) other;
         return index.equals(e.index)
-                && groups.equals(e.groups);
+                && remark.equals(e.remark);
     }
 }

@@ -26,7 +26,7 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Email> email;
     private ObjectProperty<Address> address;
     private ObjectProperty<Homepage> homepage;
-    private ObjectProperty<Groups> groups;
+    private ObjectProperty<Remark> remark;
 
     private boolean isHomepageManuallySet;
 
@@ -35,13 +35,13 @@ public class Person implements ReadOnlyPerson {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Groups groups, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Remark remark, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = new SimpleObjectProperty<>(name);
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
-        this.groups = new SimpleObjectProperty<>(groups);
+        this.remark = new SimpleObjectProperty<>(remark);
         this.isHomepageManuallySet = false;
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
@@ -57,7 +57,7 @@ public class Person implements ReadOnlyPerson {
     /**
      * Overloaded constructor for the setting of homepage
      */
-    public Person(Name name, Phone phone, Email email, Address address, Groups groups,
+    public Person(Name name, Phone phone, Email email, Address address, Remark remark,
                   Set<Tag> tags, Homepage homepage) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = new SimpleObjectProperty<>(name);
@@ -65,7 +65,7 @@ public class Person implements ReadOnlyPerson {
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
         this.isHomepageManuallySet = true;
-        this.groups = new SimpleObjectProperty<>(groups);
+        this.remark = new SimpleObjectProperty<>(remark);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
         this.homepage = new SimpleObjectProperty<>(homepage);
@@ -75,7 +75,7 @@ public class Person implements ReadOnlyPerson {
      * Creates a copy of the given ReadOnlyPerson.
      */
     public Person(ReadOnlyPerson source) {
-        this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getGroups(),
+        this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getRemark(),
                 source.getTags());
     }
 
@@ -84,7 +84,7 @@ public class Person implements ReadOnlyPerson {
      * Creates a copy of the given ReadOnlyPerson.
      */
     public Person(ReadOnlyPerson source, Homepage homepage) {
-        this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getGroups(),
+        this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getRemark(),
                 source.getTags(), homepage);
     }
 
@@ -162,18 +162,18 @@ public class Person implements ReadOnlyPerson {
         return address.get();
     }
 
-    public void setGroups(Groups groups) {
-        this.groups.set(requireNonNull(groups));
+    public void setRemark(Remark remark) {
+        this.remark.set(requireNonNull(remark));
     }
 
     @Override
-    public ObjectProperty<Groups> groupsProperty() {
-        return groups;
+    public ObjectProperty<Remark> remarkProperty() {
+        return remark;
     }
 
     @Override
-    public Groups getGroups() {
-        return groups.get();
+    public Remark getRemark() {
+        return remark.get();
     }
 
     /**
