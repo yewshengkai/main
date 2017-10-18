@@ -12,35 +12,44 @@ import seedu.address.logic.commands.FindCommand;
 public class personContainsKeywordsPredicate implements Predicate<ReadOnlyPerson>  {
     private final List<String> keywords;
     private final String commandWord;
+    private final boolean isCaseIgnored;
 
-    public personContainsKeywordsPredicate(String commandWord, List<String> keywords) {
+    public personContainsKeywordsPredicate(String commandWord, List<String> keywords, boolean isCaseIgnored) {
         this.keywords = keywords;
         this.commandWord = commandWord;
+        this.isCaseIgnored = isCaseIgnored;
     }
 
     @Override
     public boolean test(ReadOnlyPerson person) {
+
         switch (commandWord) {
 
         case FindCommand.COMMAND_WORD:
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                            person.getName().fullName, keyword, isCaseIgnored)) ;
         case FindCommand.COMMAND_WORD_ADDRESS:
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getAddress().value, keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                            person.getAddress().value, keyword, isCaseIgnored));
         case FindCommand.COMMAND_WORD_EMAIL:
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getEmail().value, keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                            person.getEmail().value, keyword, isCaseIgnored));
         case FindCommand.COMMAND_WORD_HOMEPAGE:
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getHomepage().value, keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                            person.getHomepage().value, keyword, isCaseIgnored));
         case FindCommand.COMMAND_WORD_PHONE:
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getPhone().value, keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                            person.getPhone().value, keyword, isCaseIgnored));
         case FindCommand.COMMAND_WORD_TAG:
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getTags().toString()
-                            .replaceAll("['\\[\\]']", ""), keyword));
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                            person.getTags().toString()
+                            .replaceAll("['\\[\\]']", ""), keyword, isCaseIgnored));
 
         default:
             return false;

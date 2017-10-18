@@ -16,6 +16,9 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD_TAG = "find t/";
     public static final String COMMAND_ALIAS = "f";
 
+    public static final String COMMAND_WORD_ANY = "findany";
+    public static final String COMMAND_ALIAS_ANY = "fa";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose contacts contain any of "
             + "the specified keywords (non case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"

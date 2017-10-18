@@ -22,7 +22,7 @@ public class StringUtil {
      * @param sentence cannot be null
      * @param word cannot be null, cannot be empty, must be a single word
      */
-    public static boolean containsWordIgnoreCase(String sentence, String word) {
+    public static boolean containsWordIgnoreCase(String sentence, String word, boolean isCaseIgnored) {
         requireNonNull(sentence);
         requireNonNull(word);
 
@@ -34,8 +34,15 @@ public class StringUtil {
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
         //@TODO: another command "findany" to find any keyword containing within person
         for (String wordInSentence: wordsInPreppedSentence) {
-            if (wordInSentence.equalsIgnoreCase(preppedWord)) {
-                return true;
+            if (isCaseIgnored) {
+                if (wordInSentence.toLowerCase().contains(preppedWord.toLowerCase())) {
+                    return true;
+                }
+            }
+            else if (!isCaseIgnored) {
+                if (wordInSentence.equalsIgnoreCase(preppedWord)) {
+                    return true;
+                }
             }
         }
         return false;
