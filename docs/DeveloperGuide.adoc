@@ -727,7 +727,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |delete a person |remove entries that I no longer need
 
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
+|`* * *` |user |find a person by exact matching details of a person|locate details matching exactly specified details of all persons without going through the entire list
+
+|`* * *` |user |find a person by any matching details of a person |locate details matching any specified details of all persons without going through the entire list
 
 |`* * *` |user |undo my commands |undo commands done in error
 
