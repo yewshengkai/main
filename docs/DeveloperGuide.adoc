@@ -928,7 +928,6 @@ Use case resumes at step 4.
 +
 Use case ends.
 
-
 [discrete]
 === Use case: Find contacts
 
@@ -941,8 +940,41 @@ Use case ends.
 
 1.  User request to list contacts.
 2.  AddressBook shows a list of contacts.
-3.  User request and find a contact.
-4.  AddressBook list the contact.
+3.  User request and find exact details of contacts.
+4.  AddressBook lists the contacts.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+[discrete]
+=== Use case: Findany contacts
+
+*Preconditions:* User is logged in.
+                 AddressBook is not empty.
+
+*Guarantees:* Specified contact will be listed.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and find any matching details of contacts.
+4.  AddressBook lists the contacts.
 +
 Use case ends.
 
