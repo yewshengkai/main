@@ -98,7 +98,7 @@
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
     -fx-padding: 5 0 0 0;
-    -fx-background-color: derive(#dfe3ee, 20%);
+    -fx-background-color: derive(white, 20%);
 }
 
 .list-cell:filled:even {
