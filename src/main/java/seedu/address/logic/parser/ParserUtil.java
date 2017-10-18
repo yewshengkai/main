@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Homepage;
@@ -113,12 +115,31 @@ public class ParserUtil {
     /**
      * Parses {@code Collection<String> tags} into a {@code ArrayList<String>}.
      */
-    public static ArrayList<String> parseAllDetail(Collection<String> detail) throws IllegalValueException {
+    public static ArrayList<String> parseAllDetail(Collection<String> detail, String commandType) throws IllegalValueException {
         requireNonNull(detail);
         ArrayList<String> detailList = new ArrayList<String>();
         String []detailString = detail.toString().split("\\s+");
         for (String string : detailString) {
-            detailList.add(string.replaceAll("['\\[\\]']", ""));
+            string = string.replaceAll("['\\[\\]']", "");
+            if (commandType.equals(FindCommand.COMMAND_WORD_ADDRESS) && !Address.isValidAddress(string)) {
+                throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
+            }
+            else  if (commandType.equals(FindCommand.COMMAND_WORD_EMAIL) && !Email.isValidEmail(string)) {
+                throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+            }
+            else  if (commandType.equals(FindCommand.COMMAND_WORD_PHONE) && !Phone.isValidPhone(string)) {
+                throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
+            }
+            else  if (commandType.equals(FindCommand.COMMAND_WORD_HOMEPAGE) && !Homepage.isValidHomepage(string)) {
+                throw new IllegalValueException(Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
+            }
+            else  if (commandType.equals(FindCommand.COMMAND_WORD_TAG) && !Tag.isValidTagName(string)) {
+                throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
+            }
+            else {
+                detailList.add(string);
+            }
+
         }
         return detailList;
     }
