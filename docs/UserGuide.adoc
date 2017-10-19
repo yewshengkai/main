@@ -54,6 +54,10 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
+=== Viewing About us : `about`
+
+Format: `about`
+
 // tag::add[]
 === Adding a person: `add`
 
@@ -323,6 +327,7 @@ Returns any person having phone `9123456`
 Returns `9123456`, `91234888`
 * *List* : `list`
 * *Help* : `help`
+* *About us* : `about`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *History* : `history`
