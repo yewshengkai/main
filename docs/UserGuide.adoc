@@ -290,8 +290,19 @@ e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 123466
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Find* : `find KEYWORD [MORE_KEYWORDS]` +
-e.g. `find James Jake`
+* *Find* : `find or findany KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] KEYWORD [MORE_KEYWORDS]` +
++
+e.g `Find [KEYWORD]` +
+`find John` +
+Returns `john` and `John Doe` but does not return `Johnson`
+* `findany john` +
+Returns `Johnson` and `John Doe`
++
+e.g `Find [p/PHONE]` +
+* `find p/9123456` +
+Returns any person having phone `9123456`
+* `findany p/9123` +
+Returns `9123456`, `91234888`
 * *List* : `list`
 * *Help* : `help`
 * *Select* : `select INDEX` +
