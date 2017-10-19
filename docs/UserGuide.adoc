@@ -79,6 +79,7 @@ Format: `list`
 
 // tag::sort[]
 === Sorting the contact list : `sort`
+{since v1.2}
 
 Sorts the contact list in either [a]scending or [d]escending order and shows the list. +
 Format: `sort [a / d]`

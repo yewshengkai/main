@@ -34,21 +34,11 @@ each individual contact, such as their Facebook or LinkedIn profiles.
 ==== Implementation
 
 ---
-`AddCommand` and `EditCommand` both checks for the `h/` parameter that indicates whether the current homepage is to
-be modified.
+#Start of Extract [from: Developer Guide]#
 
-If `h/` is parsed to be empty by `AddCommandParser` or `EditCommandParser`, a `Person` constructor is used to create
-the person with the default homepage.
+include::../DeveloperGuide.adoc[tag=sethomepage]
 
-If `h/` is a non-empty valid URL (determined by `Homepage.isValidHomepage`, a different `Person` constructor is invoked
-to create a person with the set homepage.
-
-[NOTE]
-Care is also given to make sure the homepage is changed when the name is edited if the current homepage is the default
-homepage (i.e. not manually set).
-
-[NOTE]
-If the homepage has been set before, it will not change until it is reset by `h/` or a new homepage is manually set.
+#End of Extract#
 
 ---
 
@@ -73,11 +63,11 @@ to be able to view the contact list in alphabetical ascending/ descending order.
 ==== Implementation
 
 ---
-`SortCommandParser` checks for the OPTIONAL `a` or `d` parameters, and calls the relevant `SortCommand`
-to sort the `internalList` backing the address book.
+#Start of Extract [from: Developer Guide]#
 
-The `internalList` is sorted using the full name of the contact using Java's `sort`.
+include::../DeveloperGuide.adoc[tag=sort]
 
+#End of Extract#
 ---
 
 === Other contributions
