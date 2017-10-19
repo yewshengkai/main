@@ -54,6 +54,10 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
+=== Viewing Anbout us : `about`
+
+Format: `about`
+
 // tag::add[]
 === Adding a person: `add`
 
@@ -257,6 +261,7 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 e.g. `find James Jake`
 * *List* : `list`
 * *Help* : `help`
+* *About us* : `about`
 * *Select* : `select INDEX` +
 e.g.`select 2`
 * *History* : `history`
