@@ -187,7 +187,7 @@ Format: `remark INDEX re/REMARK`
 * Give the person a remark at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* `1, 2, 3, ...`
-* The optional field is compulsory.
+* The re/REMARK field is compulsory.
 ****
 
 Examples:
