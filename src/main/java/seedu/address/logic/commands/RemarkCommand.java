@@ -71,8 +71,6 @@ public class RemarkCommand extends UndoableCommand {
             throw new AssertionError("The target person cannot be missing");
         }
 
-        //model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
 

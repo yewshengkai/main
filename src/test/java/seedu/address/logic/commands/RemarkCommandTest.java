@@ -47,23 +47,6 @@ public class RemarkCommandTest {
         assertCommandSuccess(remarkCommand, model, expectedMessage, expectedModel);
     }
 
-    /*@Test
-    public void execute_filteredList_success() throws Exception {
-        showFirstPersonOnly(model);
-
-        ReadOnlyPerson personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(personInFilteredList)
-                .withGroups("Some groups").build();
-        GroupCommand groupCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getGroups().value);
-
-        String expectedMessage = String.format(GroupCommand.MESSAGE_ADD_GROUPS_SUCCESS, editedPerson);
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
-
-        assertCommandSuccess(groupCommand, model, expectedMessage, expectedModel);
-    }*/
-
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size()  +  1);
