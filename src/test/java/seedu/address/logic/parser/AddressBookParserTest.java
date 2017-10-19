@@ -107,6 +107,20 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_findany() throws Exception {
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
+                FindCommand.COMMAND_WORD, keywords, true)), command);
+
+        FindCommand aliasCommand = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_ALIAS + " " + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
+                FindCommand.COMMAND_WORD, keywords, true)), aliasCommand);
+    }
+
+    @Test
     public void parseCommand_help() throws Exception {
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3") instanceof HelpCommand);

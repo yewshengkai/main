@@ -71,6 +71,7 @@ public class StringUtilTest {
         thrown.expect(exceptionClass);
         errorMessage.ifPresent(message -> thrown.expectMessage(message));
         StringUtil.containsWordIgnoreCase(sentence, word, false);
+        StringUtil.containsWordIgnoreCase(sentence, word, true);
     }
 
     @Test
