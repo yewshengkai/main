@@ -32,17 +32,12 @@ public class StringUtil {
 
         String preppedSentence = sentence;
         String[] wordsInPreppedSentence = preppedSentence.split("\\s+");
-        //@TODO: another command "findany" to find any keyword containing within person
+
         for (String wordInSentence: wordsInPreppedSentence) {
-            if (isCaseIgnored) {
-                if (wordInSentence.toLowerCase().contains(preppedWord.toLowerCase())) {
-                    return true;
-                }
-            }
-            else if (!isCaseIgnored) {
-                if (wordInSentence.equalsIgnoreCase(preppedWord)) {
-                    return true;
-                }
+            if (isCaseIgnored && wordInSentence.toLowerCase().contains(preppedWord.toLowerCase())) {
+                return true;
+            } else if (!isCaseIgnored && wordInSentence.equalsIgnoreCase(preppedWord)) {
+                return true;
             }
         }
         return false;

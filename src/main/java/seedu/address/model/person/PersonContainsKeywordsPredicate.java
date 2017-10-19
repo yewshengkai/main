@@ -9,12 +9,12 @@ import seedu.address.logic.commands.FindCommand;
 /**
  * Tests that a {@code ReadOnlyPerson}'s {@code Name} matches any of the keywords given.
  */
-public class personContainsKeywordsPredicate implements Predicate<ReadOnlyPerson>  {
+public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson>  {
     private final List<String> keywords;
     private final String commandWord;
     private final boolean isCaseIgnored;
 
-    public personContainsKeywordsPredicate(String commandWord, List<String> keywords, boolean isCaseIgnored) {
+    public PersonContainsKeywordsPredicate(String commandWord, List<String> keywords, boolean isCaseIgnored) {
         this.keywords = keywords;
         this.commandWord = commandWord;
         this.isCaseIgnored = isCaseIgnored;
@@ -59,8 +59,8 @@ public class personContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof personContainsKeywordsPredicate // instanceof handles nulls
-                && this.keywords.equals(((personContainsKeywordsPredicate) other).keywords)); // state check
+                || (other instanceof PersonContainsKeywordsPredicate // instanceof handles nulls
+                && this.keywords.equals(((PersonContainsKeywordsPredicate) other).keywords)); // state check
     }
 
 }

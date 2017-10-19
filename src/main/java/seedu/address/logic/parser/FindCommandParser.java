@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.personContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -39,27 +39,27 @@ public class FindCommandParser implements Parser<FindCommand> {
             if (arePrefixesPresent(argMultimap, PREFIX_ADDRESS)) {
                 ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_ADDRESS),
                         FindCommand.COMMAND_WORD_ADDRESS);
-                return new FindCommand(new personContainsKeywordsPredicate(
+                return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD_ADDRESS, keywordsList, isCaseIgnored));
             } else if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
                 ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_EMAIL),
                         FindCommand.COMMAND_WORD_EMAIL);
-                return new FindCommand(new personContainsKeywordsPredicate(
+                return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD_EMAIL, keywordsList, isCaseIgnored));
             } else if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
                 ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_HOMEPAGE),
                         FindCommand.COMMAND_WORD_HOMEPAGE);
-                return new FindCommand(new personContainsKeywordsPredicate(
+                return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD_HOMEPAGE, keywordsList, isCaseIgnored));
             } else if (arePrefixesPresent(argMultimap, PREFIX_PHONE)) {
                 ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_PHONE),
                         FindCommand.COMMAND_WORD_PHONE);
-                return new FindCommand(new personContainsKeywordsPredicate(
+                return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD_PHONE, keywordsList, isCaseIgnored));
             } else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
                 ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_TAG),
                         FindCommand.COMMAND_WORD_TAG);
-                return new FindCommand(new personContainsKeywordsPredicate(
+                return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD_TAG, keywordsList, isCaseIgnored));
             } else if (arePrefixesPresent(argMultimap, PREFIX_NONE)) {
                 String trimmedArgs = args.trim();
@@ -67,8 +67,8 @@ public class FindCommandParser implements Parser<FindCommand> {
                     throw new ParseException(
                             String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
                 }
-                String[] keywords = trimmedArgs.toString().split("\\s+");
-                return new FindCommand(new personContainsKeywordsPredicate(
+                String[] keywords = trimmedArgs.split("\\s+");
+                return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Arrays.asList(keywords), isCaseIgnored));
             } else {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
