@@ -21,8 +21,9 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.personContainsKeywordsPredicate;
+
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -32,11 +33,11 @@ public class FindCommandTest {
 
     @Test
     public void equals() {
-        personContainsKeywordsPredicate firstPredicate =
-                new personContainsKeywordsPredicate(
+        PersonContainsKeywordsPredicate firstPredicate =
+                new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Collections.singletonList("first"), false);
-        personContainsKeywordsPredicate secondPredicate =
-                new personContainsKeywordsPredicate(
+        PersonContainsKeywordsPredicate secondPredicate =
+                new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Collections.singletonList("second"), false);
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
@@ -139,32 +140,32 @@ public class FindCommandTest {
         switch (commandPrefix) {
 
         case FindCommand.COMMAND_WORD:
-            FindCommand command = new FindCommand(new personContainsKeywordsPredicate(
+            FindCommand command = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD, Arrays.asList(userInput.split("\\s+")), false));
             command.setData(model, new CommandHistory(), new UndoRedoStack());
             return command;
         case FindCommand.COMMAND_WORD_ADDRESS:
-            FindCommand command2 = new FindCommand(new personContainsKeywordsPredicate(
+            FindCommand command2 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList(userInput.split("\\s+")), false));
             command2.setData(model, new CommandHistory(), new UndoRedoStack());
             return command2;
         case FindCommand.COMMAND_WORD_EMAIL:
-            FindCommand command3 = new FindCommand(new personContainsKeywordsPredicate(
+            FindCommand command3 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_EMAIL, Arrays.asList(userInput.split("\\s+")), false));
             command3.setData(model, new CommandHistory(), new UndoRedoStack());
             return command3;
         case FindCommand.COMMAND_WORD_HOMEPAGE:
-            FindCommand command4 = new FindCommand(new personContainsKeywordsPredicate(
+            FindCommand command4 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_HOMEPAGE, Arrays.asList(userInput.split("\\s+")), false));
             command4.setData(model, new CommandHistory(), new UndoRedoStack());
             return command4;
         case FindCommand.COMMAND_WORD_PHONE:
-            FindCommand command5 = new FindCommand(new personContainsKeywordsPredicate(
+            FindCommand command5 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_PHONE, Arrays.asList(userInput.split("\\s+")), false));
             command5.setData(model, new CommandHistory(), new UndoRedoStack());
             return command5;
         case FindCommand.COMMAND_WORD_TAG:
-            FindCommand command6 = new FindCommand(new personContainsKeywordsPredicate(
+            FindCommand command6 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_TAG, Arrays.asList(userInput.split("\\s+")), false));
             command6.setData(model, new CommandHistory(), new UndoRedoStack());
             return command6;

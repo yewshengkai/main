@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.personContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
@@ -52,7 +52,7 @@ public class ModelManagerTest {
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
-        modelManager.updateFilteredPersonList(new personContainsKeywordsPredicate(
+        modelManager.updateFilteredPersonList(new PersonContainsKeywordsPredicate(
                 FindCommand.COMMAND_WORD, Arrays.asList(keywords), false));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
