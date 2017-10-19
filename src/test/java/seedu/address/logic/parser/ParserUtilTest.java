@@ -186,12 +186,14 @@ public class ParserUtilTest {
 
     @Test
     public void parseAllDetailWithValidDetails_throwIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
 
         Address expectedAddress = new Address(VALID_ADDRESS);
         ArrayList<String> addressList = ParserUtil.parseAllDetail(
                 Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
         assertEquals(expectedAddress.value, addressList.toString().replaceAll(
                 "['\\[\\],']", ""));
+
 
         Email expectedEmail = new Email(VALID_EMAIL);
         ArrayList<String> emailList = ParserUtil.parseAllDetail(Arrays.asList(
