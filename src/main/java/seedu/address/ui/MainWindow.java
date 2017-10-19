@@ -36,7 +36,7 @@ public class MainWindow extends UiPart<Region> {
     private static final String ICON = "/images/iungo-logo.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
-    private static final int MIN_WIDTH = 650;
+    private static final int MIN_WIDTH = 740;
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -46,8 +46,6 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
-    private GroupListPanel groupListPanel;
-    private ButtonsPanel buttonsPanel;
     private Config config;
     private UserPrefs prefs;
 
@@ -65,12 +63,6 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane personListPanelPlaceholder;
-
-    @FXML
-    private StackPane groupListPanelPlaceholder;
-
-    @FXML
-    private StackPane buttonsPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -149,12 +141,6 @@ public class MainWindow extends UiPart<Region> {
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-
-        groupListPanel = new GroupListPanel(logic.getFilteredPersonList());
-        groupListPanelPlaceholder.getChildren().add(groupListPanel.getRoot());
-
-        buttonsPanel = new ButtonsPanel();
-        buttonsPanelPlaceholder.getChildren().add(buttonsPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -242,17 +228,17 @@ public class MainWindow extends UiPart<Region> {
      * Open a file
      */
     @FXML
-    private void handleOpen() {
+    private void handleImport() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open resource file...");
+        fileChooser.setTitle("Import from...");
         fileChooser.showOpenDialog(primaryStage);
     }
 
     /**
-     * Save file as specific format
+     * Save file to specific format
      */
     @FXML
-    private void handleSaveAs() {
+    private void handleExport() {
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx");
@@ -266,7 +252,7 @@ public class MainWindow extends UiPart<Region> {
         fileChooser.getExtensionFilters().add(textFilter);
 
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setTitle("Save as..");
+        fileChooser.setTitle("Export to..");
         fileChooser.setInitialFileName("iungoAB");
         File file = fileChooser.showSaveDialog(primaryStage);
 
@@ -280,24 +266,9 @@ public class MainWindow extends UiPart<Region> {
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
-            //SaveFile(content, file);
+
         }
     }
-
-    /**
-     * Save file to specific format
-     */
-    /*private void SaveFile(String content, File file) {
-        try {
-            FileWriter fileWriter = null;
-            fileWriter = new FileWriter(file);
-            fileWriter.write(content);
-            fileWriter.close();
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
-    }*/
-
 
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;

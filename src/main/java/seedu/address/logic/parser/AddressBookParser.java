@@ -6,6 +6,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.address.logic.commands.AboutCommand;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
@@ -17,7 +18,9 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
+import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -70,6 +73,14 @@ public class AddressBookParser {
 
         case FindCommand.COMMAND_WORD:
         case FindCommand.COMMAND_ALIAS:
+            FindCommandParser findCommandParserFalse = new FindCommandParser();
+            findCommandParserFalse.setCaseIgnored(false);
+            return new FindCommandParser().parse(arguments);
+
+        case FindCommand.COMMAND_WORD_ANY:
+        case FindCommand.COMMAND_ALIAS_ANY:
+            FindCommandParser findCommandParserTrue = new FindCommandParser();
+            findCommandParserTrue.setCaseIgnored(true);
             return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
@@ -86,6 +97,9 @@ public class AddressBookParser {
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
 
+        case AboutCommand.COMMAND_WORD:
+            return new AboutCommand();
+
         case UndoCommand.COMMAND_WORD:
         case UndoCommand.COMMAND_ALIAS:
             return new UndoCommand();
@@ -93,6 +107,13 @@ public class AddressBookParser {
         case RedoCommand.COMMAND_WORD:
         case RedoCommand.COMMAND_ALIAS:
             return new RedoCommand();
+
+        case RemarkCommand.COMMAND_WORD:
+        case RemarkCommand.COMMAND_ALIAS:
+            return new RemarkCommandParser().parse(arguments);
+
+        case SortCommand.COMMAND_WORD:
+            return new SortCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

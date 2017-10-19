@@ -124,6 +124,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.setPerson(target, editedPerson);
     }
 
+    public void sortAddressBook(boolean isDescendingSort) {
+        persons.sort(isDescendingSort);
+    }
+
     /**
      * Ensures that every tag in this person:
      *  - exists in the master list {@link #tags}
