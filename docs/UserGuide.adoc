@@ -54,7 +54,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 Format: `help`
 
-=== Viewing Anbout us : `about`
+=== Viewing About us : `about`
 
 Format: `about`
 
