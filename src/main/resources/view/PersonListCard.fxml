@@ -51,6 +51,7 @@
                <Insets bottom="3.0" />
             </VBox.margin></Label>
       <Label fx:id="homepage" styleClass="cell_small_label" text="\$homepage" underline="true" />
+      <Label fx:id="remark" styleClass="cell_small_label" text="\$remark" />
     </VBox>
       <rowConstraints>
          <RowConstraints />

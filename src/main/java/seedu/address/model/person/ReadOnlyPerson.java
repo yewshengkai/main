@@ -24,6 +24,8 @@ public interface ReadOnlyPerson {
     Set<Tag> getTags();
     ObjectProperty<Homepage> homepageProperty();
     Homepage getHomepage();
+    ObjectProperty<Remark> remarkProperty();
+    Remark getRemark();
     boolean isHomepageManuallySet();
 
     /**
@@ -35,7 +37,8 @@ public interface ReadOnlyPerson {
                 && other.getName().equals(this.getName()) // state checks here onwards
                 && other.getPhone().equals(this.getPhone())
                 && other.getEmail().equals(this.getEmail())
-                && other.getAddress().equals(this.getAddress()));
+                && other.getAddress().equals(this.getAddress()))
+                && other.getRemark().equals(this.getRemark());
     }
 
     /**
@@ -50,6 +53,8 @@ public interface ReadOnlyPerson {
                 .append(getEmail())
                 .append(" Address: ")
                 .append(getAddress())
+                .append(" Remark: ")
+                .append(getRemark())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
