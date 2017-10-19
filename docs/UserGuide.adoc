@@ -77,6 +77,19 @@ Examples:
 Shows a list of all persons in the address book. +
 Format: `list`
 
+// tag::sort[]
+=== Sorting the contact list : `sort`
+
+Sorts the contact list in either [a]scending or [d]escending order and shows the list. +
+Format: `sort [a / d]`
+
+****
+* The parameters are OPTIONAL. `sort` on its own will default to a sort in ascending order.
+****
+
+// end::sort[]
+
+
 // tag::edit[]
 === Editing a person : `edit`
 
@@ -102,6 +115,7 @@ Examples:
 Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+
 // end::edit[]
 
 === Locating persons by name: `find`
@@ -248,6 +262,7 @@ There is no need to save manually.
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+* *Sort* `sort [a]/[d]`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
