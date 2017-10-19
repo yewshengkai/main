@@ -140,9 +140,9 @@ public class ParserUtil {
         return detailList;
     }
 
-     /* Parses {@code sortOrder} into a {@code boolean} and returns it.
-     * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
-     */
+    /* Parses {@code sortOrder} into a {@code boolean} and returns it.
+    * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
+    */
     public static boolean parseSort(String sortOrder) throws IllegalValueException {
         String trimmedSortParameter = sortOrder.trim();
         switch (trimmedSortParameter) {
