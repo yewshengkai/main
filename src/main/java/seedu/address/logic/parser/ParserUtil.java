@@ -120,22 +120,39 @@ public class ParserUtil {
             throws IllegalValueException {
         requireNonNull(detail);
         ArrayList<String> detailList = new ArrayList<String>();
-        String []detailString = detail.toString().split("\\s+");
+        String[] detailString = detail.toString().split("\\s+");
         for (String string : detailString) {
             string = string.replaceAll("['\\[\\]']", "");
-            if (commandType.equals(FindCommand.COMMAND_WORD_ADDRESS) && !Address.isValidAddress(string)) {
-                throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
-            } else if (commandType.equals(FindCommand.COMMAND_WORD_EMAIL) && !Email.isValidEmail(string)) {
-                throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
-            } else if (commandType.equals(FindCommand.COMMAND_WORD_PHONE) && !Phone.isValidPhone(string)) {
-                throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
-            } else if (commandType.equals(FindCommand.COMMAND_WORD_HOMEPAGE) && !Homepage.isValidHomepage(string)) {
-                throw new IllegalValueException(Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
-            } else if (commandType.equals(FindCommand.COMMAND_WORD_TAG) && !Tag.isValidTagName(string)) {
-                throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
-            } else {
-                detailList.add(string);
+            switch (commandType) {
+            case FindCommand.COMMAND_WORD_ADDRESS:
+                if (!Address.isValidAddress(string)) {
+                    throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_EMAIL:
+                if (!Email.isValidEmail(string)) {
+                    throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_PHONE:
+                if (!Phone.isValidPhone(string)) {
+                    throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_HOMEPAGE:
+                if (!Homepage.isValidHomepage(string)) {
+                    throw new IllegalValueException(Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_TAG:
+                if (!Tag.isValidTagName(string)) {
+                    throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
+                }
+                break;
+            default:
+                break;
             }
+            detailList.add(string);
         }
         return detailList;
     }
