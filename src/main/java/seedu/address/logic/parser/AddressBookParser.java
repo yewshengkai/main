@@ -72,6 +72,14 @@ public class AddressBookParser {
 
         case FindCommand.COMMAND_WORD:
         case FindCommand.COMMAND_ALIAS:
+            FindCommandParser findCommandParserFalse = new FindCommandParser();
+            findCommandParserFalse.setCaseIgnored(false);
+            return new FindCommandParser().parse(arguments);
+
+        case FindCommand.COMMAND_WORD_ANY:
+        case FindCommand.COMMAND_ALIAS_ANY:
+            FindCommandParser findCommandParserTrue = new FindCommandParser();
+            findCommandParserTrue.setCaseIgnored(true);
             return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:

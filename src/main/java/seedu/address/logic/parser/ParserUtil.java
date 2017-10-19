@@ -2,7 +2,9 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -10,6 +12,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Homepage;
@@ -111,9 +114,52 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code sortOrder} into a {@code boolean} and returns it.
-     * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
+     * Parses a {@code Collection<String> Detail} into an {@code ArrayList<String>}.
      */
+    public static ArrayList<String> parseAllDetail(Collection<String> detail, String commandType)
+            throws IllegalValueException {
+        requireNonNull(detail);
+        ArrayList<String> detailList = new ArrayList<String>();
+        String[] detailString = detail.toString().split("\\s+");
+        for (String string : detailString) {
+            string = string.replaceAll("['\\[\\]']", "");
+            switch (commandType) {
+            case FindCommand.COMMAND_WORD_ADDRESS:
+                if (!Address.isValidAddress(string)) {
+                    throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_EMAIL:
+                if (!Email.isValidEmail(string)) {
+                    throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_PHONE:
+                if (!Phone.isValidPhone(string)) {
+                    throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_HOMEPAGE:
+                if (!Homepage.isValidHomepage(string)) {
+                    throw new IllegalValueException(Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_TAG:
+                if (!Tag.isValidTagName(string)) {
+                    throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
+                }
+                break;
+            default:
+                break;
+            }
+            detailList.add(string);
+        }
+        return detailList;
+    }
+
+    /** Parses {@code sortOrder} into a {@code boolean} and returns it.
+    * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
+    */
     public static boolean parseSort(String sortOrder) throws IllegalValueException {
         String trimmedSortParameter = sortOrder.trim();
         switch (trimmedSortParameter) {
