@@ -235,7 +235,7 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
-     * Save file as specific format
+     * Save file to specific format
      */
     @FXML
     private void handleExport() {
@@ -266,24 +266,9 @@ public class MainWindow extends UiPart<Region> {
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
-            //SaveFile(content, file);
+
         }
     }
-
-    /**
-     * Save file to specific format
-     */
-    /*private void SaveFile(String content, File file) {
-        try {
-            FileWriter fileWriter = null;
-            fileWriter = new FileWriter(file);
-            fileWriter.write(content);
-            fileWriter.close();
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
-    }*/
-
 
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;
