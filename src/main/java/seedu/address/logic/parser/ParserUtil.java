@@ -114,7 +114,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code Collection<String> detail} into a {@code ArrayList<String>}.
+     * Parses a {@code Collection<String> Detail} into an {@code ArrayList<String>}.
      */
     public static ArrayList<String> parseAllDetail(Collection<String> detail, String commandType)
             throws IllegalValueException {
@@ -140,7 +140,7 @@ public class ParserUtil {
         return detailList;
     }
 
-    /* Parses {@code sortOrder} into a {@code boolean} and returns it.
+    /** Parses {@code sortOrder} into a {@code boolean} and returns it.
     * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
     */
     public static boolean parseSort(String sortOrder) throws IllegalValueException {
