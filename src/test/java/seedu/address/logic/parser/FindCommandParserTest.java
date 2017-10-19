@@ -4,7 +4,9 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -45,6 +47,11 @@ public class FindCommandParserTest {
                         FindCommand.COMMAND_WORD_PHONE, Arrays.asList("95352563", "9482224"), false));
         assertParseSuccess(parser, "95352563 9482224", expectedPhoneFindCommand);
 
+        Collection<String> keywordsList = new ArrayList<String>();
+        keywordsList.add(("Bob"));
+        ArrayList<String> arrayList = ParserUtil.parseAllDetail(keywordsList, FindCommand.COMMAND_WORD);
+        FindCommand expectedPerson = new FindCommand(new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD, arrayList, true ));
+        assertParseSuccess(parser, "Bob", expectedPerson);
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
