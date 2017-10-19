@@ -25,6 +25,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -108,15 +109,17 @@ public class EditCommand extends UndoableCommand {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
+        Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
 
         if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRemark, updatedTags);
         }
 
         if (personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedHomepage);
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
+                    updatedRemark, updatedTags, updatedHomepage);
         } else {
-            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRemark, updatedTags);
         }
     }
 
