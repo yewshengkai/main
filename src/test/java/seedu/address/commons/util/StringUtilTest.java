@@ -66,13 +66,14 @@ public class StringUtilTest {
         assertExceptionThrown(NullPointerException.class, "typical sentence", null, Optional.empty());
     }
 
-    @Test
+    /**
+    * a java doc
+    */
     private void assertExceptionThrown(Class<? extends Throwable> exceptionClass, String sentence, String word,
-            Optional<String> errorMessage) {
+                                       Optional<String> errorMessage) {
         thrown.expect(exceptionClass);
         errorMessage.ifPresent(message -> thrown.expectMessage(message));
 
-        // check words
         StringUtil.containsWordIgnoreCase(sentence, word, false);
         StringUtil.containsWordIgnoreCase(sentence, word, true);
     }
