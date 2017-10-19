@@ -19,7 +19,10 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
         this.commandWord = commandWord;
         this.isCaseIgnored = isCaseIgnored;
     }
-
+    /**
+     * Tests that a {@code ReadOnlyPerson}'s {@code commandWord} matches any of the keywords given.
+     * Also check whether if the keyword is case-sensitive or insensitive
+     */
     @Override
     public boolean test(ReadOnlyPerson person) {
 

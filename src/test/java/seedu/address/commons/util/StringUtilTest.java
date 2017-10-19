@@ -122,7 +122,7 @@ public class StringUtilTest {
 
     @Test
     public void containsWordIgnoreCase_validInputs_correctResult() {
-        //@TODO:Add more test case for caseIgnored scenario
+
         // Empty sentence
         assertFalse(StringUtil.containsWordIgnoreCase("", "abc", false)); // Boundary case
         assertFalse(StringUtil.containsWordIgnoreCase("    ", "123", false));

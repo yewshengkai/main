@@ -131,7 +131,7 @@ Format: `find or findany KEYWORD [MORE_KEYWORDS]` +
 ****
 * The search is case insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Optional fields are optional (having no options default to finding name).
+* Fields are optional (having no options default to finding name).
 * Either full words or partial words can be matched e.g. `Han` will not match `Hannons` or `non` will match `Hannons`
 * Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 ****
