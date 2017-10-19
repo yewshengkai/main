@@ -30,6 +30,7 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
     public static final String MESSAGE_INSUFFICIENT_PARTS = "Number of parts must be more than 1.";
+    public static final String MESSAGE_INVALID_ARG = "Argument provided is invalid.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -107,5 +108,22 @@ public class ParserUtil {
             tagSet.add(new Tag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses {@code sortOrder} into a {@code boolean} and returns it.
+     * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
+     */
+    public static boolean parseSort(String sortOrder) throws IllegalValueException {
+        String trimmedSortParameter = sortOrder.trim();
+        switch (trimmedSortParameter) {
+        case "":
+        case "a":
+            return false;
+        case "d":
+            return true;
+        default:
+            throw new IllegalValueException(MESSAGE_INVALID_ARG);
+        }
     }
 }

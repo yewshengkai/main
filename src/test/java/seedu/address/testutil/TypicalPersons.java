@@ -77,7 +77,26 @@ public class TypicalPersons {
         return ab;
     }
 
+    /**
+     * Returns an {@code AddressBook} with all the typical persons in descending order.
+     */
+    public static AddressBook getTypicalDescendingOrderAddressBook() {
+        AddressBook ab = new AddressBook();
+        for (ReadOnlyPerson person : getDescendingOrderTypicalPersons()) {
+            try {
+                ab.addPerson(person);
+            } catch (DuplicatePersonException e) {
+                assert false : "not possible";
+            }
+        }
+        return ab;
+    }
+
     public static List<ReadOnlyPerson> getTypicalPersons() {
         return new ArrayList<>(Arrays.asList(ALICE, BENSON, CARL, DANIEL, ELLE, FIONA, GEORGE));
+    }
+
+    public static List<ReadOnlyPerson> getDescendingOrderTypicalPersons() {
+        return new ArrayList<>(Arrays.asList(GEORGE, FIONA, ELLE, DANIEL, CARL, BENSON, ALICE));
     }
 }

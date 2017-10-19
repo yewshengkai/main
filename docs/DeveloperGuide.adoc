@@ -926,6 +926,41 @@ Use case resumes at step 4.
 +
 Use case ends.
 
+[discrete]
+=== Use case: Sort contacts
+
+*Preconditions:* User is logged in.
+
+*Guarentees:* List will be sorted in alphabetical order.
+
+*MSS*
+
+1. User request to sort contacts
+2. AddressBook shows a list of contacts sorted in ascending order according to alphabetical order of the contact's name.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The sort parameter is invalid
++
+[none]
+** 1a1. AddressBook shows an error message.
++
+Use case ends.
+
+[none]
+* 1b. The sort parameter is `d`
++
+[none]
+** 1b1. AddressBook shows a list of contacts sorted in descending order.
+
+[none]
+* 1c. The sort parameter is `a`
++
+[none]
+** 1c1. AddressBook shows a list of contacts sorted in ascending order.
 
 [discrete]
 === Use case: Find contacts
