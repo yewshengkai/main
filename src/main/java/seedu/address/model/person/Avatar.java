@@ -2,9 +2,11 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
@@ -37,12 +39,15 @@ public class Avatar {
      * Returns true if a given string is a valid image filepath.
      */
     public static boolean isValidPath(String path) {
-        File file = new File(path);
+        if (path.equals("")) {
+            return true;
+        }
+
         try {
-            String filetype = Files.probeContentType(file.toPath()).split("/")[0];
-            return filetype.equals("image");
+            BufferedImage image = ImageIO.read(new URL(path));
+            return image != null;   // false if image is null
         } catch (IOException ioe) {
-            return false;
+            return false;   // url invalid
         }
     }
 
