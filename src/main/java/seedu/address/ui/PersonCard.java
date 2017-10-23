@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -49,6 +52,8 @@ public class PersonCard extends UiPart<Region> {
     private Label homepage;
     @FXML
     private Label remark;
+    @FXML
+    private ImageView avatar;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
@@ -81,6 +86,24 @@ public class PersonCard extends UiPart<Region> {
             initTags(person);
         });
         homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
+
+        initImage(person);
+    }
+
+    /**
+     * Binds the correct image to the person.
+     * If url is "", default display picture will be assigned, else image from URL will be assigned
+     */
+    private void initImage(ReadOnlyPerson person) {
+        String path = person.getAvatar().toString();
+        Image image;
+        if (!path.equals("")) {   // not default image
+            image = new Image(path);
+            avatar.setImage(image);
+            avatar.setFitHeight(100);
+            avatar.setPreserveRatio(true);
+            avatar.setCache(true);
+        }
     }
 
     /**
