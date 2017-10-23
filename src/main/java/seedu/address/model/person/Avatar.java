@@ -11,9 +11,10 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.storage.util.WriteImageFromURLToFileForAvatar;
 
 /**
- * Represents a Person's phone number in the address book.
+ * Represents a Person's avatar in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidPath(String)}
  */
 public class Avatar {
@@ -22,10 +23,12 @@ public class Avatar {
     public static final String MESSAGE_IMAGE_CONSTRAINTS =
             "Image not found / image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"";
     public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 10KB or lower";
+    public static final String DEFAULT_AVATAR_FILE_LOCATION = "src\\\\main\\\\resources\\\\avatars\\\\";
+    public static final String AVATAR_VALIDATION_PATH = "src\\main\\resources\\avatars";
     public final String path;
 
     /**
-     * Validates given phone number.
+     * Validates given avatar.
      *
      * @throws IllegalValueException if given path string is invalid.
      */
@@ -38,14 +41,14 @@ public class Avatar {
         if (!isImageCorrectSize(trimmedPath)) {
             throw new IllegalValueException(MESSAGE_IMAGESIZE_CONSTRAINTS);
         }
-        this.path = trimmedPath;
+        this.path = WriteImageFromURLToFileForAvatar.writeImageToFile(trimmedPath);
     }
 
     /**
      * Returns true if a given string is a valid image filepath
      */
     public static boolean isValidPath(String path) {
-        if (path.equals("")) {  // default
+        if (path.equals("") || path.startsWith(AVATAR_VALIDATION_PATH)) {  // default
             return true;
         }
 
@@ -63,7 +66,7 @@ public class Avatar {
      * (This is because if the image is too big, the application will start slowing down)
      */
     public static boolean isImageCorrectSize(String path) {
-        if (path.equals("")) {  // default
+        if (path.equals("") || path.startsWith(AVATAR_VALIDATION_PATH)) {  // default
             return true;
         }
         URL url;
@@ -76,6 +79,9 @@ public class Avatar {
         return fileSize < 10;
     }
 
+    /**
+     * Obtains file size of image using a HEAD http request
+     */
     private static int getFileSize(URL url) {
         HttpURLConnection conn = null;
         try {

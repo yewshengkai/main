@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -98,7 +99,8 @@ public class PersonCard extends UiPart<Region> {
         String path = person.getAvatar().toString();
         Image image;
         if (!path.equals("")) {   // not default image
-            image = new Image(path);
+            File file = new File(path);
+            image = new Image(file.toURI().toString());
             avatar.setImage(image);
             avatar.setFitHeight(100);
             avatar.setPreserveRatio(true);
