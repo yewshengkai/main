@@ -11,7 +11,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.storage.util.WriteImageFromURLToFileForAvatar;
+import seedu.address.storage.util.WriteImageFromUrlToFileForAvatar;
 
 /**
  * Represents a Person's avatar in the address book.
@@ -41,7 +41,7 @@ public class Avatar {
         if (!isImageCorrectSize(trimmedPath)) {
             throw new IllegalValueException(MESSAGE_IMAGESIZE_CONSTRAINTS);
         }
-        this.path = WriteImageFromURLToFileForAvatar.writeImageToFile(trimmedPath);
+        this.path = WriteImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
     }
 
     /**

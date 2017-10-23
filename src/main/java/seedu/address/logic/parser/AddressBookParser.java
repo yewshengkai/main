@@ -115,7 +115,7 @@ public class AddressBookParser {
 
         case SetAvatarCommand.COMMAND_WORD:
         case SetAvatarCommand.COMMAND_ALIAS:
-             return new SetAvatarCommandParser().parse(arguments);
+            return new SetAvatarCommandParser().parse(arguments);
 
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(arguments);

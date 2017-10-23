@@ -16,7 +16,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 /**
  * Utility class to write an image from an URL to a file for the Avatar class
  */
-public class WriteImageFromURLToFileForAvatar {
+public class WriteImageFromUrlToFileForAvatar {
     /**
      * Writes the image URL path provided into an image file
      */
