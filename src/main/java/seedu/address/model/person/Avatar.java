@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -48,8 +49,17 @@ public class Avatar {
      * Returns true if a given string is a valid image filepath
      */
     public static boolean isValidPath(String path) {
-        if (path.equals("") || path.startsWith(AVATAR_VALIDATION_PATH)) {  // default
+        if (path.equals("")) {  // default
             return true;
+        }
+
+        if (path.startsWith(AVATAR_VALIDATION_PATH)) {  // could have been put by user in directory
+            try {
+                BufferedImage image = ImageIO.read(new File(path));
+                return image != null;
+            } catch (IOException ioe) {
+                return false;   // file invalid
+            }
         }
 
         try {
@@ -62,7 +72,7 @@ public class Avatar {
     }
 
     /**
-     * Returns true if image is smaller than 10KB.
+     * Returns true if image is smaller than 20KB.
      * (This is because if the image is too big, the application will start slowing down)
      */
     public static boolean isImageCorrectSize(String path) {
@@ -76,7 +86,7 @@ public class Avatar {
             return false;
         }
         int fileSize = getFileSize(url) / 1024;     // filesize in KBs
-        return fileSize < 10;
+        return fileSize < 20;
     }
 
     /**
