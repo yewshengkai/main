@@ -117,6 +117,7 @@ public class AddressBookParser {
             return new SortCommandParser().parse(arguments);
 
         case ThemeCommand.COMMAND_WORD:
+        case ThemeCommand.COMMAND_ALIAS:
             return new ThemeCommandParser().parse(arguments);
 
         default:

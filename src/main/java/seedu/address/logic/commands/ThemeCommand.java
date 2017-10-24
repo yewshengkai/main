@@ -21,6 +21,9 @@ public class ThemeCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Switches to selected theme\n"
+            + "1. No theme\n"
+            + "2. Blue theme\n"
+            + "3. Dark theme\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
@@ -47,7 +50,7 @@ public class ThemeCommand extends Command {
         themeList.add("DarkTheme");
 
         if (targetIndex.getZeroBased() >= themeList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_THEME_INDEX);
         }
 
         switch (targetIndex.getOneBased()) {
