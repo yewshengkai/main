@@ -28,6 +28,8 @@ public class Avatar {
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "data\\\\avatar\\\\";
     public final String path;
 
+
+
     /**
      * Validates given avatar.
      * Invokes ProcessImageFromUrlToFileForAvatar for processing of storage of avatar
@@ -82,12 +84,12 @@ public class Avatar {
         URL url;
         try {
             url = new URL(path);
-            int fileSize = getFileSize(url) / 1024;     // file size in KBs
-            return fileSize < 20;
         } catch (MalformedURLException e) {
             // invalid URL, or is file path, check file size instead
             return ((new File(path).length()) / 1024) < 20;
         }
+        int fileSize = getFileSize(url) / 1024;     // file size in KBs
+        return fileSize < 20;
     }
 
     /**
