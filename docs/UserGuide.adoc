@@ -296,10 +296,10 @@ Format: `theme INDEX`
 
 Examples:
 
-* `themelist` +
+* `theme` +
 `theme 1` +
 Select and load the first theme in the results of the `themelist` command.
-* `tlist` +
+* `t` +
 `theme 2` +
 Select and load the second theme in the results of the `tlist` command.
 
