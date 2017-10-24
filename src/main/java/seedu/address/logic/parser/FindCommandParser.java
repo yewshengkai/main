@@ -78,7 +78,7 @@ public class FindCommandParser implements Parser<FindCommand> {
 
     @Override
     public FindCommand parse(String userInput) throws ParseException {
-        return null;
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
