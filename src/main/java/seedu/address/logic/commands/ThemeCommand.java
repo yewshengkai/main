@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.layout.Region;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -24,10 +25,16 @@ public class ThemeCommand extends Command {
 
     public static final String MESSAGE_THEME_SUCCESS = "Theme updated: %1$s";
 
-    private final Index targetIndex;
+    private static Region region = null;
+    private static Index targetIndex = null;
+
 
     public ThemeCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
+    }
+
+    public ThemeCommand(Region region) {
+        this.region = region;
     }
 
     @Override
@@ -43,8 +50,10 @@ public class ThemeCommand extends Command {
 
         switch (targetIndex.getOneBased()){
             case 1:
+                setTheme(themeList.get(0));
                 break;
             case 2:
+                setTheme(themeList.get(1));
                 break;
             default:
                 break;
@@ -61,6 +70,7 @@ public class ThemeCommand extends Command {
     }
 
     public void setTheme(String args) {
-
+        region.getStylesheets().clear();
+        region.getStylesheets().add("/view/" + args);
     }
 }
