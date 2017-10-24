@@ -1,6 +1,5 @@
 package seedu.address.storage.util;
 
-import static seedu.address.model.person.Avatar.AVATAR_VALIDATION_PATH;
 import static seedu.address.model.person.Avatar.DEFAULT_AVATAR_FILE_LOCATION;
 import static seedu.address.model.person.Avatar.MESSAGE_IMAGE_CONSTRAINTS;
 
@@ -18,11 +17,13 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class ProcessImageFromUrlToFileForAvatar {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
+    private static String directoryPath = "data\\avatar\\";
+
     /**
      * Writes the image URL path provided into an image file
      */
     public static String writeImageToFile(String path) throws IllegalValueException {
-        if (path.equals("") || path.startsWith(AVATAR_VALIDATION_PATH)) {
+        if (path.equals("") || path.startsWith(directoryPath)) {
             return path;
         }
         try {
