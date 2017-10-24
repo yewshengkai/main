@@ -3,10 +3,11 @@ package seedu.address.logic.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.ui.MainWindow;
 
 /**
  * Selects a person identified using it's last displayed index from the address book.
@@ -48,6 +49,7 @@ public class ThemeCommand extends Command {
             default:
                 break;
         }
+        EventsCenter.getInstance().post(new ChangeThemeRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_THEME_SUCCESS, targetIndex.getOneBased()));
     }
 
