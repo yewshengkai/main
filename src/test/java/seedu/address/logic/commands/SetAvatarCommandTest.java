@@ -89,10 +89,12 @@ public class SetAvatarCommandTest {
         assertFalse(standardCommand.equals(new ClearCommand()));
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new SetAvatarCommand(INDEX_SECOND_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE))));
+        assertFalse(standardCommand.equals(new SetAvatarCommand(
+                INDEX_SECOND_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE))));
 
         // different descriptor  -> returns false
-        assertFalse(standardCommand.equals(new SetAvatarCommand(INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_TWO))));
+        assertFalse(standardCommand.equals(new SetAvatarCommand(
+                INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_TWO))));
     }
 
     /**

@@ -139,6 +139,9 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Avatar} of the {@code Person} that we are building.
+     */
     public PersonBuilder withAvatar(String avatarPath) {
         try {
             this.person.setAvatar(new Avatar(avatarPath));

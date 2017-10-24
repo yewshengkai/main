@@ -17,7 +17,7 @@ public class SetAvatarCommandParserTest {
     private SetAvatarCommandParser parser = new SetAvatarCommandParser();
 
     @Test
-    public void parse_indexSpecified_noParameters_success() throws Exception {
+    public void parse_noParameters_success() throws Exception {
         final Avatar avatarNoParameters = new Avatar("");
 
         Index targetIndex = INDEX_FIRST_PERSON;
@@ -29,7 +29,7 @@ public class SetAvatarCommandParserTest {
     }
 
     @Test
-    public void parse_indexSpecified_withParameters_success() throws Exception {
+    public void parse_withParameters_success() throws Exception {
         final Avatar avatarWithParameters = new Avatar(VALID_AVATAR_IMAGE_URL_ONE);
 
         Index targetIndex = INDEX_FIRST_PERSON;
