@@ -76,9 +76,60 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
     }
 
+    /**
+     * For test case
+     * Parses the given {@code String} of arguments in the context of the FindCommand
+     * and returns an FindCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
     @Override
     public FindCommand parse(String userInput) throws ParseException {
-        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(userInput,
+                        PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG,
+                        PREFIX_HOMEPAGE);
+
+        try {
+            if (arePrefixesPresent(argMultimap, PREFIX_ADDRESS)) {
+                ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_ADDRESS),
+                        FindCommand.COMMAND_WORD_ADDRESS);
+                return new FindCommand(new PersonContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_ADDRESS, keywordsList, true));
+            } else if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
+                ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_EMAIL),
+                        FindCommand.COMMAND_WORD_EMAIL);
+                return new FindCommand(new PersonContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_EMAIL, keywordsList, true));
+            } else if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
+                ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_HOMEPAGE),
+                        FindCommand.COMMAND_WORD_HOMEPAGE);
+                return new FindCommand(new PersonContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_HOMEPAGE, keywordsList, true));
+            } else if (arePrefixesPresent(argMultimap, PREFIX_PHONE)) {
+                ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_PHONE),
+                        FindCommand.COMMAND_WORD_PHONE);
+                return new FindCommand(new PersonContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_PHONE, keywordsList, true));
+            } else if (arePrefixesPresent(argMultimap, PREFIX_TAG)) {
+                ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_TAG),
+                        FindCommand.COMMAND_WORD_TAG);
+                return new FindCommand(new PersonContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD_TAG, keywordsList, true));
+            } else if (arePrefixesPresent(argMultimap, PREFIX_NONE)) {
+                String trimmedArgs = userInput.trim();
+                if (trimmedArgs.isEmpty()) {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                }
+                String[] keywords = trimmedArgs.split("\\s+");
+                return new FindCommand(new PersonContainsKeywordsPredicate(
+                        FindCommand.COMMAND_WORD, Arrays.asList(keywords), true));
+            } else {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
