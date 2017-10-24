@@ -2,7 +2,6 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
@@ -60,12 +58,16 @@ public class Avatar {
     public static boolean isImageValid(String path) {
         try {
             URL url = new URL(path);
-            Image image = new ImageIcon(url).getImage();
+            BufferedImage image = ImageIO.read(url);
             return image != null;
         } catch (IOException ioe) {
             // invalid URL, check if is file path
-            Image image = new ImageIcon(path).getImage();
-            return image != null;
+            try {
+                BufferedImage image = ImageIO.read(new File(path));
+                return image != null;
+            } catch (IOException ioe2) {
+                return false;
+            }
         }
     }
 
@@ -80,12 +82,12 @@ public class Avatar {
         URL url;
         try {
             url = new URL(path);
+            int fileSize = getFileSize(url) / 1024;     // file size in KBs
+            return fileSize < 20;
         } catch (MalformedURLException e) {
             // invalid URL, or is file path, check file size instead
             return ((new File(path).length()) / 1024) < 20;
         }
-        int fileSize = getFileSize(url) / 1024;     // file size in KBs
-        return fileSize < 20;
     }
 
     /**
