@@ -126,7 +126,7 @@ public class PersonBuilder {
         try {
             this.person.setHomepage(new Homepage(homepage));
         } catch (IllegalValueException ive) {
-            throw new IllegalArgumentException("email is expected to be unique.");
+            throw new IllegalArgumentException("homepage is expected to be unique.");
         }
         return this;
     }
@@ -136,6 +136,15 @@ public class PersonBuilder {
      */
     public PersonBuilder withRemark(String remark) {
         this.person.setRemark(new Remark(remark));
+        return this;
+    }
+
+    public PersonBuilder withAvatar(String avatarPath) {
+        try {
+            this.person.setAvatar(new Avatar(avatarPath));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("avatar is expected to be unique");
+        }
         return this;
     }
 
