@@ -98,11 +98,11 @@ public class PersonCard extends UiPart<Region> {
     private void initImage(ReadOnlyPerson person) {
         String path = person.getAvatar().toString();
         Image image;
-        if (!path.equals("")) {   // not default image
+        if (!"".equals(path)) {   // not default image
             File file = new File(path);
             image = new Image(file.toURI().toString());
             avatar.setImage(image);
-            avatar.setFitHeight(100);
+            avatar.setFitHeight(90);
             avatar.setPreserveRatio(true);
             avatar.setCache(true);
         }

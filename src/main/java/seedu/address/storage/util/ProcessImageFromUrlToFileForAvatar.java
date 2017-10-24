@@ -23,15 +23,19 @@ public class ProcessImageFromUrlToFileForAvatar {
      * Writes the image URL path provided into an image file
      */
     public static String writeImageToFile(String path) throws IllegalValueException {
-        if (path.equals("") || path.startsWith(directoryPath)) {
+        if ("".equals(path) || path.startsWith(directoryPath)) {
             return path;
         }
         try {
+            int i = 1;
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
 
-            // Using hashCode() assures uniqueness of name of created file
+            // Using hashCode() + checking if file exists assures uniqueness of name of created file
             File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
+            while (file.exists()) {
+                file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
+            }
             ImageIO.write(image, "jpg", file);
             return file.getPath();
         } catch (IOException ioe) {

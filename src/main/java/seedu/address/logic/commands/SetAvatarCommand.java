@@ -60,11 +60,14 @@ public class SetAvatarCommand extends UndoableCommand {
         }
 
         ReadOnlyPerson personToSetAvatar = lastShownList.get(targetIndex.getZeroBased());
+        String personToSetAvatarPath = personToSetAvatar.getAvatar().path;
         Person editedPerson;
 
-        if (avatar.path.equals("")) {
-            if (!personToSetAvatar.getAvatar().path.equals("")) {   // resetting avatar, delete image from storage
-                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatar.getAvatar().path);
+        if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
+            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
+        } else {
+            if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
             }
         }
 

@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
@@ -46,7 +48,7 @@ public class Avatar {
      * Returns true if a given string is a valid image filepath
      */
     public static boolean isValidPath(String path) {
-        if (path.equals("")) {  // default
+        if ("".equals(path)) {  // default
             return true;
         }
         return isImageValid(path) && isImageCorrectSize(path);
@@ -58,15 +60,12 @@ public class Avatar {
     public static boolean isImageValid(String path) {
         try {
             URL url = new URL(path);
-            BufferedImage image = ImageIO.read(url);
+            Image image = new ImageIcon(url).getImage();
             return image != null;
         } catch (IOException ioe) {
-            try {   // invalid URL, check if is file path
-                BufferedImage image = ImageIO.read(new File(path));
-                return image != null;
-            } catch (IOException ioe2) {
-                return false;   // file invalid
-            }
+            // invalid URL, check if is file path
+            Image image = new ImageIcon(path).getImage();
+            return image != null;
         }
     }
 
@@ -75,7 +74,7 @@ public class Avatar {
      * (This is because if the image is too big, the application will start slowing down)
      */
     public static boolean isImageCorrectSize(String path) {
-        if (path.equals("")) {  // default
+        if ("".equals(path)) {  // default
             return true;
         }
         URL url;

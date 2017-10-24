@@ -59,7 +59,7 @@
          <RowConstraints />
       </rowConstraints>
   </GridPane>
-   <ImageView fx:id="avatar" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="avatar" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/default_avatar.png" />
       </image>
