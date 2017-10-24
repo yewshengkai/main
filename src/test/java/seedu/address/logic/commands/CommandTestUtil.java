@@ -65,7 +65,7 @@ public class CommandTestUtil {
     public static final String VALID_AVATAR_IMAGE_URL_ONE = "https://i.imgur.com/o4VkosH.png";
     public static final String VALID_AVATAR_IMAGE_URL_TWO = "https://i.imgur.com/xPHOeWL.png";
 
-    public static final String VALID_AVATAR_FILEPATH = "src\\test\\resources\\avatarTest\\testAvatar.png";
+    public static final String VALID_AVATAR_FILEPATH = "src/test/resources/avatarTest/testAvatar.png";
 
     public static final String INVALID_AVATAR_URL_MISSING_FILETYPE = "https://i.imgur.com/xPHOeWL"; // missing filetype
     public static final String INVALID_AVATAR_URL_MISSING_HTTP = "i.imgur.com/xPHOeWL.png"; // missing http header

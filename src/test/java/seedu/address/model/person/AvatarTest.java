@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_AVATAR_URL_LARGE_IMAGE;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_AVATAR_URL_MISSING_FILETYPE;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_AVATAR_URL_MISSING_HTTP;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_FILEPATH;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_ONE;
 
 import org.junit.Test;
@@ -22,5 +23,6 @@ public class AvatarTest {
 
         // valid avatars
         assertTrue(Avatar.isValidPath(VALID_AVATAR_IMAGE_URL_ONE)); // valid URL
+        assertTrue(Avatar.isValidPath(VALID_AVATAR_FILEPATH));  // valid filepath
     }
 }

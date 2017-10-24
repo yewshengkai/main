@@ -17,14 +17,14 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class ProcessImageFromUrlToFileForAvatar {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
-    private static String directoryPath = "data\\avatar\\";
 
     /**
      * Writes the image URL path provided into an image file
      */
     public static String writeImageToFile(String path) throws IllegalValueException {
-        if ("".equals(path) || path.startsWith(directoryPath)) {
-            return path;
+        String standardPath = path.replace("\\", "/");
+        if ("".equals(standardPath) || standardPath.startsWith(DEFAULT_AVATAR_FILE_LOCATION)) {
+            return standardPath;
         }
         try {
             int i = 1;
