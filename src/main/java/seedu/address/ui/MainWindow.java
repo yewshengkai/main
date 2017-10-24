@@ -25,6 +25,7 @@ import seedu.address.commons.events.ui.ShowAboutRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -87,6 +88,7 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
+        ThemeCommand newThemeRoot = new ThemeCommand(getRoot());
 
         setAccelerators();
         registerAsAnEventHandler(this);
@@ -184,6 +186,13 @@ public class MainWindow extends UiPart<Region> {
     private void setWindowMinSize() {
         primaryStage.setMinHeight(MIN_HEIGHT);
         primaryStage.setMinWidth(MIN_WIDTH);
+    }
+
+    /**
+     * Sets new theme based on user preferences.
+     */
+    public void setWindowTheme(String prefs) {
+        getRoot().getStylesheets().add("/view/DarkTheme.css");
     }
 
     /**
