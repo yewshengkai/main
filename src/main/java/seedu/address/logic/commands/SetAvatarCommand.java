@@ -50,6 +50,10 @@ public class SetAvatarCommand extends UndoableCommand {
         this.avatar = avatar;
     }
 
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
 

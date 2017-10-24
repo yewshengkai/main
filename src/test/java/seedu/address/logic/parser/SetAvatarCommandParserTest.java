@@ -7,14 +7,26 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.util.ArrayList;
+
+import org.junit.After;
 import org.junit.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.model.person.Avatar;
+import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 
 public class SetAvatarCommandParserTest {
     private SetAvatarCommandParser parser = new SetAvatarCommandParser();
+    private ArrayList<String> filesCreated = new ArrayList<>();
+
+    @After
+    public void cleanup() {
+        for (String path : filesCreated) {
+            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+        }
+    }
 
     @Test
     public void parse_noParameters_success() throws Exception {
@@ -37,6 +49,7 @@ public class SetAvatarCommandParserTest {
                 + " " + avatarWithParameters.path;
 
         SetAvatarCommand expectedCommandWithParameters = new SetAvatarCommand(INDEX_FIRST_PERSON, avatarWithParameters);
+        filesCreated.add(expectedCommandWithParameters.getAvatar().path);
         assertParseSuccess(parser, userInputWithParameters, expectedCommandWithParameters);
     }
 

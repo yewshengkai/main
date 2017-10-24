@@ -11,6 +11,10 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.ArrayList;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
@@ -24,10 +28,20 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Person;
+import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 import seedu.address.testutil.PersonBuilder;
 
 public class SetAvatarCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    private ArrayList<String> filesCreated = new ArrayList<>();
+
+    @After
+    public void cleanup() {
+        for (String path : filesCreated) {
+            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+        }
+    }
 
     @Test
     public void execute_removeAvatar_success() throws Exception {
@@ -88,10 +102,12 @@ public class SetAvatarCommandTest {
     public void equals() throws IllegalValueException {
         final SetAvatarCommand standardCommand = new SetAvatarCommand(
                 INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
+        filesCreated.add(standardCommand.getAvatar().path);
 
         // same values -> returns false (different file name should be created when duplicating)
         SetAvatarCommand commandWithSameValues = new SetAvatarCommand(
                 INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
+        filesCreated.add(commandWithSameValues.getAvatar().path);
         assertFalse(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
@@ -104,12 +120,16 @@ public class SetAvatarCommandTest {
         assertFalse(standardCommand.equals(new ClearCommand()));
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new SetAvatarCommand(
-                INDEX_SECOND_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE))));
+        SetAvatarCommand commandWithDifferentIndex = new SetAvatarCommand(
+                INDEX_SECOND_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
+        filesCreated.add(commandWithDifferentIndex.getAvatar().path);
+        assertFalse(standardCommand.equals(commandWithDifferentIndex));
 
         // different descriptor  -> returns false
-        assertFalse(standardCommand.equals(new SetAvatarCommand(
-                INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_TWO))));
+        SetAvatarCommand commandWithDifferentDescriptor = new SetAvatarCommand(
+                INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_TWO));
+        filesCreated.add(commandWithDifferentDescriptor.getAvatar().path);
+        assertFalse(standardCommand.equals(commandWithDifferentDescriptor));
     }
 
     /**
@@ -118,6 +138,7 @@ public class SetAvatarCommandTest {
     private SetAvatarCommand prepareCommand(Index index, String path) throws IllegalValueException {
         SetAvatarCommand setAvatarCommand = new SetAvatarCommand(index, new Avatar(path));
         setAvatarCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        filesCreated.add(setAvatarCommand.getAvatar().path);
         return setAvatarCommand;
     }
 }
