@@ -1,9 +1,11 @@
 package seedu.address.logic.commands;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.layout.Region;
+import seedu.address.MainApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -41,22 +43,26 @@ public class ThemeCommand extends Command {
     public CommandResult execute() throws CommandException {
 
         List<String> themeList = new ArrayList<>();
-        themeList.add("BlueTheme.css");
-        themeList.add("DarkTheme.css");
+        themeList.add("NoTheme");
+        themeList.add("BlueTheme");
+        themeList.add("DarkTheme");
 
         if (targetIndex.getZeroBased() >= themeList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        switch (targetIndex.getOneBased()){
-            case 1:
-                setTheme(themeList.get(0));
-                break;
-            case 2:
-                setTheme(themeList.get(1));
-                break;
-            default:
-                break;
+        switch (targetIndex.getOneBased()) {
+        case 1:
+            setTheme(themeList.get(0));
+            break;
+        case 2:
+            setTheme(themeList.get(1));
+            break;
+        case 3:
+            setTheme(themeList.get(2));
+            break;
+        default:
+            break;
         }
         EventsCenter.getInstance().post(new ChangeThemeRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_THEME_SUCCESS, targetIndex.getOneBased()));
@@ -69,8 +75,12 @@ public class ThemeCommand extends Command {
                 && this.targetIndex.equals(((ThemeCommand) other).targetIndex)); // state check
     }
 
-    public void setTheme(String args) {
+    public void setTheme(String args) throws CommandException{
+        if (MainApp.class.getResource("/view/" + args + ".css") == null) {
+            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
+        }
         region.getStylesheets().clear();
-        region.getStylesheets().add("/view/" + args);
+        region.getStylesheets().add("/view/" + args + ".css");
+
     }
 }
