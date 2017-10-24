@@ -22,7 +22,7 @@ public class ProcessImageFromUrlToFileForAvatar {
      * Writes the image URL path provided into an image file
      */
     public static String writeImageToFile(String path) throws IllegalValueException {
-        String standardPath = path.replace("\\", "/");
+        String standardPath = path.replace('\\', '/');
         if ("".equals(standardPath) || standardPath.startsWith(DEFAULT_AVATAR_FILE_LOCATION)) {
             return standardPath;
         }
@@ -37,7 +37,7 @@ public class ProcessImageFromUrlToFileForAvatar {
                 file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
             }
             ImageIO.write(image, "jpg", file);
-            return file.getPath();
+            return file.getPath().replace('\\', '/');
         } catch (IOException ioe) {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
