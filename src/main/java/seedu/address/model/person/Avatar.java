@@ -12,7 +12,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.storage.util.WriteImageFromUrlToFileForAvatar;
+import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 
 /**
  * Represents a Person's avatar in the address book.
@@ -30,7 +30,7 @@ public class Avatar {
 
     /**
      * Validates given avatar.
-     *
+     * Invokes ProcessImageFromUrlToFileForAvatar for processing of storage of avatar
      * @throws IllegalValueException if given path string is invalid.
      */
     public Avatar(String path) throws IllegalValueException {
@@ -42,7 +42,7 @@ public class Avatar {
         if (!isImageCorrectSize(trimmedPath)) {
             throw new IllegalValueException(MESSAGE_IMAGESIZE_CONSTRAINTS);
         }
-        this.path = WriteImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
+        this.path = ProcessImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
     }
 
     /**
@@ -101,6 +101,7 @@ public class Avatar {
         } catch (IOException ioe) {
             return -1;
         } finally {
+            assert conn != null;
             conn.disconnect();
         }
     }
