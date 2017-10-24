@@ -22,7 +22,8 @@ public class Avatar {
 
 
     public static final String MESSAGE_IMAGE_CONSTRAINTS =
-            "Image not found/ image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"";
+            "Image not found/ image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"\n"
+            + "Image might also be too big";
     public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 10KB or lower";
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "src\\\\main\\\\resources\\\\avatars\\\\";
     public static final String AVATAR_VALIDATION_PATH = "src\\main\\resources\\avatars";
