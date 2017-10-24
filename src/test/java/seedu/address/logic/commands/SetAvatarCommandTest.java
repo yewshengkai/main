@@ -45,6 +45,21 @@ public class SetAvatarCommandTest {
     }
 
     @Test
+    public void execute_setAvatar_success() throws Exception {
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
+
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getAvatar().path);
+
+        String expectedMessage = String.format(SetAvatarCommand.MESSAGE_SET_AVATAR_SUCCESS, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(setAvatarCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size()  +  1);
         SetAvatarCommand setAvatarCommand = prepareCommand(outOfBoundIndex, VALID_AVATAR_IMAGE_URL_ONE);
@@ -74,10 +89,10 @@ public class SetAvatarCommandTest {
         final SetAvatarCommand standardCommand = new SetAvatarCommand(
                 INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
 
-        // same values -> returns true
+        // same values -> returns false (different file name should be created when duplicating)
         SetAvatarCommand commandWithSameValues = new SetAvatarCommand(
                 INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
-        assertTrue(standardCommand.equals(commandWithSameValues));
+        assertFalse(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
         assertTrue(standardCommand.equals(standardCommand));
