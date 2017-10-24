@@ -71,8 +71,7 @@ public class FindCommandParser implements Parser<FindCommand> {
             } else {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
             }
-        }
-        catch (IllegalValueException ive) {
+        } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
         }
     }
