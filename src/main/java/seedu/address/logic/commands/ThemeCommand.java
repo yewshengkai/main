@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class ThemeCommand extends Command {
                 && this.targetIndex.equals(((ThemeCommand) other).targetIndex)); // state check
     }
 
-    public void setTheme(String args) throws CommandException{
+    public void setTheme(String args) throws CommandException {
         if (MainApp.class.getResource("/view/" + args + ".css") == null) {
             throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
         }
