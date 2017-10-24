@@ -301,7 +301,7 @@ Examples:
 Select and load the first theme in the results of the `themelist` command.
 * `tlist` +
 `theme 2` +
-Select and load the second theme in the results of the `themelist` command.
+Select and load the second theme in the results of the `tlist` command.
 
 === Clearing all entries : `clear`
 
