@@ -22,7 +22,7 @@ public class Avatar {
 
 
     public static final String MESSAGE_IMAGE_CONSTRAINTS =
-            "Image not found / image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"";
+            "Image not found/ image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"";
     public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 10KB or lower";
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "src\\\\main\\\\resources\\\\avatars\\\\";
     public static final String AVATAR_VALIDATION_PATH = "src\\main\\resources\\avatars";
@@ -53,21 +53,17 @@ public class Avatar {
             return true;
         }
 
-        if (path.startsWith(AVATAR_VALIDATION_PATH)) {  // could have been put by user in directory
-            try {
-                BufferedImage image = ImageIO.read(new File(path));
-                return image != null;
-            } catch (IOException ioe) {
-                return false;   // file invalid
-            }
-        }
-
         try {
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
             return image != null;
         } catch (IOException ioe) {
-            return false;   // url invalid
+            try {   // invalid URL, check if is file path
+                BufferedImage image = ImageIO.read(new File(path));
+                return image != null;
+            } catch (IOException ioe2) {
+                return false;   // file invalid
+            }
         }
     }
 
@@ -76,16 +72,19 @@ public class Avatar {
      * (This is because if the image is too big, the application will start slowing down)
      */
     public static boolean isImageCorrectSize(String path) {
-        if (path.equals("") || path.startsWith(AVATAR_VALIDATION_PATH)) {  // default
+        if (path.equals("")) {  // default
             return true;
         }
         URL url;
         try {
             url = new URL(path);
         } catch (MalformedURLException e) {
-            return false;
+            // invalid URL, or is file path, check file size instead
+            File file = new File(path);
+            System.out.println(file.length());
+            return ((new File(path).length()) / 1024) < 20;
         }
-        int fileSize = getFileSize(url) / 1024;     // filesize in KBs
+        int fileSize = getFileSize(url) / 1024;     // file size in KBs
         return fileSize < 20;
     }
 

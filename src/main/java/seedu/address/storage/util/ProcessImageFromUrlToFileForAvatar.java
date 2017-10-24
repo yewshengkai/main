@@ -30,8 +30,8 @@ public class ProcessImageFromUrlToFileForAvatar {
             BufferedImage image = ImageIO.read(url);
 
             // Using hashCode() assures uniqueness of name of created file
-            File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".png");
-            ImageIO.write(image, "png", file);
+            File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
+            ImageIO.write(image, "jpg", file);
             return file.getPath();
         } catch (IOException ioe) {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
