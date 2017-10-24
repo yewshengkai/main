@@ -39,9 +39,6 @@ public class Avatar {
         if (!isValidPath(trimmedPath)) {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
-        if (!isImageCorrectSize(trimmedPath)) {
-            throw new IllegalValueException(MESSAGE_IMAGESIZE_CONSTRAINTS);
-        }
         this.path = ProcessImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
     }
 
@@ -52,7 +49,13 @@ public class Avatar {
         if (path.equals("")) {  // default
             return true;
         }
+        return isImageValid(path) && isImageCorrectSize(path);
+    }
 
+    /**
+     * Returns true if image can be loaded from path
+     */
+    public static boolean isImageValid(String path) {
         try {
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
@@ -80,8 +83,6 @@ public class Avatar {
             url = new URL(path);
         } catch (MalformedURLException e) {
             // invalid URL, or is file path, check file size instead
-            File file = new File(path);
-            System.out.println(file.length());
             return ((new File(path).length()) / 1024) < 20;
         }
         int fileSize = getFileSize(url) / 1024;     // file size in KBs
