@@ -46,7 +46,7 @@ public class SetAvatarCommandParserTest {
 
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInputWithParameters = targetIndex.getOneBased() + " " + PREFIX_AVATAR.toString()
-                + " " + avatarWithParameters.path;
+                + " " + avatarWithParameters.initialUrl;
 
         SetAvatarCommand expectedCommandWithParameters = new SetAvatarCommand(INDEX_FIRST_PERSON, avatarWithParameters);
         filesCreated.add(expectedCommandWithParameters.getAvatar().path);

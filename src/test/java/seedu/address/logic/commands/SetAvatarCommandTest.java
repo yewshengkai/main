@@ -103,11 +103,11 @@ public class SetAvatarCommandTest {
                 INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
         filesCreated.add(standardCommand.getAvatar().path);
 
-        // same values -> returns false (different file name should be created when duplicating)
+        // same values -> returns true (checks if initialURL is equal)
         SetAvatarCommand commandWithSameValues = new SetAvatarCommand(
                 INDEX_FIRST_PERSON, new Avatar(VALID_AVATAR_IMAGE_URL_ONE));
         filesCreated.add(commandWithSameValues.getAvatar().path);
-        assertFalse(standardCommand.equals(commandWithSameValues));
+        assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
         assertTrue(standardCommand.equals(standardCommand));
