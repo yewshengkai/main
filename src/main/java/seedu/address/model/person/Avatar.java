@@ -27,6 +27,7 @@ public class Avatar {
     public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 10KB or lower";
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "./data/avatar/";
     public final String path;
+    public final String initialUrl;
 
 
 
@@ -41,6 +42,7 @@ public class Avatar {
         if (!isValidPath(trimmedPath)) {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
+        this.initialUrl = trimmedPath;
         this.path = ProcessImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
     }
 
@@ -89,7 +91,7 @@ public class Avatar {
             return ((new File(path).length()) / 1024) < 20;
         }
         int fileSize = getFileSize(url) / 1024;     // file size in KBs
-        return fileSize < 20;
+        return fileSize < 20 && fileSize > 0;
     }
 
     /**
@@ -118,7 +120,7 @@ public class Avatar {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Avatar // instanceof handles nulls
-                && this.path.equals(((Avatar) other).path)); // state check
+                && this.initialUrl.equals(((Avatar) other).initialUrl)); // state check
     }
 
     @Override

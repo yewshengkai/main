@@ -24,5 +24,6 @@ public class AvatarTest {
         // valid avatars
         assertTrue(Avatar.isValidPath(VALID_AVATAR_IMAGE_URL_ONE)); // valid URL
         assertTrue(Avatar.isValidPath(VALID_AVATAR_FILEPATH));  // valid filepath
+        assertTrue(Avatar.isValidPath("")); //nothing, default avatar
     }
 }
