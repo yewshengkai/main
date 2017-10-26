@@ -15,6 +15,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
@@ -49,14 +50,15 @@ public class AddCommandParser implements Parser<AddCommand> {
             Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL)).get();
             Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS)).get();
             Remark remark = new Remark(""); // add command does not allow adding remark straight away
+            Avatar avatar = new Avatar(""); // add command does not allow adding avatar straight away
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             ReadOnlyPerson person;
 
             if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
                 Homepage homepage = ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).get();
-                person = new Person(name, phone, email, address, remark, tagList, homepage);
+                person = new Person(name, phone, email, address, remark, avatar, tagList, homepage);
             } else {
-                person = new Person(name, phone, email, address, remark, tagList);
+                person = new Person(name, phone, email, address, remark, avatar, tagList);
             }
 
 

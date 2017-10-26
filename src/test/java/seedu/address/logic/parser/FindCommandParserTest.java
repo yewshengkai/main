@@ -51,7 +51,7 @@ public class FindCommandParserTest {
         keywordsList.add(("Bob"));
         ArrayList<String> arrayList = ParserUtil.parseAllDetail(keywordsList, FindCommand.COMMAND_WORD);
         FindCommand expectedPerson = new FindCommand(
-                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD, arrayList, true ));
+                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD, arrayList, true));
         assertParseSuccess(parser, "Bob", expectedPerson);
 
         // multiple whitespaces between keywords
