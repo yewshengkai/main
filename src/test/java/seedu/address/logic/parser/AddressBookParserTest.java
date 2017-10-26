@@ -217,7 +217,7 @@ public class AddressBookParserTest {
                 ThemeCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new ThemeCommand(INDEX_FIRST_PERSON), aliasCommand);
     }
-      
+
     @Test
     public void parseCommand_setAvatar() throws Exception {
         //setup
