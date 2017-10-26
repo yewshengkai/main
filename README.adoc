@@ -24,6 +24,8 @@ _verb_ - latin for _connect_
 * This is a desktop Address Book application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
 * This application targets users who is adept at using the keyboard, and prefers adding contacts solely with the keyboard, rather than using a mouse. As a result, most of the available commands can be done using just a keyboard.
 
+=== Current version : `v1.3`
+
 == Site Map
 
 * <<UserGuide#, User Guide>>
