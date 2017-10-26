@@ -123,6 +123,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 
 // end::edit[]
 
+// tag::find[]
 === Locating persons by name: `find`
 
 Finds persons whose details contain any of the given specified keywords. +
@@ -164,6 +165,7 @@ Returns any person having phone `9123456`, `8123456`
 Returns `9123456`, `91234888`
 * `findany p/123 777 888` +
 Returns any person having phone `9123456`, `8123456`, `8777666`, or `9888555`
+// end::find[]
 
 === Deleting a person : `delete`
 
