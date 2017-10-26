@@ -22,6 +22,7 @@ import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -74,15 +75,11 @@ public class AddressBookParser {
 
         case FindCommand.COMMAND_WORD:
         case FindCommand.COMMAND_ALIAS:
-            FindCommandParser findCommandParserFalse = new FindCommandParser();
-            findCommandParserFalse.setCaseIgnored(false);
-            return new FindCommandParser().parse(arguments);
+            return new FindCommandParser().parse(arguments, false);
 
         case FindCommand.COMMAND_WORD_ANY:
         case FindCommand.COMMAND_ALIAS_ANY:
-            FindCommandParser findCommandParserTrue = new FindCommandParser();
-            findCommandParserTrue.setCaseIgnored(true);
-            return new FindCommandParser().parse(arguments);
+            return new FindCommandParser().parse(arguments, true);
 
         case ListCommand.COMMAND_WORD:
         case ListCommand.COMMAND_ALIAS:
@@ -119,6 +116,10 @@ public class AddressBookParser {
 
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(arguments);
+
+        case ThemeCommand.COMMAND_WORD:
+        case ThemeCommand.COMMAND_ALIAS:
+            return new ThemeCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

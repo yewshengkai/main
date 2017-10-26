@@ -1517,6 +1517,31 @@ Use case ends.
 Use case resume at step 2.
 Use case ends.
 
+[discrete]
+=== Use case: Theme
+
+*Guarantees:* Application theme change.
+
+*MSS*
+
+1.  User request to change theme.
+2.  AddressBook changes the theme.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list of theme is empty.
+[none]
+** 1a1. AddressBook shows an error message.
+[none]
+* 1b. The theme file is missing.
+[none]
+** 1b1. AddressBook shows an error message.
++
+Use case ends.
+
 {More to be added}
 
 [appendix]
