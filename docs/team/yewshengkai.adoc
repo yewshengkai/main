@@ -18,8 +18,6 @@ it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and
 
 include::../UserGuide.adoc[tag=find]
 
-include::../UserGuide.adoc[tag=find]
-
 #End of Extract#
 
 ---

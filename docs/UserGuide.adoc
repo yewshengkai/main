@@ -165,6 +165,7 @@ Returns any person having phone `9123456`, `8123456`
 Returns `9123456`, `91234888`
 * `findany p/123 777 888` +
 Returns any person having phone `9123456`, `8123456`, `8777666`, or `9888555`
+// end::find[]
 
 === Deleting a person : `delete`
 
@@ -223,8 +224,6 @@ Examples:
 * `list` +
 `remark 2 re/He's my childhood friend` +
 Give the 2nd person a remark in the address book.
-
-// end::find[]
 
 === Listing entered commands : `history`
 
