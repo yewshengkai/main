@@ -68,6 +68,7 @@ to be able to view the contact list in alphabetical ascending/ descending order.
 include::../DeveloperGuide.adoc[tag=sort]
 
 #End of Extract#
+
 ---
 
 === Enhancement Added: Set avatar
