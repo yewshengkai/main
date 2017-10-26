@@ -189,13 +189,6 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
-     * Sets new theme based on user preferences.
-     */
-    public void setWindowTheme(String prefs) {
-        getRoot().getStylesheets().add("/view/DarkTheme.css");
-    }
-
-    /**
      * Returns the current size and the position of the main Window.
      */
     GuiSettings getCurrentGuiSetting() {

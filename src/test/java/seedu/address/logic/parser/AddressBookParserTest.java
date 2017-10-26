@@ -30,6 +30,7 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
@@ -198,6 +199,17 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD) instanceof SortCommand);
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD + " a") instanceof SortCommand);
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD + " d") instanceof SortCommand);
+    }
+
+    @Test
+    public void parseCommand_theme() throws Exception {
+        ThemeCommand command = (ThemeCommand) parser.parseCommand(
+                ThemeCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new ThemeCommand(INDEX_FIRST_PERSON), command);
+
+        ThemeCommand aliasCommand = (ThemeCommand) parser.parseCommand(
+                ThemeCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new ThemeCommand(INDEX_FIRST_PERSON), aliasCommand);
     }
 
     @Test
