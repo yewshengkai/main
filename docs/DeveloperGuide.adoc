@@ -450,7 +450,7 @@ image::SortSequenceDiagram.png[]
 
 The find mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenizes +
 arguments string and returns an `ArgumentMultimap` object that maps prefixes to their respective argument values whereby +
-only the given prefixes (e.g. p/, e/) will be recognized in the arguments string . After which, `FindCommandParser` +
+only the given prefixes (e.g. p/, e/) will be recognized in the arguments string. After which, `FindCommandParser` +
 utilizes `arePrefixesPresent` method to retrieve the string in which utilizes `ParserUtil` to check the validity of string +
 expression.
 
@@ -526,25 +526,17 @@ New developers will not miss out certain prefixes to add in unlike Alternative 1
 // tag::theme[]
 === Theme selector mechanism
 
-The theme mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenizes +
-arguments string and returns an `ArgumentMultimap` object that maps prefixes to their respective argument values whereby +
-only the given prefixes (e.g. p/, e/) will be recognized in the arguments string . After which, `FindCommandParser` +
-utilizes `arePrefixesPresent` method to retrieve the string in which utilizes `ParserUtil` to check the validity of string +
-expression.
+The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate +
+through `ParserUtil` and calls the relevant `ThemeCommand` to change the application `theme`.
 
-Finally, `PersonContainsKeyWordsPredicate` will retrieve any matching string by the given command and prefixes residing in +
-the address book in which `FindCommand` will execute and return the results base on the matched string.
-
-The find mechanism support both `find` and `findany` command in which enables the search of single/multiple `Person` at once +
-and lists their details (e.g. find john mary brook).
+When the application run, `MainWindow` will execute `ThemeCommand.setRegion` in allowing ThemeCommand to retrieve the application root.
 
 [NOTE]
-By default if no prefixes are present, find command will search for the name of `Person` in the address book.
-(e.g find [NAME]).
+By default if no index are present, theme command will return an invalid message.
+(e.g theme "").
 
 [NOTE]
-`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` +
-whose contains ohn. Result: John, Fohnny, Johnny).
+When the application is first initialize, 
 
 `FindCommandParser` code snippet to determine if user's command contains any parameter:
 [source,java]
