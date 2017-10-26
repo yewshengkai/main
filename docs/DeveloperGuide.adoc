@@ -586,25 +586,18 @@ private void initImage(ReadOnlyPerson person) {
 // tag::find[]
 === Find mechanism
 
-The find mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenize +
-arguments string and returns an `ArgumentMultimap` object that maps prefixes to their respective argument values whereby +
-only the given prefixes (e.g. p/, e/) will be recognized in the arguments string. After which, `FindCommandParser` +
-utilizes `arePrefixesPresent` method to retrieve the string which utilizes `ParserUtil` to check the validity of string +
-expression.
+The find mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenize arguments string and returns an `ArgumentMultimap` object that maps prefixes to their respective argument values whereby only the given prefixes (e.g. p/, e/) will be recognized in the arguments string. After which, `FindCommandParser` utilizes `arePrefixesPresent` method to retrieve the string which utilizes `ParserUtil` to check the validity of string expression.
 
-Finally, `PersonContainsKeyWordsPredicate` will retrieve any matching string by the given command and prefixes residing in +
-the address book in which `FindCommand` will execute and return the results base on the matched string.
+Finally, `PersonContainsKeyWordsPredicate` will retrieve any matching string by the given command and prefixes residing in the address book in which `FindCommand` will execute and return the results base on the matched string.
 
-The find mechanism support both `find` and `findany` command in which enables the search of single/multiple `Person` at once +
-and lists their details (e.g. find john mary brook).
+The find mechanism support both `find` and `findany` command in which enables the search of single/multiple `Person` at once and lists their details (e.g. find john mary brook).
 
 [NOTE]
 If no prefixes are present, `find` command will search for the name of `Person` in the address book by default.
 (e.g find [NAME]).
 
 [NOTE]
-`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` +
-whose contains ohn. Result: John, Fohnny, Johnny).
+`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` whose contains ohn. Result: John, Fohnny, Johnny).
 
 `FindCommandParser` code snippet to determine if user's input contains any parameter:
 [source,java]
@@ -650,23 +643,19 @@ image::FindCommand.png[]
 
 ==== Design Considerations
 *Aspect:* Implementation of FindCommandParser +
-*Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to store all usable prefixes. Uses +
-if-else statement to check if any prefixes are present when user execute the find operation. +
+*Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to store all usable prefixes. Uses if-else statement to check if any prefixes are present when user execute the find operation. +
 *Pros:* If user entered invalid command, the application will not crash but will instead return an invalid command message. +
-*Cons:* New developers will have to take note to include new prefixes in ArgumentMultimap when adding new prefixes. +
-Program will have to loop through if-else statement before determine which to execute. +
+*Cons:* New developers will have to take note to include new prefixes in ArgumentMultimap when adding new prefixes. Program will have to loop through if-else statement before determine which to execute. +
 *Alternative 2:* Create multiple find command (e.g. findaddress, findphone) with different prefixes. +
-*Pros:* Less complexity in the code and slightly quicker execution, easier for new developers to handle. +
-New developers will not miss out certain prefixes to add in unlike Alternative 1. +
+*Pros:* Less complexity in the code and slightly quicker execution, easier for new developers to handle. New developers will not miss out certain prefixes to add in unlike Alternative 1. +
 *Cons:* Duplicated find command with similar functionality which is unnecessary.
 
 // end::find[]
 
 // tag::theme[]
-=== Theme selector mechanism
+=== Theme mechanism
 
-The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate +
-through `ParserUtil` and calls the relevant `ThemeCommand` to switch the application `theme`.
+The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate through `ParserUtil` and calls the relevant `ThemeCommand` to switch the application `theme`.
 
 When the application run, `MainWindow` will execute `ThemeCommand.setRegion` in allowing ThemeCommand to retrieve the application root.
 
@@ -675,8 +664,7 @@ By default if no index are present, theme command will return an invalid message
 (e.g theme "").
 
 [NOTE]
-When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` +
-is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
+When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
 
 `ThemeCommandParser` code snippet to determine if user's input contains any index:
 [source,java]
@@ -709,22 +697,24 @@ public static void setRegion(Region region) {
 
 `MainWindow` code snippet to give/set ThemeCommand `Region`:
 [source,java]
+----
 public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
-...
-ThemeCommand.setRegion(getRoot());
+    ...
+    ThemeCommand.setRegion(getRoot());
 }
 ----
 
 `BrowserPanel` code snippet to change the opacity of `WebView`:
 [source,java]
+----
 public BrowserPanel() {
-...
-browser.setOpacity(0);
+    ...
+    browser.setOpacity(0);
 }
 
 private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
-...
-browser.setOpacity(100);
+    ...
+    browser.setOpacity(100);
 }
 ----
 
@@ -738,17 +728,12 @@ image::ThemeCommand.png[]
 
 ==== Design Considerations
 *Aspect:* Implementation of ThemeCommand +
-*Alternative 1 (Current choice):* Enable `MainWindow` at start to set/give ThemeCommand its `Region` before utilizing setTheme +
-method to switch stylesheet. +
-*Pros:* Prevent unnecessary re-access to retrieve application `Region` or access to other `class` file. +
-Check if file exist and clear current stylesheet before changing the new style. +
-*Cons:* There are many other ways to change the styling of application (e.g. Utilizing `ChangeThemeRequestEvent` and call +
-methods in MainWindow) +
-*Alternative 2:* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to +
-change theme. +
+*Alternative 1 (Current choice):* Enable `MainWindow` at start to set/give ThemeCommand its `Region` before utilizing setTheme method to switch stylesheet. +
+*Pros:* Prevent unnecessary re-access to retrieve application `Region` or access to other `class` file. Check if file exist and clear current stylesheet before changing the new style. +
+*Cons:* There are many other ways to change the styling of application (e.g. Utilizing `ChangeThemeRequestEvent` and call methods in `MainWindow`) +
+*Alternative 2:* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to change theme. +
 *Pros:* ThemeCommand will have lesser responsibility and checks to validate. +
-*Cons:* A class should follow `Single Responsibility Principle`. Method that is not supposed to be called through `MainWindow` +
-should be avoided.
+*Cons:* A class should follow `Single Responsibility Principle`. Method that is not supposed to be called through `MainWindow` should be avoided.
 
 // end::theme[]
 
