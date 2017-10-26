@@ -223,6 +223,28 @@ Examples:
 `remark 2 re/He's my childhood friend` +
 Give the 2nd person a remark in the address book.
 
+=== Setting an avatar for a contact : `setavatar`, `sa`
+
+Sets an avatar for a contact referenced by the index number used in the last person listing. +
+Format: `setavatar INDEX sa/AVATAR_URL` +
+Alias: `sa INDEX sa/AVATAR_URL`
+
+[NOTE]
+This requires an active Internet connection to work, as the application requires an URL to retrieve the image.
+
+****
+* Sets the avatar for the contact at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* `1, 2, 3, ...`
+* If `AVATAR_URL` is empty; i.e `""`, the avatar will be removed and the default avatar will be shown
+* The image size *must not be bigger than 20KB*.
+****
+
+Examples:
+
+* `setavatar 1 sa/https://i.imgur.com/xPHOeWL.png` +
+Sets the avatar of the 1st person listed to be the image as referenced by https://i.imgur.com/xPHOeWL.png.
+
 === Listing entered commands : `history`
 
 Lists all the commands that you have entered in reverse chronological order. +
