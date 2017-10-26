@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import org.junit.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -24,6 +26,7 @@ public class FindCommandParserTest {
     }
 
     @Test
+    @OverridingMethodsMustInvokeSuper
     public void parse_validArgs_returnsFindCommand() throws IllegalValueException {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
@@ -48,11 +51,11 @@ public class FindCommandParserTest {
         assertParseSuccess(parser, "95352563 9482224", expectedPhoneFindCommand);
 
         Collection<String> keywordsList = new ArrayList<String>();
-        keywordsList.add(("Bob"));
-        ArrayList<String> arrayList = ParserUtil.parseAllDetail(keywordsList, FindCommand.COMMAND_WORD);
+        keywordsList.add(("Bob").toLowerCase());
+        ArrayList<String> arrayList = ParserUtil.parseAllDetail(keywordsList, FindCommand.COMMAND_WORD_ANY);
         FindCommand expectedPerson = new FindCommand(
-                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD, arrayList, true ));
-        assertParseSuccess(parser, "Bob", expectedPerson);
+                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, false));
+        assertParseSuccess(parser, "bob", expectedPerson);
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);

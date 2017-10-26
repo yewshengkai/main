@@ -445,6 +445,144 @@ image::SortSequenceDiagram.png[]
 
 // end::sort[]
 
+// tag::avatar[]
+=== Avatar mechanism
+==== Logic and Model implementation
+The avatar mechanism is facilitated by the using `ImageView` in `JavaFX` to display the avatar in the UI. +
+The main driver to create an `Avatar` is handled by `SetAvatarCommandParser`, which is invoked after `AddressBookParser`
+parses the arguments provided by the user.
+
+The following sequence diagrams shows how the setting of avatar is achieved:
+
+image::SetAvatarCommandParserSequenceDiagram.png[]
+image::SetAvatarCommandSequenceDiagram.png[width="800"]
+
+The arguments needed are `INDEX` and `AVATAR_URL`. +
+An `Avatar` object is created using `AVATAR_URL` before being passed as a parameter into the creation of the `SetAvatarCommand`
+object.
+
+The `Avatar` class performs a series of validity checks to ensure the URL provided is valid. Validity is defined by having:
+
+1. A valid URL OR is empty
+2. The image must not be larger than 20KB (due to application slowdowns if the file is too big)
+
+
+`SetAvatarCommand` also performs a series of checks in order to decide the steps to take before editing the `Person` referenced. +
+Below is the code snippet of `SetAvatarCommand` for the various checks:
+
+[source,java]
+----
+ public CommandResult executeUndoableCommand() throws CommandException {
+     // ... irrelevent logic ...
+
+     // avatar refers to the avatar object created during the construction of SetAvatarCommand
+     if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
+            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
+         } else {
+             if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
+             }
+         }
+     }
+ }
+----
+The utility class `ProcessImageFromUrlToFileForAvatar` is used to process images retrieved from the Internet. It contains
+two methods -- `writeImageToFile(...)` and `removeImageFromStorage(...)` which stores the image into the
+`DEFAULT_AVATAR_FILE_LOCATION` and removes the image respectively. +
+Below is the code snippet of the write method:
+
+[source,java]
+----
+void writeImageToFile(String path) {
+    // ... irrelevant ...
+
+    // Using hashCode() + checking if file exists assures uniqueness of name of created file
+    File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
+    while (file.exists()) {
+        file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
+    }
+    ImageIO.write(image, "jpg", file);
+    return file.getPath().replace('\\', '/');
+}
+----
+
+As `SetAvatarCommand` is an `UndoableCommand`, `removeImageFromStorage(...)` only deletes the image when the application exits,
+in order to allow the user to undo the command. +
+Below is the code snipper of the remove method:
+
+[source,java]
+----
+void removeImageFromStorage(String path) {
+    File file = new File(path);
+    file.deleteOnExit();    // so as to allow undoable command
+}
+----
+
+==== Storage implementation
+`AvatarStorage` is called during `Model` initialization to check for the existence of an `avatar` folder.
+If the folder does not exist, the folder will be created to store the avatar images. +
+Below is the code snippet for the relevant code flow:
+
+[source, java]
+----
+private Model initModelManager(Storage storage, UserPrefs userPrefs, AvatarStorage avatarStorage) {
+    // ... other logic ...
+
+    avatarDirectoryPath = userPrefs.getAvatarFileDirectoryPath();
+    if (!new File(avatarDirectoryPath).exists()) {
+        logger.info("Directory not found. Will be attempting to create new directory");
+        avatarStorage.createDirectory(avatarDirectoryPath);
+    }
+    // ... other logic ...
+}
+----
+
+==== Ui implementation
+The `PersonCard` is updated via the `bindListeners()`. The loose sequence diagram is displayed below:
+
+image::SetAvatarUISequenceDiagram.png[]
+
+Below is a more in-depth look at `initImage()`:
+
+[source, java]
+----
+/**
+ * Binds the correct image to the person.
+ * If url is "", default display picture will be assigned, else image from URL will be assigned
+ */
+private void initImage(ReadOnlyPerson person) {
+    String path = person.getAvatar().toString();
+    Image image;
+    if (!"".equals(path)) {   // not default image
+        File file = new File(path);
+        image = new Image(file.toURI().toString());
+        avatar.setImage(image);
+        avatar.setFitHeight(90);
+        avatar.setPreserveRatio(true);
+        avatar.setCache(true);
+    }
+}
+----
+==== Design Considerations
+*Aspect:* Saving of image from URL to local disk +
+*Alternative 1 (Current choice):* File is saved during construction of `Avatar` in `SetAvatarCommand`, before the Avatar is set to a `Person` +
+*Pros:* Filepath (not URL) of avatar class will be ascertained during binding to `editedPerson` +
+*Cons:* New developers might find it hard to follow the sequence +
+*Alternative 2:* Only save file after `Avatar` has been assigned to `Person`, assign URL as path when assigning before file is saved. +
+*Pros:* Easier for developers to follow the sequence flow +
+*Cons:* Possibility of program crashing (`NullPointerException`) if URL is added and Internet connection is disrupted before file creation is invoked. +
+
+---
+*Aspect:* Image source +
+*Alternative 1 (Current choice):* Only accept image URL from the Internet +
+*Pros:* Easy for user to input source; Check guarantees validity of image from "HEAD" request +
+*Cons:* Requires internet connection. +
+*Alternative 2:* Accept images from user's local disk in addition from the Internet +
+*Pros:* Natural extension of a function to set avatar. +
+*Cons:* Difficult for user to input source; difficulty in writing code to ascertain if file entered is entered.
+
+// end::avatar[]
+
 // tag::find[]
 === Find mechanism
 
@@ -521,6 +659,7 @@ Program will have to loop through if-else statement before determine which to ex
 *Pros:* Less complexity in the code and slightly quicker execution, easier for new developers to handle. +
 New developers will not miss out certain prefixes to add in unlike Alternative 1. +
 *Cons:* Duplicated find command with similar functionality which is unnecessary.
+
 // end::find[]
 
 // tag::theme[]
@@ -607,6 +746,7 @@ change theme. +
 *Pros:* ThemeCommand will have lesser responsibility and checks to validate. +
 *Cons:* A class should follow `Single Responsibility Principle`. Method that is not supposed to be called through `MainWindow` +
 should be avoided.
+
 // end::theme[]
 
 == Documentation
@@ -1332,7 +1472,7 @@ Use case ends.
 
 *Preconditions:* AddressBook is not empty.
 
-*Guarantees:* Specified index of contact will be selected.
+*Guarantees:* Remark will be added to specified contact at index.
 
 *MSS*
 
@@ -1357,6 +1497,58 @@ Use case ends.
 +
 Use case resumes at step 2.
 Use case ends.
+
+[discrete]
+=== Use case: Set avatar
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarentees:* Avatar will be added to specified contact at index.
+
+*MSS*
+
+1. User request to list contacts.
+2. AddressBook shows a list of contacts.
+3. User sets an avatar for the contact at index chosen.
+4. AddressBook updates the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+[none]
+* 3b. The argument provided is `""`
++
+[none]
+** 3b1. Avatar is set to be deleted on program exit.
++
+Use case resumes at step 4.
++
+
+[none]
+* 3c. The argument provided is invalid (either invalid URL or invalid file size)
++
+[none]
+** 3c1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
 
 [discrete]
 === Use case: History

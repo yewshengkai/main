@@ -26,6 +26,8 @@ public interface ReadOnlyPerson {
     Homepage getHomepage();
     ObjectProperty<Remark> remarkProperty();
     Remark getRemark();
+    ObjectProperty<Avatar> avatarProperty();
+    Avatar getAvatar();
     boolean isHomepageManuallySet();
 
     /**
