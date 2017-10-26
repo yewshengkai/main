@@ -129,7 +129,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 // end::edit[]
 
 // tag::find[]
-=== Locating persons by full keyword: `find`, `f` 
+=== Locating persons by full keyword: `find`, `f`
 
 Finds persons whose details contain any of the given specified keywords. *Keyword must be exact* +
 Format: `find KEYWORD [MORE_KEYWORDS]` +
@@ -433,4 +433,3 @@ e.g.`select 2`
 * *Redo* : `r`
 * *Set avatar* : `sa`
 * *Change theme* : `t`
-
