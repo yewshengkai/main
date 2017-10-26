@@ -872,8 +872,6 @@ increasing security
 [discrete]
 === Use case: Add contacts
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* Adds a contact to AddressBook.
 
 *MSS*
@@ -912,8 +910,6 @@ Use case ends.
 [discrete]
 === Use case: Clear contacts
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* Clears all entries from AddressBook.
 
 *MSS*
@@ -926,8 +922,7 @@ Use case ends.
 [discrete]
 === Use case: Delete contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified contact will be removed from the AddressBook.
 
@@ -959,8 +954,7 @@ Use case ends.
 [discrete]
 === Use case: Edit contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Existing contact will be updated.
 
@@ -1012,8 +1006,6 @@ Use case ends.
 [discrete]
 === Use case: Sort contacts
 
-*Preconditions:* User is logged in.
-
 *Guarentees:* List will be sorted in alphabetical order.
 
 *MSS*
@@ -1048,8 +1040,7 @@ Use case ends.
 [discrete]
 === Use case: Find contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified contact will be listed.
 
@@ -1081,8 +1072,7 @@ Use case ends.
 [discrete]
 === Use case: Findany contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified contact will be listed.
 
@@ -1114,8 +1104,6 @@ Use case ends.
 [discrete]
 === Use case: List contacts
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* All entries will be listed.
 
 *MSS*
@@ -1135,8 +1123,6 @@ Use case ends.
 [discrete]
 === Use case: Help
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* User guide will be displayed.
 
 *MSS*
@@ -1149,8 +1135,7 @@ Use case ends.
 [discrete]
 === Use case: Select contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified index of contact will be selected.
 
@@ -1181,8 +1166,7 @@ Use case ends.
 [discrete]
 === Use case: Give a contact Remark
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified index of contact will be selected.
 
@@ -1213,8 +1197,6 @@ Use case ends.
 [discrete]
 === Use case: History
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* List all entered commands.
 
 *MSS*
@@ -1233,8 +1215,6 @@ Use case ends.
 
 [discrete]
 === Use case: Undo
-
-*Preconditions:* User is logged in.
 
 *Guarantees:* Restores AddressBook to the previous state.
 
@@ -1284,8 +1264,6 @@ Use case ends.
 
 [discrete]
 === Use case: Redo
-
-*Preconditions:* User is logged in.
 
 *Guarantees:* Reverse the most recent undo command.
 
