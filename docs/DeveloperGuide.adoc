@@ -711,8 +711,8 @@ public static void setRegion(Region region) {
 [source,java]
 ----
 public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
-...
-ThemeCommand.setRegion(getRoot());
+    ...
+    ThemeCommand.setRegion(getRoot());
 }
 ----
 
@@ -720,13 +720,13 @@ ThemeCommand.setRegion(getRoot());
 [source,java]
 ----
 public BrowserPanel() {
-...
-browser.setOpacity(0);
+    ...
+    browser.setOpacity(0);
 }
 
 private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
-...
-browser.setOpacity(100);
+    ...
+    browser.setOpacity(100);
 }
 ----
 
