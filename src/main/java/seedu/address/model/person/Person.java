@@ -27,6 +27,7 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Address> address;
     private ObjectProperty<Homepage> homepage;
     private ObjectProperty<Remark> remark;
+    private ObjectProperty<Avatar> avatar;
 
     private boolean isHomepageManuallySet;
 
@@ -35,16 +36,17 @@ public class Person implements ReadOnlyPerson {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Remark remark, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Remark remark, Avatar avatar, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = new SimpleObjectProperty<>(name);
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
         this.remark = new SimpleObjectProperty<>(remark);
-        this.isHomepageManuallySet = false;
+        this.avatar = new SimpleObjectProperty<>(avatar);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        this.isHomepageManuallySet = false;
         try {
             this.homepage = new SimpleObjectProperty<>(new Homepage(
                     GOOGLE_SEARCH_URL_PREFIX + name.fullName.replaceAll(" ", "+")
@@ -57,17 +59,18 @@ public class Person implements ReadOnlyPerson {
     /**
      * Overloaded constructor for the setting of homepage
      */
-    public Person(Name name, Phone phone, Email email, Address address, Remark remark,
+    public Person(Name name, Phone phone, Email email, Address address, Remark remark, Avatar avatar,
                   Set<Tag> tags, Homepage homepage) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = new SimpleObjectProperty<>(name);
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
-        this.isHomepageManuallySet = true;
         this.remark = new SimpleObjectProperty<>(remark);
+        this.avatar = new SimpleObjectProperty<>(avatar);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+        this.isHomepageManuallySet = true;
         this.homepage = new SimpleObjectProperty<>(homepage);
     }
 
@@ -76,7 +79,7 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getRemark(),
-                source.getTags());
+                source.getAvatar(), source.getTags());
     }
 
     /**
@@ -85,7 +88,7 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(ReadOnlyPerson source, Homepage homepage) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getRemark(),
-                source.getTags(), homepage);
+                source.getAvatar(), source.getTags(), homepage);
     }
 
     public void setName(Name name) {
@@ -175,6 +178,22 @@ public class Person implements ReadOnlyPerson {
     public Remark getRemark() {
         return remark.get();
     }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar.set(requireNonNull(avatar));
+    }
+
+    @Override
+    public ObjectProperty<Avatar> avatarProperty() {
+        return avatar;
+    }
+
+    @Override
+    public Avatar getAvatar() {
+        return avatar.get();
+    }
+
+
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

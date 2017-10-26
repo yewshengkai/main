@@ -15,8 +15,8 @@ public class RemarkTest {
         assertTrue(remark.equals(remark));
 
         // same values -> returns true
-        Remark RemarkCopy = new Remark(remark.value);
-        assertTrue(remark.equals(RemarkCopy));
+        Remark remarkCopy = new Remark(remark.value);
+        assertTrue(remark.equals(remarkCopy));
 
         // different types -> returns false
         assertFalse(remark.equals(1));

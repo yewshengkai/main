@@ -5,9 +5,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_ONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_AVATAR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,13 +32,16 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.Remark;
+import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -210,6 +216,31 @@ public class AddressBookParserTest {
         ThemeCommand aliasCommand = (ThemeCommand) parser.parseCommand(
                 ThemeCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new ThemeCommand(INDEX_FIRST_PERSON), aliasCommand);
+    }
+      
+    @Test
+    public void parseCommand_setAvatar() throws Exception {
+        //setup
+        ArrayList<String> filesCreated = new ArrayList<>();
+
+        final Avatar avatar = new Avatar(VALID_AVATAR_IMAGE_URL_ONE);
+        filesCreated.add(avatar.path);
+
+        SetAvatarCommand command = (SetAvatarCommand) parser.parseCommand(SetAvatarCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_AVATAR + " " + avatar.initialUrl);
+        filesCreated.add(command.getAvatar().path);
+
+        SetAvatarCommand aliasCommand = (SetAvatarCommand) parser.parseCommand(SetAvatarCommand.COMMAND_ALIAS
+                + " " + INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_AVATAR + " " + avatar.initialUrl);
+        filesCreated.add(aliasCommand.getAvatar().path);
+
+        assertEquals(new SetAvatarCommand(INDEX_FIRST_PERSON, avatar), command);
+        assertEquals(new SetAvatarCommand(INDEX_FIRST_PERSON, avatar), aliasCommand);
+
+        // cleanup
+        for (String path : filesCreated) {
+            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+        }
     }
 
     @Test
