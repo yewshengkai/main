@@ -586,10 +586,10 @@ private void initImage(ReadOnlyPerson person) {
 // tag::find[]
 === Find mechanism
 
-The find mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenizes +
+The find mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenize +
 arguments string and returns an `ArgumentMultimap` object that maps prefixes to their respective argument values whereby +
 only the given prefixes (e.g. p/, e/) will be recognized in the arguments string. After which, `FindCommandParser` +
-utilizes `arePrefixesPresent` method to retrieve the string in which utilizes `ParserUtil` to check the validity of string +
+utilizes `arePrefixesPresent` method to retrieve the string which utilizes `ParserUtil` to check the validity of string +
 expression.
 
 Finally, `PersonContainsKeyWordsPredicate` will retrieve any matching string by the given command and prefixes residing in +
@@ -599,7 +599,7 @@ The find mechanism support both `find` and `findany` command in which enables th
 and lists their details (e.g. find john mary brook).
 
 [NOTE]
-By default if no prefixes are present, find command will search for the name of `Person` in the address book.
+If no prefixes are present, `find` command will search for the name of `Person` in the address book by default.
 (e.g find [NAME]).
 
 [NOTE]
@@ -651,8 +651,8 @@ image::FindCommand.png[]
 ==== Design Considerations
 *Aspect:* Implementation of FindCommandParser +
 *Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to store all usable prefixes. Uses +
-if-else statement to check if any prefixe are present when user execute the find operation. +
-*Pros:* If user entered invalid command, program will not crash but return an invalid command message. +
+if-else statement to check if any prefixes are present when user execute the find operation. +
+*Pros:* If user entered invalid command, the application will not crash but will instead return an invalid command message. +
 *Cons:* New developers will have to take note to include new prefixes in ArgumentMultimap when adding new prefixes. +
 Program will have to loop through if-else statement before determine which to execute. +
 *Alternative 2:* Create multiple find command (e.g. findaddress, findphone) with different prefixes. +
@@ -694,7 +694,6 @@ try {
 `ThemeCommand` code snippet to determine the existence of CSS file and clear the current layout before using the new CSS file:
 [source,java]
 ----
-====ThemeCommand====
 public void setTheme(String args) throws CommandException {
     if (MainApp.class.getResource("/view/" + args + ".css") == null) {
         throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
@@ -706,14 +705,18 @@ public void setTheme(String args) throws CommandException {
 public static void setRegion(Region region) {
     ThemeCommand.region = region;
 }
+----
 
-====MainWindow====
+`MainWindow` code snippet to give/set ThemeCommand `Region`:
+[source,java]
 public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
 ...
 ThemeCommand.setRegion(getRoot());
 }
+----
 
-====BrowserPanel====
+`BrowserPanel` code snippet to change the opacity of `WebView`:
+[source,java]
 public BrowserPanel() {
 ...
 browser.setOpacity(0);
