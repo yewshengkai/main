@@ -491,6 +491,87 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: `config.json`).
 
+// tag::sethomepage[]
+=== Setting of homepage for a `Person`
+
+The mechanism to set a homepage for a specified `Person` relies on `AddCommand` and `EditCommand`. +
+It supports both the setting and resetting of a homepage. Resetting a homepage returns the homepage to the
+default homepage of a Google search of the Person's full name. +
+[NOTE]
+Care is also given to make sure the homepage is changed when the name is edited if the current homepage is the default
+homepage (i.e. not manually set).
+
+[NOTE]
+If the homepage has been set before, it will not change until it is reset by `h/` or a new homepage is manually set.
+
+
+`AddCommand` and `EditCommand` both checks for the `h/` parameter that indicates whether the current homepage is to
+be modified. +
+If `h/` is parsed to be empty (`""` by `AddCommandParser` or `EditCommandParser`, a `Person` constructor is used to create
+the person with the default homepage. +
+If `h/` is a non-empty valid URL (determined by `Homepage.isValidHomepage`, a different `Person` constructor is invoked
+to create a person with the set homepage. +
+`AddCommandParser` code snippet to determine if user's `AddCommand` contains `h/` parameter:
+[source,java]
+----
+if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
+    Homepage homepage = ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).get();
+    person = new Person(name, phone, email, address, tagList, homepage);
+} else {
+    person = new Person(name, phone, email, address, tagList);
+}
+----
+
+`EditCommand` will create an `EditPersonDescriptor` with the arguments entered, and pass the resulting
+`EditPersonDescriptor` into a method to create the updated `Person`. +
+`EditCommand.createEditedPerson` code snippet to check if homepage has been manually set before:
+[source,java]
+----
+private static Person createEditedPerson(ReadOnlyPerson personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    Homepage originalHomepage = personToEdit.getHomepage();
+
+    Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
+
+    // ... other logic...
+
+    if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+    }
+    if (personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedHomepage);
+    } else {
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+    }
+}
+----
+
+==== Design Considerations
+*Aspect:* Implementation of homepage changing when name of contact is changed +
+*Alternative 1 (Current choice):* Change homepage to a Google search of the name name when name is changed if homepage
+has not been manually set prior +
+*Pros:* Consistent behaviour - if name changes but the default homepage was still referring to the old name, user
+will be confused. +
+*Cons:* New developers will have to take note of the extra `Homepage` check when enhancing or refactoring `AddCommand` or
+`EditCommand` +
+*Alternative 2:* `Homepage` will not be changed after creation. +
+*Pros:* Less complexity in the code, easier for new developers to handle. +
+*Cons:* Results in a less user friendly application.
+// end::sethomepage[]
+
+// tag::sort[]
+=== Sort mechanism
+The sort mechanism is facilitated by the `SortCommand`, which is an `UndoableCommand`. +
+`SortCommandParser` checks for the OPTIONAL `a` or `d` parameters, and calls the relevant `SortCommand`
+to sort the `internalList` backing the address book.
+
+The `internalList` is sorted using the full name of the contact using Java's `sort`. +
+The following sequence diagrams shows how the sort mechanism works:
+
+image::SortCommandParserSequenceDiagram.png[]
+image::SortSequenceDiagram.png[]
+
+// end::sort[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
@@ -918,8 +999,6 @@ increasing security
 [discrete]
 === Use case: Add contacts
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* Adds a contact to AddressBook.
 
 *MSS*
@@ -958,8 +1037,6 @@ Use case ends.
 [discrete]
 === Use case: Clear contacts
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* Clears all entries from AddressBook.
 
 *MSS*
@@ -972,8 +1049,7 @@ Use case ends.
 [discrete]
 === Use case: Delete contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified contact will be removed from the AddressBook.
 
@@ -1005,8 +1081,7 @@ Use case ends.
 [discrete]
 === Use case: Edit contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Existing contact will be updated.
 
@@ -1058,8 +1133,6 @@ Use case ends.
 [discrete]
 === Use case: Sort contacts
 
-*Preconditions:* User is logged in.
-
 *Guarentees:* List will be sorted in alphabetical order.
 
 *MSS*
@@ -1094,8 +1167,7 @@ Use case ends.
 [discrete]
 === Use case: Find contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified contact will be listed.
 
@@ -1127,8 +1199,7 @@ Use case ends.
 [discrete]
 === Use case: Findany contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified contact will be listed.
 
@@ -1160,8 +1231,6 @@ Use case ends.
 [discrete]
 === Use case: List contacts
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* All entries will be listed.
 
 *MSS*
@@ -1181,8 +1250,6 @@ Use case ends.
 [discrete]
 === Use case: Help
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* User guide will be displayed.
 
 *MSS*
@@ -1195,8 +1262,7 @@ Use case ends.
 [discrete]
 === Use case: Select contacts
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified index of contact will be selected.
 
@@ -1227,8 +1293,7 @@ Use case ends.
 [discrete]
 === Use case: Give a contact Remark
 
-*Preconditions:* User is logged in.
-                 AddressBook is not empty.
+*Preconditions:* AddressBook is not empty.
 
 *Guarantees:* Specified index of contact will be selected.
 
@@ -1259,8 +1324,6 @@ Use case ends.
 [discrete]
 === Use case: History
 
-*Preconditions:* User is logged in.
-
 *Guarantees:* List all entered commands.
 
 *MSS*
@@ -1279,8 +1342,6 @@ Use case ends.
 
 [discrete]
 === Use case: Undo
-
-*Preconditions:* User is logged in.
 
 *Guarantees:* Restores AddressBook to the previous state.
 
@@ -1330,8 +1391,6 @@ Use case ends.
 
 [discrete]
 === Use case: Redo
-
-*Preconditions:* User is logged in.
 
 *Guarantees:* Reverse the most recent undo command.
 
