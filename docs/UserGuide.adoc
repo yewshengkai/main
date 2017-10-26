@@ -128,7 +128,8 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 
 // end::edit[]
 
-=== Locating persons by full keyword: `find`, `f`
+// tag::find[]
+=== Locating persons by full keyword: `find`, `f` 
 
 Finds persons whose details contain any of the given specified keywords. *Keyword must be exact* +
 Format: `find KEYWORD [MORE_KEYWORDS]` +
@@ -191,6 +192,7 @@ Find by `Phone`:
 Returns `9123456`, `91234888`
 * `fa p/123 777 888` +
 Returns any person having phone `9123456`, `8123456`, `8777666`, or `9888555`
+// end::find[]
 
 
 === Deleting a person : `delete`, `d`
