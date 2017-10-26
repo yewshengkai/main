@@ -663,7 +663,7 @@ New developers will not miss out certain prefixes to add in unlike Alternative 1
 // end::find[]
 
 // tag::theme[]
-=== Theme selector mechanism
+=== Theme mechanism
 
 The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate +
 through `ParserUtil` and calls the relevant `ThemeCommand` to switch the application `theme`.
