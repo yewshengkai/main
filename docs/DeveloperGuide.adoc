@@ -709,6 +709,7 @@ public static void setRegion(Region region) {
 
 `MainWindow` code snippet to give/set ThemeCommand `Region`:
 [source,java]
+----
 public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
 ...
 ThemeCommand.setRegion(getRoot());
@@ -717,6 +718,7 @@ ThemeCommand.setRegion(getRoot());
 
 `BrowserPanel` code snippet to change the opacity of `WebView`:
 [source,java]
+----
 public BrowserPanel() {
 ...
 browser.setOpacity(0);
