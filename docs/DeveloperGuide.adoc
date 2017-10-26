@@ -1308,7 +1308,7 @@ Use case ends.
 
 *Preconditions:* AddressBook is not empty.
 
-*Guarantees:* Specified index of contact will be selected.
+*Guarantees:* Remark will be added to specified contact at index.
 
 *MSS*
 
@@ -1333,6 +1333,58 @@ Use case ends.
 +
 Use case resumes at step 2.
 Use case ends.
+
+[discrete]
+=== Use case: Set avatar
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarentees:* Avatar will be added to specified contact at index.
+
+*MSS*
+
+1. User request to list contacts.
+2. AddressBook shows a list of contacts.
+3. User sets an avatar for the contact at index chosen.
+4. AddressBook updates the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+[none]
+* 3b. The argument provided is `""`
++
+[none]
+** 3b1. Avatar is set to be deleted on program exit.
++
+Use case resumes at step 4.
++
+
+[none]
+* 3c. The argument provided is invalid (either invalid URL or invalid file size)
++
+[none]
+** 3c1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
 
 [discrete]
 === Use case: History
