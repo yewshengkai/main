@@ -23,14 +23,12 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    private static boolean isCaseIgnored = false;
-
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
      * and returns an FindCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public FindCommand parse(String args) throws ParseException {
+    public FindCommand parse(String args, boolean isCaseIgnored) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG,
                         PREFIX_HOMEPAGE);
@@ -78,8 +76,15 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
     }
 
-    public boolean setCaseIgnored(boolean isValid) {
-        return isCaseIgnored = isValid;
+    /**
+     * For test case
+     * Parses the given {@code String} of arguments in the context of the FindCommand
+     * and returns an FindCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    @Override
+    public FindCommand parse(String userInput) throws ParseException {
+        return FindCommandParser.this.parse(userInput, true);
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
