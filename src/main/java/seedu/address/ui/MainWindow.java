@@ -88,7 +88,7 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
-        ThemeCommand newThemeRoot = new ThemeCommand(getRoot());
+        ThemeCommand.setRegion(getRoot());
 
         setAccelerators();
         registerAsAnEventHandler(this);

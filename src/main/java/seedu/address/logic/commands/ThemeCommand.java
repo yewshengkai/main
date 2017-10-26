@@ -29,16 +29,10 @@ public class ThemeCommand extends Command {
 
     public static final String MESSAGE_THEME_SUCCESS = "Theme updated: %1$s";
 
-    private static Region region = null;
-    private static Index targetIndex = null;
-
-
+    private static Region region;
+    private final Index targetIndex;
     public ThemeCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
-    }
-
-    public ThemeCommand(Region region) {
-        this.region = region;
     }
 
     @Override
@@ -84,5 +78,9 @@ public class ThemeCommand extends Command {
         region.getStylesheets().clear();
         region.getStylesheets().add("/view/" + args + ".css");
 
+    }
+
+    public static void setRegion(Region region) {
+        ThemeCommand.region = region;
     }
 }
