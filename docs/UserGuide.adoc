@@ -307,6 +307,26 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 // end::undoredo[]
 
+=== Selecting a theme : `theme`
+
+Selects the theme identified by the index number. +
+Format: `theme INDEX`
+
+****
+* Select and load the theme at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* `1, 2, 3, ...`
+****
+
+Examples:
+
+* `theme` +
+`theme 1` +
+Select and load the first theme in the results of the `themelist` command.
+* `t` +
+`theme 2` +
+Select and load the second theme in the results of the `tlist` command.
+
 === Clearing all entries : `clear`
 
 Clears all entries from the address book. +
