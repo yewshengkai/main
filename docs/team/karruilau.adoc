@@ -70,6 +70,32 @@ include::../DeveloperGuide.adoc[tag=sort]
 #End of Extract#
 ---
 
+=== Enhancement Added: Set avatar
+
+==== External behavior
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=avatar]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+Setting an avatar is a natural extension of an address book application
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=avatar]
+
+#End of Extract#
+---
+
 === Other contributions
 
 {To be included in the future}
