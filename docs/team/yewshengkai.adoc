@@ -4,20 +4,21 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :stylesDir: ../stylesheets
 
 == Project: iungo
-iungo is a desktop address book application used for learning Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 6 kLoC.
+iungo is a desktop address book application used for learning Software Engineering principles. The user interacts with
+it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 6 kLoC.
 
 *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] {give links to collated code files}
 
-=== Enhancement Added: Enhanced Find feature, remark, tags color, GUI
+=== Enhancement Added: Find/Findany feature with prefixes
 
 ==== External behavior
 
 ---
 #Start of Extract [from: User Guide]#
 
-include::../UserGuide.adoc[tag=edit]
+include::../UserGuide.adoc[tag=find]
 
-include::../UserGuide.adoc[tag=add]
+include::../UserGuide.adoc[tag=find]
 
 #End of Extract#
 
@@ -25,23 +26,29 @@ include::../UserGuide.adoc[tag=add]
 
 ==== Justification
 
-{Justify the need for, and the current design (i.e. external behavior) of, the feature}
+Previous behaviour of find operation did not allow the user to search for other details except for their name.
+
+This implementation now enhances the usability of the application by allowing the user to utilizes different prefixes to search
+for single/multiple contact details or a portion of details.
 
 ==== Implementation
 
 ---
 #Start of Extract [from: Developer Guide]#
 
+include::../DeveloperGuide.adoc[tag=find]
 
 #End of Extract#
 
 ---
 
-=== Enhancement Added: Find by prefixes
+=== Enhancement Added: Theme
 
 ==== External behavior
 ---
 #Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=theme]
 
 #End of Extract#
 
@@ -49,17 +56,23 @@ include::../UserGuide.adoc[tag=add]
 
 ==== Justification
 
-{Justify the need for, and the current design (i.e. external behavior) of, the feature}
+Previously, the application only support one theme which makes the address book looks dull and may not be suitable to be viewed by
+user under certain circumstances (e.g. At certain time or day, user might opt for brighter look and feel on the address book)
 
 ==== Implementation
 
 ---
 #Start of Extract [from: Developer Guide]#
 
-#End of Extract#
+include::../DeveloperGuide.adoc[tag=theme]
 
+#End of Extract#
 ---
 
 === Other contributions
+
+* Updated the GUI layout and color scheme, logo (Pull requests https://github.com[#7], https://github.com[#15], https://github.com[#10], https://github.com[#33])
+* Wrote default functionality for developer guide 'Use case' (textual form) (Pull requests https://github.com[#10])
+* Wrote additional tests to increase coverage (Pull requests all)
 
 {To be included in the future}
