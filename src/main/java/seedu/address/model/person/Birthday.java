@@ -7,8 +7,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
-            "Birthday should only contain numbers, separated by '/'";
-    public static final String BIRTHDAY_VALIDATION_REGEX = "[\\d\\.]+/[\\d\\.]+/[\\d\\.]+";
+            "Birthday should be DD/MM/YYYY, only contain numbers, separated by '/'";
+    public static final String BIRTHDAY_VALIDATION_REGEX = "\\d{1,2}/\\d{1,2}/\\d{4}";
 
     public final String value;
 
