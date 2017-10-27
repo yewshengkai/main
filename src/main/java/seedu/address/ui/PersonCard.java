@@ -1,8 +1,15 @@
 package seedu.address.ui;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Random;
+
 import javafx.beans.binding.Bindings;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -14,6 +21,9 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
+    private static String[] colors = { "red", "yellow", "blue", "orange", "brown", "green", "pink", "black", "grey" };
+    private static HashMap<String, String> tagColors = new HashMap<String, String>();
+    private static Random random = new Random();
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -39,6 +49,12 @@ public class PersonCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label homepage;
+    @FXML
+    private Label remark;
+    @FXML
+    private ImageView avatar;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
@@ -46,6 +62,14 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         initTags(person);
         bindListeners(person);
+    }
+
+    private static String getColorForTag(String tagValue) {
+        if (!tagColors.containsKey(tagValue)) {
+            tagColors.put(tagValue, colors[random.nextInt(colors.length)]);
+        }
+
+        return tagColors.get(tagValue);
     }
 
     /**
@@ -57,14 +81,42 @@ public class PersonCard extends UiPart<Region> {
         phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
         address.textProperty().bind(Bindings.convert(person.addressProperty()));
         email.textProperty().bind(Bindings.convert(person.emailProperty()));
+        remark.textProperty().bind(Bindings.convert(person.remarkProperty()));
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
             tags.getChildren().clear();
-            person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+            initTags(person);
         });
+        homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
+
+        initImage(person);
     }
 
+    /**
+     * Binds the correct image to the person.
+     * If url is "", default display picture will be assigned, else image from URL will be assigned
+     */
+    private void initImage(ReadOnlyPerson person) {
+        String path = person.getAvatar().toString();
+        Image image;
+        if (!"".equals(path)) {   // not default image
+            File file = new File(path);
+            image = new Image(file.toURI().toString());
+            avatar.setImage(image);
+            avatar.setFitHeight(90);
+            avatar.setPreserveRatio(true);
+            avatar.setCache(true);
+        }
+    }
+
+    /**
+     * Tags coloring
+     */
     private void initTags(ReadOnlyPerson person) {
-        person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        person.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
+            tags.getChildren().add(tagLabel);
+        });
     }
 
     @Override

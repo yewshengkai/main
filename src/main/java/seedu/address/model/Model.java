@@ -45,4 +45,9 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate);
 
+    /**
+     * Sorts the current person list in model.
+     */
+    void sortContactList(boolean isDescendingSort);
+
 }

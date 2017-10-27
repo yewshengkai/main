@@ -36,14 +36,14 @@ public class BrowserPanel extends UiPart<Region> {
 
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
+        browser.setOpacity(0);
 
         loadDefaultPage();
         registerAsAnEventHandler(this);
     }
 
     private void loadPersonPage(ReadOnlyPerson person) {
-        loadPage(GOOGLE_SEARCH_URL_PREFIX + person.getName().fullName.replaceAll(" ", "+")
-                + GOOGLE_SEARCH_URL_SUFFIX);
+        loadPage(person.getHomepage().toString());
     }
 
     public void loadPage(String url) {
@@ -69,5 +69,6 @@ public class BrowserPanel extends UiPart<Region> {
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadPersonPage(event.getNewSelection().person);
+        browser.setOpacity(100);
     }
 }
