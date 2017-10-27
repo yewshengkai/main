@@ -18,7 +18,7 @@ public class BirthdayTest {
         assertFalse(Birthday.isValidBirthday("12/Jan/1212")); // alphabets within fields
         assertFalse(Birthday.isValidBirthday("12/1 2/1212")); // spaces within birthday
 
-        // valid phone numbers
+        // valid birthdays
         assertTrue(Birthday.isValidBirthday("01/01/0101")); // exactly 2,2,4 numbers
         assertTrue(Birthday.isValidBirthday("01/1/0101")); // day and month fields can be 1 to 2 numbers long
         assertTrue(Birthday.isValidBirthday("1/1/1111"));
