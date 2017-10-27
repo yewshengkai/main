@@ -42,6 +42,7 @@ public class PersonCardTest extends GuiUnitTest {
         assertCardDisplay(personCard, personWithTags, 2);
     }
 
+    //@@author karrui
     @Test
     public void avatarCheck() {
         Person personWithNoAvatar = new PersonBuilder().withAvatar("").build();
@@ -55,6 +56,7 @@ public class PersonCardTest extends GuiUnitTest {
         assertCardDisplay(personCard, personWithAvatar, 1);
     }
 
+    //@@author
     @Test
     public void equals() {
         Person person = new PersonBuilder().build();
