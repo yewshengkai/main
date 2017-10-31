@@ -22,7 +22,6 @@ public class FindHistory {
      */
     public void add(ReadOnlyPerson person) {
         requireNonNull(person);
-        userFindHistory.remove(person); // ensures person is put in correct order
         userFindHistory.add(person);
     }
 
@@ -30,6 +29,10 @@ public class FindHistory {
         if (userFindHistory.contains(person)) {
             userFindHistory.set(userFindHistory.indexOf(person), newPerson);
         }
+    }
+
+    public void resetData(LinkedList<ReadOnlyPerson> newData) {
+        this.userFindHistory = newData;
     }
 
     /**
