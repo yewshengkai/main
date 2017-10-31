@@ -88,7 +88,7 @@ public class MainApp extends Application {
      * and {@code avatarStorage}. <br>
      * The data from the sample address book will be used instead if {@code storage}'s address book is not found,
      * or an empty address book will be used instead if errors occur when reading {@code storage}'s address book.
-     * A new directory for the storage of avatars will be created if {@avatarStorage}'s directory does not exist.
+     * A new directory for the storage of avatars will be created if {@code avatarStorage}'s directory does not exist.
      */
     private Model initModelManager(Storage storage, UserPrefs userPrefs, AvatarStorage avatarStorage) {
         Optional<ReadOnlyAddressBook> addressBookOptional;
