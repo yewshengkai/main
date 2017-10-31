@@ -18,17 +18,27 @@ public class FindHistory {
     }
 
     /**
-     * Appends {@code personName} to the list of persons user found with FindCommand.
+     * Adds {@code person} to the list of persons user found with FindCommand.
      */
     public void add(ReadOnlyPerson person) {
         requireNonNull(person);
         userFindHistory.add(person);
     }
 
+    /**
+     * Changes {@code person} to {@code newPerson}
+     */
     public void set(ReadOnlyPerson person, ReadOnlyPerson newPerson) {
         if (userFindHistory.contains(person)) {
             userFindHistory.set(userFindHistory.indexOf(person), newPerson);
         }
+    }
+
+    /**
+     * Removes {@code person} from userFindHistory
+     */
+    public void deletePerson(ReadOnlyPerson person) {
+        userFindHistory.remove(person);
     }
 
     public void resetData(LinkedList<ReadOnlyPerson> newData) {
