@@ -1,15 +1,21 @@
 package seedu.address.testutil;
 
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_PREFIX;
+import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_SUFFIX;
+
 import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -24,6 +30,8 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_BIRTHDAY = "1/2/1234";
     public static final String DEFAULT_TAGS = "friends";
+    public static final String DEFAULT_REMARK = "";
+    private static final String DEFAULT_AVATAR = "";
 
     private Person person;
 
@@ -34,9 +42,11 @@ public class PersonBuilder {
             Email defaultEmail = new Email(DEFAULT_EMAIL);
             Address defaultAddress = new Address(DEFAULT_ADDRESS);
             Birthday defaultBirthday = new Birthday(DEFAULT_BIRTHDAY);
+            Remark defaultRemark = new Remark(DEFAULT_REMARK);
+            Avatar defaultAvatar = new Avatar(DEFAULT_AVATAR);
             Set<Tag> defaultTags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
             this.person = new Person(defaultName, defaultPhone, defaultEmail,
-                    defaultAddress, defaultBirthday, defaultTags);
+                    defaultAddress, defaultBirthday, defaultRemark, defaultAvatar, defaultTags);
         } catch (IllegalValueException ive) {
             throw new AssertionError("Default person's values are invalid.");
         }
@@ -55,6 +65,9 @@ public class PersonBuilder {
     public PersonBuilder withName(String name) {
         try {
             this.person.setName(new Name(name));
+            this.person.setHomepage(new Homepage(
+                    GOOGLE_SEARCH_URL_PREFIX + name.replaceAll(" ", "+")
+                            + GOOGLE_SEARCH_URL_SUFFIX));
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("name is expected to be unique.");
         }
@@ -109,7 +122,7 @@ public class PersonBuilder {
         return this;
     }
 
-    /**
+     /**
      * Sets the {@code Birthday} of the {@code Person} that we are building.
      */
     public PersonBuilder withBirthday(String birthday) {
@@ -117,6 +130,38 @@ public class PersonBuilder {
             this.person.setBirthday(new Birthday(birthday));
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("birthday is expected to be unique.");
+        }
+        return this;
+    }
+
+     /**
+     * Sets the {@code Homepage} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withHomepage(String homepage) {
+        try {
+            this.person.setHomepage(new Homepage(homepage));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("homepage is expected to be unique.");
+        }
+        return this;
+    }
+
+    /**
+     * Sets the {@code Remark} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRemark(String remark) {
+        this.person.setRemark(new Remark(remark));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Avatar} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withAvatar(String avatarPath) {
+        try {
+            this.person.setAvatar(new Avatar(avatarPath));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("avatar is expected to be unique");
         }
         return this;
     }

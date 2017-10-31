@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= iungo - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -10,9 +10,9 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103AUG2017-F11-B3/iungo/tree/master
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Team F11-B3`      Since: `Oct 2017`      Licence: `MIT`
 
 == Setting up
 
@@ -363,6 +363,379 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 === Configuration
 
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: `config.json`).
+
+// tag::sethomepage[]
+=== Setting of homepage for a `Person`
+
+The mechanism to set a homepage for a specified `Person` relies on `AddCommand` and `EditCommand`. +
+It supports both the setting and resetting of a homepage. Resetting a homepage returns the homepage to the
+default homepage of a Google search of the Person's full name. +
+[NOTE]
+Care is also given to make sure the homepage is changed when the name is edited if the current homepage is the default
+homepage (i.e. not manually set).
+
+[NOTE]
+If the homepage has been set before, it will not change until it is reset by `h/` or a new homepage is manually set.
+
+
+`AddCommand` and `EditCommand` both checks for the `h/` parameter that indicates whether the current homepage is to
+be modified. +
+If `h/` is parsed to be empty (`""` by `AddCommandParser` or `EditCommandParser`, a `Person` constructor is used to create
+the person with the default homepage. +
+If `h/` is a non-empty valid URL (determined by `Homepage.isValidHomepage`, a different `Person` constructor is invoked
+to create a person with the set homepage. +
+`AddCommandParser` code snippet to determine if user's `AddCommand` contains `h/` parameter:
+[source,java]
+----
+if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
+    Homepage homepage = ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).get();
+    person = new Person(name, phone, email, address, tagList, homepage);
+} else {
+    person = new Person(name, phone, email, address, tagList);
+}
+----
+
+`EditCommand` will create an `EditPersonDescriptor` with the arguments entered, and pass the resulting
+`EditPersonDescriptor` into a method to create the updated `Person`. +
+`EditCommand.createEditedPerson` code snippet to check if homepage has been manually set before:
+[source,java]
+----
+private static Person createEditedPerson(ReadOnlyPerson personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    Homepage originalHomepage = personToEdit.getHomepage();
+
+    Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
+
+    // ... other logic...
+
+    if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+    }
+    if (personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedHomepage);
+    } else {
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+    }
+}
+----
+
+==== Design Considerations
+*Aspect:* Implementation of homepage changing when name of contact is changed +
+*Alternative 1 (Current choice):* Change homepage to a Google search of the name name when name is changed if homepage
+has not been manually set prior +
+*Pros:* Consistent behaviour - if name changes but the default homepage was still referring to the old name, user
+will be confused. +
+*Cons:* New developers will have to take note of the extra `Homepage` check when enhancing or refactoring `AddCommand` or
+`EditCommand` +
+*Alternative 2:* `Homepage` will not be changed after creation. +
+*Pros:* Less complexity in the code, easier for new developers to handle. +
+*Cons:* Results in a less user friendly application.
+// end::sethomepage[]
+
+// tag::sort[]
+=== Sort mechanism
+The sort mechanism is facilitated by the `SortCommand`, which is an `UndoableCommand`. +
+`SortCommandParser` checks for the OPTIONAL `a` or `d` parameters, and calls the relevant `SortCommand`
+to sort the `internalList` backing the address book.
+
+The `internalList` is sorted using the full name of the contact using Java's `sort`. +
+The following sequence diagrams shows how the sort mechanism works:
+
+image::SortCommandParserSequenceDiagram.png[]
+image::SortSequenceDiagram.png[]
+
+// end::sort[]
+
+// tag::avatar[]
+=== Avatar mechanism
+==== Logic and Model implementation
+The avatar mechanism is facilitated by the using `ImageView` in `JavaFX` to display the avatar in the UI. +
+The main driver to create an `Avatar` is handled by `SetAvatarCommandParser`, which is invoked after `AddressBookParser`
+parses the arguments provided by the user.
+
+The following sequence diagrams shows how the setting of avatar is achieved:
+
+image::SetAvatarCommandParserSequenceDiagram.png[]
+image::SetAvatarCommandSequenceDiagram.png[width="800"]
+
+The arguments needed are `INDEX` and `AVATAR_URL`. +
+An `Avatar` object is created using `AVATAR_URL` before being passed as a parameter into the creation of the `SetAvatarCommand`
+object.
+
+The `Avatar` class performs a series of validity checks to ensure the URL provided is valid. Validity is defined by having:
+
+1. A valid URL OR is empty
+2. The image must not be larger than 20KB (due to application slowdowns if the file is too big)
+
+
+`SetAvatarCommand` also performs a series of checks in order to decide the steps to take before editing the `Person` referenced. +
+Below is the code snippet of `SetAvatarCommand` for the various checks:
+
+[source,java]
+----
+ public CommandResult executeUndoableCommand() throws CommandException {
+     // ... irrelevent logic ...
+
+     // avatar refers to the avatar object created during the construction of SetAvatarCommand
+     if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
+            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
+         } else {
+             if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
+             }
+         }
+     }
+ }
+----
+The utility class `ProcessImageFromUrlToFileForAvatar` is used to process images retrieved from the Internet. It contains
+two methods -- `writeImageToFile(...)` and `removeImageFromStorage(...)` which stores the image into the
+`DEFAULT_AVATAR_FILE_LOCATION` and removes the image respectively. +
+Below is the code snippet of the write method:
+
+[source,java]
+----
+void writeImageToFile(String path) {
+    // ... irrelevant ...
+
+    // Using hashCode() + checking if file exists assures uniqueness of name of created file
+    File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
+    while (file.exists()) {
+        file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
+    }
+    ImageIO.write(image, "jpg", file);
+    return file.getPath().replace('\\', '/');
+}
+----
+
+As `SetAvatarCommand` is an `UndoableCommand`, `removeImageFromStorage(...)` only deletes the image when the application exits,
+in order to allow the user to undo the command. +
+Below is the code snipper of the remove method:
+
+[source,java]
+----
+void removeImageFromStorage(String path) {
+    File file = new File(path);
+    file.deleteOnExit();    // so as to allow undoable command
+}
+----
+
+==== Storage implementation
+`AvatarStorage` is called during `Model` initialization to check for the existence of an `avatar` folder.
+If the folder does not exist, the folder will be created to store the avatar images. +
+Below is the code snippet for the relevant code flow:
+
+[source, java]
+----
+private Model initModelManager(Storage storage, UserPrefs userPrefs, AvatarStorage avatarStorage) {
+    // ... other logic ...
+
+    avatarDirectoryPath = userPrefs.getAvatarFileDirectoryPath();
+    if (!new File(avatarDirectoryPath).exists()) {
+        logger.info("Directory not found. Will be attempting to create new directory");
+        avatarStorage.createDirectory(avatarDirectoryPath);
+    }
+    // ... other logic ...
+}
+----
+
+==== Ui implementation
+The `PersonCard` is updated via the `bindListeners()`. The loose sequence diagram is displayed below:
+
+image::SetAvatarUISequenceDiagram.png[]
+
+Below is a more in-depth look at `initImage()`:
+
+[source, java]
+----
+/**
+ * Binds the correct image to the person.
+ * If url is "", default display picture will be assigned, else image from URL will be assigned
+ */
+private void initImage(ReadOnlyPerson person) {
+    String path = person.getAvatar().toString();
+    Image image;
+    if (!"".equals(path)) {   // not default image
+        File file = new File(path);
+        image = new Image(file.toURI().toString());
+        avatar.setImage(image);
+        avatar.setFitHeight(90);
+        avatar.setPreserveRatio(true);
+        avatar.setCache(true);
+    }
+}
+----
+==== Design Considerations
+*Aspect:* Saving of image from URL to local disk +
+*Alternative 1 (Current choice):* File is saved during construction of `Avatar` in `SetAvatarCommand`, before the Avatar is set to a `Person` +
+*Pros:* Filepath (not URL) of avatar class will be ascertained during binding to `editedPerson` +
+*Cons:* New developers might find it hard to follow the sequence +
+*Alternative 2:* Only save file after `Avatar` has been assigned to `Person`, assign URL as path when assigning before file is saved. +
+*Pros:* Easier for developers to follow the sequence flow +
+*Cons:* Possibility of program crashing (`NullPointerException`) if URL is added and Internet connection is disrupted before file creation is invoked. +
+
+---
+*Aspect:* Image source +
+*Alternative 1 (Current choice):* Only accept image URL from the Internet +
+*Pros:* Easy for user to input source; Check guarantees validity of image from "HEAD" request +
+*Cons:* Requires internet connection. +
+*Alternative 2:* Accept images from user's local disk in addition from the Internet +
+*Pros:* Natural extension of a function to set avatar. +
+*Cons:* Difficult for user to input source; difficulty in writing code to ascertain if file entered is entered.
+
+// end::avatar[]
+
+// tag::find[]
+=== Find mechanism
+
+The find mechanism is facilitated by the `FindCommand`. `FindCommandParser` utilizes `ArgumentTokenizer` to tokenize arguments string and returns an `ArgumentMultimap` object that maps prefixes to their respective argument values whereby only the given prefixes (e.g. p/, e/) will be recognized in the arguments string. After which, `FindCommandParser` utilizes `arePrefixesPresent` method to retrieve the string which utilizes `ParserUtil` to check the validity of string expression.
+
+Finally, `PersonContainsKeyWordsPredicate` will retrieve any matching string by the given command and prefixes residing in the address book in which `FindCommand` will execute and return the results base on the matched string.
+
+The find mechanism support both `find` and `findany` command in which enables the search of single/multiple `Person` at once and lists their details (e.g. find john mary brook).
+
+[NOTE]
+If no prefixes are present, `find` command will search for the name of `Person` in the address book by default.
+(e.g find [NAME]).
+
+[NOTE]
+`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` whose contains ohn. Result: John, Fohnny, Johnny).
+
+`FindCommandParser` code snippet to determine if user's input contains any parameter:
+[source,java]
+----
+if (arePrefixesPresent(argMultimap, PREFIX_ADDRESS)) {
+    ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_ADDRESS),
+            FindCommand.COMMAND_WORD_ADDRESS);
+    return new FindCommand(new PersonContainsKeywordsPredicate(
+            FindCommand.COMMAND_WORD_ADDRESS, keywordsList, isCaseIgnored));
+} else if (arePrefixesPresent(argMultimap, PREFIX_EMAIL)) {
+    ArrayList<String> keywordsList = ParserUtil.parseAllDetail(argMultimap.getAllValues(PREFIX_EMAIL),
+            FindCommand.COMMAND_WORD_EMAIL);
+    return new FindCommand(new PersonContainsKeywordsPredicate(
+            FindCommand.COMMAND_WORD_EMAIL, keywordsList, isCaseIgnored));
+}
+...
+----
+
+`PersonContainsKeywordsPredicate` code snippet to determine if address book contains the matched string:
+[source,java]
+----
+switch (commandWord) {
+
+case FindCommand.COMMAND_WORD:
+    return keywords.stream()
+            .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                    person.getName().fullName, keyword, isCaseIgnored));
+case FindCommand.COMMAND_WORD_ADDRESS:
+    return keywords.stream()
+            .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(
+                    person.getAddress().value, keyword, isCaseIgnored));
+...
+----
+
+The following sequence diagram shows how the find (FindCommandParser) operation works:
+
+image::FindCommandParserArgumentTokenizer.png[]
+image::FindCommandParserArePrefixesPresent.png[]
+
+The following sequence diagram shows how the find (FindCommand) operation works:
+
+image::FindCommand.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of FindCommandParser +
+*Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to store all usable prefixes. Uses if-else statement to check if any prefixes are present when user execute the find operation. +
+*Pros:* If user entered invalid command, the application will not crash but will instead return an invalid command message. +
+*Cons:* New developers will have to take note to include new prefixes in ArgumentMultimap when adding new prefixes. Program will have to loop through if-else statement before determine which to execute. +
+*Alternative 2:* Create multiple find command (e.g. findaddress, findphone) with different prefixes. +
+*Pros:* Less complexity in the code and slightly quicker execution, easier for new developers to handle. New developers will not miss out certain prefixes to add in unlike Alternative 1. +
+*Cons:* Duplicated find command with similar functionality which is unnecessary.
+
+// end::find[]
+
+// tag::theme[]
+=== Theme mechanism
+
+The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate through `ParserUtil` and calls the relevant `ThemeCommand` to switch the application `theme`.
+
+When the application run, `MainWindow` will execute `ThemeCommand.setRegion` in allowing ThemeCommand to retrieve the application root.
+
+[NOTE]
+By default if no index are present, theme command will return an invalid message.
+(e.g theme "").
+
+[NOTE]
+When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
+
+`ThemeCommandParser` code snippet to determine if user's input contains any index:
+[source,java]
+----
+try {
+    Index index = ParserUtil.parseIndex(args);
+    return new ThemeCommand(index);
+} catch (IllegalValueException ive) {
+    throw new ParseException(
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, ThemeCommand.MESSAGE_USAGE));
+}
+...
+----
+
+`ThemeCommand` code snippet to determine the existence of CSS file and clear the current layout before using the new CSS file:
+[source,java]
+----
+public void setTheme(String args) throws CommandException {
+    if (MainApp.class.getResource("/view/" + args + ".css") == null) {
+        throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
+    }
+    region.getStylesheets().clear();
+    region.getStylesheets().add("/view/" + args + ".css");
+}
+
+public static void setRegion(Region region) {
+    ThemeCommand.region = region;
+}
+----
+
+`MainWindow` code snippet to give/set ThemeCommand `Region`:
+[source,java]
+----
+public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
+    ...
+    ThemeCommand.setRegion(getRoot());
+}
+----
+
+`BrowserPanel` code snippet to change the opacity of `WebView`:
+[source,java]
+----
+public BrowserPanel() {
+    ...
+    browser.setOpacity(0);
+}
+
+private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
+    ...
+    browser.setOpacity(100);
+}
+----
+
+The following sequence diagram shows how the theme (ThemeCommandParser) operation works:
+
+image::ThemeCommandParser.png[]
+
+The following sequence diagram shows how the theme (ThemeCommand) operation works:
+
+image::ThemeCommand.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of ThemeCommand +
+*Alternative 1 (Current choice):* Enable `MainWindow` at start to set/give ThemeCommand its `Region` before utilizing setTheme method to switch stylesheet. +
+*Pros:* Prevent unnecessary re-access to retrieve application `Region` or access to other `class` file. Check if file exist and clear current stylesheet before changing the new style. +
+*Cons:* There are many other ways to change the styling of application (e.g. Utilizing `ChangeThemeRequestEvent` and call methods in `MainWindow`) +
+*Alternative 2:* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to change theme. +
+*Pros:* ThemeCommand will have lesser responsibility and checks to validate. +
+*Cons:* A class should follow `Single Responsibility Principle`. Method that is not supposed to be called through `MainWindow` should be avoided.
+
+// end::theme[]
 
 == Documentation
 
@@ -723,15 +1096,62 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |user |add a new person |
+|`* * *` |user |add a new person | add a new person
 
 |`* * *` |user |delete a person |remove entries that I no longer need
 
-|`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
+|`* * *` |user |find a person details by matching exact keyword |locate person details that matches the exact given keyword without going through the entire list
+
+|`* * *` |user |find using a portion of given keyword to locate a person details |locate person details by matching any portion of the given keyword without going through the entire list
+
+|`* * *` |user |undo my commands |undo commands done in error
+
+|`* * *` |user |redo my commands |redo undone commands
+
+|`* * *` | user |be able to set the link:#homepage[homepage] for a contact | able to customize the details of the
+contact
+
+|`* * *` |user |link:#tag[tag] contacts |I can find people with the same tags easily in a listing
+
+|`* * *` |user with many persons in the address book |sort persons by name |locate a person easily
+
+|`* *` |user |add remarks to contact |store additional information about the contact
+
+|`* *` |user |add profile picture to contact |I can easily find the contact visually
+
+|`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
+
+|`* *` |user |export address book to other format | I can print out the address book and view it with better program
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`* *` |user |use shorthand aliases for commands|execute commands more conveniently
+
+|`* *` |user with many frequently used contacts |mark specific contacts as a "link:#favourite[Favourite]" |find my
+favourite contacts easily
+
+|`* *` |user |view my recently searched contacts |refer to who I searched recently
+
+|`* *` |user |add birthdays to contacts |see the birthday of my contact
+
+|`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
+
+|`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
+
+|`* *` |security conscious user |lock the application with a password |view my address book only with a password,
+increasing security
+
+|`*` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
+|locate a contact without their full names
+
+|`*` |user |see list of upcoming birthdays | I can see at a glance if there are upcoming birthdays
+
+|`*` |user |share contacts |I can share my contacts with other people
+
+|`*` |user who likes customization|change the theme of the application |customize the theme to my liking
+
+
+
 |=======================================================================
 
 {More to be added}
@@ -742,14 +1162,68 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 (For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: Add contacts
+
+*Guarantees:* Adds a contact to AddressBook.
 
 *MSS*
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User request and add a contact.
+2.  AddressBook add the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Format of the given details is invalid.
++
+[none]
+** 1a1.AddressBook shows an error message.
++
+Use case ends.
+
+* 1b. The contact already exist.
++
+[none]
+** 1b1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+* 2a. AddressBook exceeded storage capacity.
++
+[none]
+** 1a1.AddressBook shows an error message.
++
+Use case ends.
+
+[discrete]
+=== Use case: Clear contacts
+
+*Guarantees:* Clears all entries from AddressBook.
+
+*MSS*
+
+1.  User request and clear AddressBook.
+2.  AddressBook clear all entries.
++
+Use case ends.
+
+[discrete]
+=== Use case: Delete contacts
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified contact will be removed from the AddressBook.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete a specific contact in the list.
+4.  AddressBook delete the contact.
 +
 Use case ends.
 
@@ -766,26 +1240,544 @@ Use case ends.
 ** 3a1. AddressBook shows an error message.
 +
 Use case resumes at step 2.
++
+Use case ends.
+
+[discrete]
+=== Use case: Edit contacts
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Existing contact will be updated.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and update a contact.
+4.  AddressBook update the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. Format of the given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
++
+
+* 3b.  User types `/t` to delete tags.
++
+[none]
+** 3b1. Tags are removed from the contact.
++
+Use case resumes at step 4.
++
+Use case ends.
++
+
+* 3c. User types `/h` to reset homepage.
++
+[none]
+** 3c1. Homepage is set back to the default (A Google Search of contact name).
++
+Use case resumes at step 4.
++
+Use case ends.
+
+[discrete]
+=== Use case: Sort contacts
+
+*Guarentees:* List will be sorted in alphabetical order.
+
+*MSS*
+
+1. User request to sort contacts
+2. AddressBook shows a list of contacts sorted in ascending order according to alphabetical order of the contact's name.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The sort parameter is invalid
++
+[none]
+** 1a1. AddressBook shows an error message.
++
+Use case ends.
+
+[none]
+* 1b. The sort parameter is `d`
++
+[none]
+** 1b1. AddressBook shows a list of contacts sorted in descending order.
+
+[none]
+* 1c. The sort parameter is `a`
++
+[none]
+** 1c1. AddressBook shows a list of contacts sorted in ascending order.
+
+[discrete]
+=== Use case: Find contacts
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified contact will be listed.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and find exact details of contacts.
+4.  AddressBook lists the contacts.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+[discrete]
+=== Use case: Findany contacts
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified contact will be listed.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and find any matching details of contacts.
+4.  AddressBook lists the contacts.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given details is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+[discrete]
+=== Use case: List contacts
+
+*Guarantees:* All entries will be listed.
+
+*MSS*
+
+1.  User request and list all contacts.
+2.  AddressBook shows a list of contacts.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Help
+
+*Guarantees:* User guide will be displayed.
+
+*MSS*
+
+1.  User request help.
+2.  AddressBook open user guide in a new window.
++
+Use case ends.
+
+[discrete]
+=== Use case: Select contacts
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and select a contact.
+4.  AddressBook select the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Give a contact Remark
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Remark will be added to specified contact at index.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and give a contact remark.
+4.  AddressBook update the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Set avatar
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarentees:* Avatar will be added to specified contact at index.
+
+*MSS*
+
+1. User request to list contacts.
+2. AddressBook shows a list of contacts.
+3. User sets an avatar for the contact at index chosen.
+4. AddressBook updates the contact.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+[none]
+* 3b. The argument provided is `""`
++
+[none]
+** 3b1. Avatar is set to be deleted on program exit.
++
+Use case resumes at step 4.
++
+
+[none]
+* 3c. The argument provided is invalid (either invalid URL or invalid file size)
++
+[none]
+** 3c1. AddressBook shows an error message.
++
+Use case resumes at step 2.
++
+Use case ends.
+
+
+[discrete]
+=== Use case: History
+
+*Guarantees:* List all entered commands.
+
+*MSS*
+
+1.  User request to show history.
+2.  AddressBook shows a list of entered commands.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The history is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Undo
+
+*Guarantees:* Restores AddressBook to the previous state.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete the contacts.
+4.  AddressBook delete the contacts.
+5.  User requests to clear the contacts.
+6.  AddressBook clear all contacts.
+7.  User requests to undo.
+8.  AddressBook reverse the previous clear command.
+9.  User requests to undo.
+10.  AddressBook reverse the previous delete command.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 6a. The list is empty.
++
+Use case ends.
+
+* 8a. No undoable commands.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 10a. No undoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Redo
+
+*Guarantees:* Reverse the most recent undo command.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User requests to delete the contacts.
+4.  AddressBook delete the contacts.
+5.  User requests to clear the contacts.
+6.  AddressBook clear all contacts.
+7.  User requests to undo.
+8.  AddressBook reverse the previous clear command.
+9.  User requests to undo.
+10.  AddressBook reverse the previous delete command.
+11.  User request to redo.
+12.  AddressBook delete the contact.
+13.  User request to redo.
+14.  AddressBook clear all entries.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 6a. The list is empty.
++
+Use case ends.
+
+* 8a. No undoable commands.
++
+Use case resumes at step 2.
+Use case ends.
+
+* 10a. No undoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+* 12a. No redoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+* 14a. No redoable commands.
++
+Use case resume at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: Theme
+
+*Guarantees:* Application theme change.
+
+*MSS*
+
+1.  User request to change theme.
+2.  AddressBook changes the theme.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list of theme is empty.
+[none]
+** 1a1. AddressBook shows an error message.
+[none]
+* 1b. The theme file is missing.
+[none]
+** 1b1. AddressBook shows an error message.
++
+Use case ends.
 
 {More to be added}
 
 [appendix]
 == Non Functional Requirements
 
-.  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
-.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+- Constraints
+    .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
+
+- Quality
+    .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+    .  System should be usable by a novice who has never used a search engine before
+    .  User guide should be comprehensive (easily understood)
+
+- Performance
+    .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+    .  Search should deliver results within 2 seconds.
+
+- Reliability
+    .  Mean time to recovery: first thing to update to not keep users waiting and changing to another product. Assures users it is only a lapse and the app is reliable.
+    .  Mean time between failures: 1 hour.
+
+- Recoverability
+    .  Should auto-save information after user is idling for 5 seconds.
+    .  Should be able to stores information in event of crash / internet cut-off.
+
+- Robustness
+    .  Should keeping essence of original design whenever making updates. (keeps users who have not used the application in a long time be able to use the application although they may not know the difference in updates)
+    .  Be able to use old versions of the application although there is a new update.
+
+- Usability
+    .  Should enable spell-check
+    .  Should work with other languages and not restricted to English.
+    .  Should allow users to use Emojis within the application.
+
+- Documentation
+    . Easily locatable 'Help?' section
+
+- Notes about project scope
+    .  The application is not required to have voice recognition of inputs.
+
+- Any other noteworthy points
+    .  GUI should be appealing to adults and younger generation.
+    .  GUI should not have bright colours to reduce strain on eyes.
+    .  GUI should have toggling sizes for those with differing eyesight capabilities.
+    .  Should keep a log of user actions done (to allow them to keep track of their own actions).
 
 {More to be added}
 
 [appendix]
 == Glossary
 
+[[autocomplete]]
+Autocomplete
+
+....
+A function that completes words or strings without the user needing to type them in full
+....
+
+[[command-line-interface]]
+Command Line Interface
+
+....
+A user interface to a computer's operating system or an application in which the user responds to a visual prompt by typing in a command on a specified line, receives a response back from the system, and then enters another command, and so forth
+....
+
+[[favourite]]
+Favourites
+
+....
+A collection of contacts that the user have marked as frequently used such that it can be listed via a command
+....
+
+[[homepage]]
+Homepage
+
+....
+A web page set as the default page loaded when a contact is selected
+....
+
 [[mainstream-os]]
 Mainstream OS
 
 ....
-Windows, Linux, Unix, OS-X
+Windows, Linux, Unix, MacOS X
 ....
 
 [[private-contact-detail]]
@@ -793,6 +1785,13 @@ Private contact detail
 
 ....
 A contact detail that is not meant to be shared with others
+....
+
+[[tag]]
+Tag
+
+....
+Marking a contact with a specified keyword so as to facilitate easy listing or search of contacts with the keyword
 ....
 
 [appendix]

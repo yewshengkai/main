@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -13,14 +15,17 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ShowAboutRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -29,10 +34,10 @@ import seedu.address.model.UserPrefs;
  */
 public class MainWindow extends UiPart<Region> {
 
-    private static final String ICON = "/images/address_book_32.png";
+    private static final String ICON = "/images/iungo-logo.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
-    private static final int MIN_WIDTH = 450;
+    private static final int MIN_WIDTH = 740;
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -55,6 +60,9 @@ public class MainWindow extends UiPart<Region> {
     private MenuItem helpMenuItem;
 
     @FXML
+    private MenuItem aboutMenuItem;
+
+    @FXML
     private StackPane personListPanelPlaceholder;
 
     @FXML
@@ -62,6 +70,7 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML);
@@ -79,6 +88,7 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
+        ThemeCommand.setRegion(getRoot());
 
         setAccelerators();
         registerAsAnEventHandler(this);
@@ -89,7 +99,9 @@ public class MainWindow extends UiPart<Region> {
     }
 
     private void setAccelerators() {
+
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
+        setAccelerator(aboutMenuItem, KeyCombination.valueOf("F9"));
     }
 
     /**
@@ -135,7 +147,8 @@ public class MainWindow extends UiPart<Region> {
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath());
+        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath(),
+                logic.getFilteredPersonList().size());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(logic);
@@ -192,6 +205,15 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
+    /**
+     * Opens the about window.
+     */
+    @FXML
+    public void handleAbout() {
+        AboutWindow aboutWindow = new AboutWindow();
+        aboutWindow.show();
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -202,6 +224,52 @@ public class MainWindow extends UiPart<Region> {
     @FXML
     private void handleExit() {
         raise(new ExitAppRequestEvent());
+    }
+
+    /**
+     * Open a file
+     */
+    @FXML
+    private void handleImport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import from...");
+        fileChooser.showOpenDialog(primaryStage);
+    }
+
+    /**
+     * Save file to specific format
+     */
+    @FXML
+    private void handleExport() {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx");
+        FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("XML Data (*.xml)", "*.xml");
+        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+
+        fileChooser.getExtensionFilters().add(excelFilter);
+        fileChooser.getExtensionFilters().add(pdfFilter);
+        fileChooser.getExtensionFilters().add(xmlFilter);
+        fileChooser.getExtensionFilters().add(textFilter);
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setTitle("Export to..");
+        fileChooser.setInitialFileName("iungoAB");
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            String content = "Prep_data_save_to_excel";
+            try {
+                FileWriter fileWriter = null;
+                fileWriter = new FileWriter(file);
+                fileWriter.write(content);
+                fileWriter.close();
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
+
+        }
     }
 
     public PersonListPanel getPersonListPanel() {
@@ -216,5 +284,11 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    @Subscribe
+    private void handleShowAboutEvent(ShowAboutRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleAbout();
     }
 }

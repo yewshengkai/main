@@ -4,10 +4,12 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_HOMEPAGE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.person.Homepage.RESET_HOMEPAGE;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +20,15 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Birthday;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.Remark;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -34,6 +39,7 @@ import seedu.address.model.tag.Tag;
 public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
+    public static final String COMMAND_ALIAS = "e";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
             + "by the index number used in the last person listing. "
@@ -44,6 +50,7 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_BIRTHDAY + "BIRTHDAY] "
+            + "[" + PREFIX_HOMEPAGE + "HOMEPAGE] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -98,14 +105,30 @@ public class EditCommand extends UndoableCommand {
                                              EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
+        Homepage originalHomepage = personToEdit.getHomepage();
+
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Birthday updatedBirthday = editPersonDescriptor.getBirthday().orElse(personToEdit.getBirthday());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
+        Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
+        Avatar updatedAvatar = personToEdit.getAvatar(); // edit command does not allow editing avatar
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedBirthday, updatedTags);
+        if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
+            return new Person(updatedName, updatedPhone, updatedEmail,
+                    updatedAddress, updatedBirthday, updatedRemark, updatedAvatar, updatedTags);
+        }
+
+        if (personToEdit.isHomepageManuallySet() || !(originalHomepage.toString().equals(updatedHomepage.toString()))) {
+            return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedBirthday,
+                    updatedRemark, updatedAvatar, updatedTags, updatedHomepage);
+        } else {
+            return new Person(updatedName, updatedPhone, updatedEmail,
+                    updatedAddress, updatedBirthday, updatedRemark, updatedAvatar, updatedTags);
+        }
     }
 
     @Override
@@ -137,6 +160,7 @@ public class EditCommand extends UndoableCommand {
         private Address address;
         private Birthday birthday;
         private Set<Tag> tags;
+        private Homepage homepage;
 
         public EditPersonDescriptor() {}
 
@@ -147,13 +171,15 @@ public class EditCommand extends UndoableCommand {
             this.address = toCopy.address;
             this.birthday = toCopy.birthday;
             this.tags = toCopy.tags;
+            this.homepage = toCopy.homepage;
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.birthday, this.tags);
+            return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.birthday, this.tags,
+                                               this.homepage);
         }
 
         public void setName(Name name) {
@@ -204,6 +230,14 @@ public class EditCommand extends UndoableCommand {
             return Optional.ofNullable(tags);
         }
 
+        public void setHomepage(Homepage homepage) {
+            this.homepage = homepage;
+        }
+
+        public Optional<Homepage> getHomepage() {
+            return Optional.ofNullable(homepage);
+        }
+
         @Override
         public boolean equals(Object other) {
             // short circuit if same object
@@ -224,7 +258,8 @@ public class EditCommand extends UndoableCommand {
                     && getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
                     && getBirthday().equals(e.getBirthday())
-                    && getTags().equals(e.getTags());
+                    && getTags().equals(e.getTags())
+                    && getHomepage().equals(e.getHomepage());
         }
     }
 }

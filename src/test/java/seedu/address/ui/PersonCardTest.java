@@ -3,6 +3,7 @@ package seedu.address.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_ONE;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
 
@@ -37,8 +38,22 @@ public class PersonCardTest extends GuiUnitTest {
             personWithTags.setPhone(ALICE.getPhone());
             personWithTags.setBirthday(ALICE.getBirthday());
             personWithTags.setTags(ALICE.getTags());
+            personWithTags.setRemark(ALICE.getRemark());
         });
         assertCardDisplay(personCard, personWithTags, 2);
+    }
+
+    @Test
+    public void avatarCheck() {
+        Person personWithNoAvatar = new PersonBuilder().withAvatar("").build();
+        PersonCard personCard = new PersonCard(personWithNoAvatar, 1);
+        uiPartRule.setUiPart(personCard);
+        assertCardDisplay(personCard, personWithNoAvatar, 1);
+
+        Person personWithAvatar = new PersonBuilder().withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
+        personCard = new PersonCard(personWithAvatar, 1);
+        uiPartRule.setUiPart(personCard);
+        assertCardDisplay(personCard, personWithAvatar, 1);
     }
 
     @Test
