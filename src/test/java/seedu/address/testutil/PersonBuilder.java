@@ -122,7 +122,7 @@ public class PersonBuilder {
         return this;
     }
 
-     /**
+    /**
      * Sets the {@code Birthday} of the {@code Person} that we are building.
      */
     public PersonBuilder withBirthday(String birthday) {
@@ -134,7 +134,7 @@ public class PersonBuilder {
         return this;
     }
 
-     /**
+    /**
      * Sets the {@code Homepage} of the {@code Person} that we are building.
      */
     public PersonBuilder withHomepage(String homepage) {
