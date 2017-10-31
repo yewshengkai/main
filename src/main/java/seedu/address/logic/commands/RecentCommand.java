@@ -8,7 +8,7 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.FindHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.Model;
-import seedu.address.model.PersonContainsRecentPredicate;
+import seedu.address.model.person.PersonContainsRecentPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**

@@ -1,9 +1,7 @@
-package seedu.address.model;
+package seedu.address.model.person;
 
 import java.util.List;
 import java.util.function.Predicate;
-
-import seedu.address.model.person.ReadOnlyPerson;
 
 /**
  * Tests that a {@code ReadOnlyPerson} matches any of the persons in the backing list.
