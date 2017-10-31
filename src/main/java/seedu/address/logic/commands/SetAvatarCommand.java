@@ -77,12 +77,13 @@ public class SetAvatarCommand extends UndoableCommand {
 
         if (personToSetAvatar.isHomepageManuallySet()) {
             editedPerson = new Person(personToSetAvatar.getName(), personToSetAvatar.getPhone(),
-                    personToSetAvatar.getEmail(), personToSetAvatar.getAddress(), personToSetAvatar.getBirthday(), personToSetAvatar.getRemark(),
-                    avatar, personToSetAvatar.getTags(), personToSetAvatar.getHomepage());
+                    personToSetAvatar.getEmail(), personToSetAvatar.getAddress(), personToSetAvatar.getBirthday(),
+                    personToSetAvatar.getRemark(), avatar, personToSetAvatar.getTags(),
+                    personToSetAvatar.getHomepage());
         } else {
             editedPerson = new Person(personToSetAvatar.getName(), personToSetAvatar.getPhone(),
-                    personToSetAvatar.getEmail(), personToSetAvatar.getAddress(), personToSetAvatar.getBirthday(), personToSetAvatar.getRemark(),
-                    avatar, personToSetAvatar.getTags());
+                    personToSetAvatar.getEmail(), personToSetAvatar.getAddress(), personToSetAvatar.getBirthday(),
+                    personToSetAvatar.getRemark(), avatar, personToSetAvatar.getTags());
         }
 
         try {

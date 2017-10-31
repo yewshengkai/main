@@ -61,7 +61,8 @@ public class RemarkCommand extends UndoableCommand {
 
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getBirthday(), remark, personToEdit.getAvatar(), personToEdit.getTags());
+                personToEdit.getAddress(), personToEdit.getBirthday(), remark,
+                personToEdit.getAvatar(), personToEdit.getTags());
 
         try {
             model.updatePerson(personToEdit, editedPerson);
