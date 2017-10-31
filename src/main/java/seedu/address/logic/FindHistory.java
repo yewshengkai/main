@@ -5,11 +5,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.LinkedList;
 import java.util.List;
 
+import seedu.address.model.person.ReadOnlyPerson;
+
 /**
  * Stores the names of persons returned by FindCommand.
  */
 public class FindHistory {
-    private LinkedList<String> userFindHistory;
+    private LinkedList<ReadOnlyPerson> userFindHistory;
 
     public FindHistory() {
         userFindHistory = new LinkedList<>();
@@ -18,25 +20,22 @@ public class FindHistory {
     /**
      * Appends {@code personName} to the list of persons user found with FindCommand.
      */
-    public void add(String personName) {
-        requireNonNull(personName);
-        if (userFindHistory.contains(personName)) {
-            userFindHistory.remove(personName); // ensures person is put in correct order
-        }
-        userFindHistory.add(personName);
+    public void add(ReadOnlyPerson person) {
+        requireNonNull(person);
+        userFindHistory.remove(person); // ensures person is put in correct order
+        userFindHistory.add(person);
     }
 
-    public void set(String personName, String personNewName) {
-        requireNonNull(personNewName);
-        if (userFindHistory.contains(personName)) {
-            userFindHistory.set(userFindHistory.indexOf(personName), personNewName);
+    public void set(ReadOnlyPerson person, ReadOnlyPerson newPerson) {
+        if (userFindHistory.contains(person)) {
+            userFindHistory.set(userFindHistory.indexOf(person), newPerson);
         }
     }
 
     /**
      * Returns a defensive copy of {@code userInputHistory}.
      */
-    public List<String> getHistory() {
+    public List<ReadOnlyPerson> getHistory() {
         return new LinkedList<>(userFindHistory);
     }
 

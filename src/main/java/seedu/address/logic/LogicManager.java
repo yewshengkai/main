@@ -47,7 +47,7 @@ public class LogicManager extends ComponentManager implements Logic {
         } finally {
             if (command instanceof FindCommand) {
                 for (ReadOnlyPerson p : model.getFilteredPersonList()) {
-                    findHistory.add(p.getName().fullName);
+                    findHistory.add(p);
                 }
             }
             history.add(commandText);
