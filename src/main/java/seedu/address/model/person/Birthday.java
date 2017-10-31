@@ -4,6 +4,10 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
+/**
+ * Represents a Person's birthday in the address book.
+ * Guarantees: immutable; is valid as declared in {@link #isValidBirthday(String)}
+ */
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
