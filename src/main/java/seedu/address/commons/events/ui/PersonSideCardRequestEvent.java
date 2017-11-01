@@ -1,4 +1,21 @@
 package seedu.address.commons.events.ui;
 
-public class PersonSideCardRequestEvent {
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Indicates a request to jump to the list of persons
+ */
+public class PersonSideCardRequestEvent extends BaseEvent {
+
+    public final boolean isVisible;
+
+    public PersonSideCardRequestEvent(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
 }
