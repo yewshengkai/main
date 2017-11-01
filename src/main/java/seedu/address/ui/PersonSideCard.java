@@ -17,6 +17,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.PersonSideCardRequestEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -60,6 +61,8 @@ public class PersonSideCard extends UiPart<Region> {
     public PersonSideCard() {
         super(FXML);
         registerAsAnEventHandler(this);
+        getRoot().setManaged(false);
+        getRoot().setOpacity(0);
 
     }
 
@@ -120,9 +123,29 @@ public class PersonSideCard extends UiPart<Region> {
         });
     }
 
+    /**
+     * Make PersonSideCard Panel visible or invisible to save a portion of GUi space for WebView
+     */
+    private void showSidePanel(boolean isVisible) {
+        getRoot().setManaged(isVisible);
+        int opacityLevel;
+        if (isVisible) {
+            opacityLevel =  100; }
+        else {
+            opacityLevel = 0;
+        }
+        getRoot().setOpacity(opacityLevel);
+    }
+
     @Subscribe
      private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         bindListeners(event.getNewSelection().person);
+    }
+
+    @Subscribe
+    private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        showSidePanel(event.isVisible);
     }
 }
