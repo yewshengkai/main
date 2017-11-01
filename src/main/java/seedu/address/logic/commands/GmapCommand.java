@@ -29,8 +29,6 @@ public class GmapCommand extends Command {
 
     private final Index targetIndex;
 
-    private final Logger logger = LogsCenter.getLogger(this.getClass());
-
     public GmapCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
     }
