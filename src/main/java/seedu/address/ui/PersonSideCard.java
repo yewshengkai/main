@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
@@ -123,9 +122,7 @@ public class PersonSideCard extends UiPart<Region> {
 
     @Subscribe
      private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
-                logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
         bindListeners(event.getNewSelection().person);
-//        getRoot().setManaged(false);
-//        getRoot().setOpacity(0);
-            }
+    }
 }
