@@ -354,7 +354,6 @@
 #sidePersonPlaceholder {
     -fx-background-color: derive(#1d1d1d, 50%);
     -fx-background-insets: 0;
-    -fx-border-color: #f7f7f7;
     -fx-border-insets: 0;
     -fx-border-width: 1;
     -fx-border-radius:5px;
