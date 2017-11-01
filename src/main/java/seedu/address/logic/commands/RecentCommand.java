@@ -11,6 +11,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsRecentPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author karrui
 /**
  * Lists all the persons searched by user from the start of app launch.
  */

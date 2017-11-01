@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import seedu.address.testutil.PersonBuilder;
 
+//@@author karrui
 public class PersonContainsRecentPredicateTest {
     private final Person alice = new PersonBuilder().build();
     private final Person bob = new PersonBuilder().withName("Bob").build();

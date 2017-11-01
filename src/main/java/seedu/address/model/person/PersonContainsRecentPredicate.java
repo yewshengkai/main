@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import java.util.List;
 import java.util.function.Predicate;
 
+//@@author karrui
 /**
  * Tests that a {@code ReadOnlyPerson} matches any of the persons in the backing list.
  */

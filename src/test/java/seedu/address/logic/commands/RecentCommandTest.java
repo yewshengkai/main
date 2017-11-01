@@ -19,6 +19,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author karrui
 public class RecentCommandTest {
     private RecentCommand recentCommand;
     private FindHistory findHistory;
@@ -34,10 +35,10 @@ public class RecentCommandTest {
     @Test
     public void execute() {
         String expectedMessage = RecentCommand.MESSAGE_SUCCESS;
-        assertCommandResult(recentCommand, RecentCommand.MESSAGE_NO_RECENT);
+        assertCommandResult(recentCommand, RecentCommand.MESSAGE_NO_RECENT);    // nothing in findHistory yet
         findHistory.add(ALICE);
-        assertCommandSuccess(Collections.singletonList(ALICE));
-        assertCommandResult(recentCommand, expectedMessage);
+        assertCommandSuccess(Collections.singletonList(ALICE)); // backing list should be equals to argument
+        assertCommandResult(recentCommand, expectedMessage); // success message
     }
 
     /**
