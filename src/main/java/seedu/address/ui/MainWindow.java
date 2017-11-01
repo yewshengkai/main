@@ -47,6 +47,7 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
+    private PersonSideCard personSideCard;
     private Config config;
     private UserPrefs prefs;
 
@@ -70,6 +71,9 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private StackPane sidePersonPlaceholder;
 
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
@@ -139,7 +143,10 @@ public class MainWindow extends UiPart<Region> {
      */
     void fillInnerParts() {
         browserPanel = new BrowserPanel();
+        personSideCard = new PersonSideCard();
+
         browserPlaceholder.getChildren().add(browserPanel.getRoot());
+        sidePersonPlaceholder.getChildren().add(personSideCard.getRoot());
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
@@ -153,6 +160,7 @@ public class MainWindow extends UiPart<Region> {
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
     }
 
     void hide() {
