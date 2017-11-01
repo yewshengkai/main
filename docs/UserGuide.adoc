@@ -358,7 +358,12 @@ Examples:
 Select and load the first theme in the results of the `themelist` command.
 * `t` +
 `theme 2` +
-Select and load the second theme in the results of the `tlist` command.
+Select and load the second theme in the results of the `themelist` command.
+
+=== Display recently searched contacts : `recent`, `rc`
+
+Shows a list of all contacts that was returned by `find` command since application was started. +
+Format: `recent`
 
 === Clearing all entries : `clear`, `c`
 
@@ -413,6 +418,8 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Recent* : `recent`
+* *Remark* : `remark INDEX [re/REMARK]`
 * *Set avatar* : `setavatar`
 * *Change theme* : `theme`
 
@@ -431,5 +438,7 @@ e.g.`select 2`
 * *History* : `h`
 * *Undo* : `u`
 * *Redo* : `r`
+* *Recent* : `rc`
+* *Remark* : `re INDEX [re/REMARK]`
 * *Set avatar* : `sa`
 * *Change theme* : `t`
