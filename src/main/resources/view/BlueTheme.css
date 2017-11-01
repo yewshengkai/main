@@ -92,6 +92,10 @@
     -fx-background-color: #f7f7f7;
     -fx-padding: 0;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 2);
+    -fx-border-width: 1;
+    -fx-border-radius:5px;
+    -fx-background-radius:5px;
+
 }
 
 .list-cell {
@@ -99,6 +103,8 @@
     -fx-graphic-text-gap : 0;
     -fx-padding: 5 0 0 0;
     -fx-background-color: derive(white, 20%);
+    -fx-border-radius:5px;
+    -fx-background-radius:5px;
 }
 
 .list-cell:filled:even {
@@ -128,7 +134,7 @@
     -fx-font-family: "Segoe UI";
     -fx-font-size: 16px;
     -fx-text-fill: black;
-    -fx-font-weight:bold;
+
 }
 
 .cell_small_label {
@@ -368,10 +374,27 @@
 }
 
 #tags .label {
-    -fx-text-fill: #f7f7f7;
+    -fx-text-fill: black;
     -fx-background-color: #3e7b91;
     -fx-padding: 1 3 1 3;
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+
+#sidePersonPlaceholder {
+    -fx-background-color: #ffffff;
+    -fx-background-insets: 0;
+    -fx-border-color: #f7f7f7;
+    -fx-border-insets: 0;
+    -fx-border-width: 1;
+    -fx-border-radius:5px;
+    -fx-background-radius:5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 1, 2);
+}
+
+
+#sidePersonPlaceholder .label{
+    -fx-font-family: "Segoe UI";
+}
+
