@@ -14,6 +14,7 @@ import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.GmapCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -120,6 +121,10 @@ public class AddressBookParser {
         case ThemeCommand.COMMAND_WORD:
         case ThemeCommand.COMMAND_ALIAS:
             return new ThemeCommandParser().parse(arguments);
+
+        case GmapCommand.COMMAND_WORD:
+        case GmapCommand.COMMAND_ALIAS:
+            return new GmapCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
