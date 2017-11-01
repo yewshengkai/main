@@ -130,8 +130,8 @@ public class PersonSideCard extends UiPart<Region> {
         getRoot().setManaged(isVisible);
         int opacityLevel;
         if (isVisible) {
-            opacityLevel =  100; }
-        else {
+            opacityLevel =  100;
+        } else {
             opacityLevel = 0;
         }
         getRoot().setOpacity(opacityLevel);
