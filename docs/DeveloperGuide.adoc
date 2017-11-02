@@ -740,7 +740,7 @@ image::ThemeCommand.png[]
 // tag::gmap[]
 === Gmap mechanism
 
-The gmap mechanism is facilitated by the `GmapCommand`. `GhemeCommandParser` checks for input index and validate through `ParserUtil` and calls the relevant `GmapCommand` to search for `Person` address using Google Map.
+The gmap mechanism is facilitated by the `GmapCommand`. `GmapCommandParser` checks for input index and validate through `ParserUtil` and calls the relevant `GmapCommand` to search for `Person` address using Google Map.
 
 `GmapCommand` relies on `MapToListRequestEvent` which is handled by `BrowserPanel` to call the appropriate method for loading `Person` address using Google Map.
 
