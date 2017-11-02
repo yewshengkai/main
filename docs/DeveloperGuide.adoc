@@ -737,6 +737,98 @@ image::ThemeCommand.png[]
 
 // end::theme[]
 
+// tag::gmap[]
+=== Gmap mechanism
+
+The gmap mechanism is facilitated by the `GmapCommand`. `GhemeCommandParser` checks for input index and validate through `ParserUtil` and calls the relevant `GmapCommand` to search for `Person` address using Google Map.
+
+`GmapCommand` relies on `MapToListRequestEvent` which is handled by `BrowserPanel` to call the appropriate method for loading `Person` address using Google Map.
+
+[NOTE]
+By default if no index are present, gmap command will return an invalid message.
+(e.g gmap "").
+
+[NOTE]
+Events which triggers `PersonSideCardRequestEvent` handler, set the visibility of `Person` side panel card (Allow more display and exposure to the Web Browser).
+
+`GmapCommand` code snippet to ensure input index is within the PersonList, and calls the relevant `MapToListRequestevent` handler to search `Person` address on Google Map:
+[source,java]
+----
+try {
+public CommandResult execute() throws CommandException {
+    List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+    if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+    EventsCenter.getInstance().post(new MapToListRequestEvent(lastShownList.get(targetIndex.getZeroBased())));
+    return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
+}
+----
+
+`GmapCommandParser` code snippet to check if user's input contains any index and returns message if there exist invalid input:
+[source,java]
+----
+public GmapCommand parse(String args) throws ParseException {
+    try {
+        Index index = ParserUtil.parseIndex(args);
+        return new GmapCommand(index);
+    } catch (IllegalValueException ive) {
+        throw new ParseException(
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, GmapCommand.MESSAGE_USAGE));
+    }
+}
+----
+
+`BrowserPanel` code snippet that handle `MapToListRequestEvent` and load the method to search on Google Map:
+[source,java]
+----
+private void loadPersonMap(ReadOnlyPerson targetPerson) {
+    loadPage(GOOGLE_MAP_SEARCH_URL_PREFIX + targetPerson.getAddress().value
+            .replaceAll(",", ""));
+}
+private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    loadPersonMap(event.targetPerson);
+    browser.setOpacity(100);
+}
+----
+
+`PersonSideCard` code snippet that handles `PersonSideCardRequestEvent` and set Person card side panel visibility:
+[source,java]
+----
+private void showSidePanel(boolean isVisible) {
+    getRoot().setManaged(isVisible);
+    int opacityLevel;
+    if (isVisible) {
+        opacityLevel =  100;
+    } else {
+        opacityLevel = 0;
+    }
+    getRoot().setOpacity(opacityLevel);
+}
+@Subscribe
+private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    showSidePanel(event.isVisible);
+}
+----
+
+The following sequence diagram shows how the theme (GmapCommand) operation works:
+
+image::GmapCommand.png[]
+
+The following sequence diagram shows how the theme (GmapCommandParser) operation works:
+
+image::GmapCommandParser.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of GmapCommand +
+*Alternative 1 (Current choice):* Utilizes event handler and ensure that web browser won't be obstruct by person side card panel permanently by implementing extra event handler +
+*Pros:* Better user experience. +
+*Cons:* We could always implement library to deal with sliding person side card panel. +
+
+// end::gmap[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
