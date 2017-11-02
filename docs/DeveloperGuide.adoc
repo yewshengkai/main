@@ -1795,7 +1795,7 @@ Use case ends.
 
 *Preconditions:* AddressBook is not empty.
 
-*Guarantees:* Specified index of contact will be selected and search on Google Map.
+*Guarantees:* Specified index of contact will be selected and address will be search on Google Map.
 
 *MSS*
 
