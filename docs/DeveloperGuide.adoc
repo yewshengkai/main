@@ -816,12 +816,15 @@ changes in the backing list.
 *Pros:* Intuitive for user, better UX +
 *Cons:* Requires an additional hook to `Model` to swap between two lists (addressbook and findhistory), additional complexity and chance of regressions +
 *Alternative 2 (Current choice):* Shows the list in current order of addressbook backing list. +
-*Pros:* Follows design logic of all commands that shows the list to user, allowing new developers to easily understand implementation +
-*Cons:* Worse UX +
+*Pros:* Follows design logic of all commands that shows the list to user, allowing new developers to easily understand implementation. +
+*Cons:* Worse UX.
+
+---
+
 *Aspect:* Data structure to store `FindHistory` backing list +
 *Alternative 1 (Current choice):* LinkedList +
 *Pros:* Preserves order, fast add, able to use set to preserve ordering when mutating elements. Good for future implementations (if any) of
-returning the list in order user searched for contacts.
+returning the list in order user searched for contacts. +
 *Cons:* Slightly slower than competition when traversing and deleting. +
 *Alternative 2:* LinkedHashMap or LinkedHashSet +
 *Pros:* Keeps order, faster than LinkedList +
@@ -1034,7 +1037,6 @@ image::RemarkCommandParser.png[]
 *Cons:* Can be troublesome for user to view their own input during the `AddCommand` phase as remark is usually lengthy.
 
 // end::remark[]
->>>>>>> 9b9481e03de568407d5708eb8fe51a72fba8d0cd
 
 == Documentation
 
