@@ -10,6 +10,7 @@ import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Avatar;
 
+//@@author karrui
 /**
  * Parses the given {@code String} of arguments in the context of the SetAvatarCommand
  * and returns an SetAvatarCommand object for execution.

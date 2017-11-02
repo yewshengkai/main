@@ -12,7 +12,7 @@ public class ChangeThemeRequestEvent extends BaseEvent {
     public final int targetIndex;
 
     public ChangeThemeRequestEvent(Index targetIndex) {
-        this.targetIndex = targetIndex.getZeroBased();
+        this.targetIndex = targetIndex.getOneBased();
     }
 
     @Override

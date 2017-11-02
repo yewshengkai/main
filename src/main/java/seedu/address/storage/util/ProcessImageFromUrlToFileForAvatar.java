@@ -18,6 +18,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class ProcessImageFromUrlToFileForAvatar {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
 
+    //@@author karrui
     /**
      * Writes the image URL path provided into an image file
      */

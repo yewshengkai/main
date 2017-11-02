@@ -205,6 +205,7 @@ public class AddressBookParserTest {
     }
     //@@author
 
+    //@@author karrui
     @Test
     public void parseCommand_sort() throws Exception {
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD) instanceof SortCommand);
@@ -225,6 +226,7 @@ public class AddressBookParserTest {
     }
     //@@author
 
+    //@@author karrui
     @Test
     public void parseCommand_setAvatar() throws Exception {
         //setup
