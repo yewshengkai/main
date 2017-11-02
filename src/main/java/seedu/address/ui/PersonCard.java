@@ -76,6 +76,7 @@ public class PersonCard extends UiPart<Region> {
         initImage(person);
     }
 
+    //@@author karrui
     /**
      * Binds the correct image to the person.
      * If url is "", default display picture will be assigned, else image from URL will be assigned
@@ -92,6 +93,7 @@ public class PersonCard extends UiPart<Region> {
             avatar.setCache(true);
         }
     }
+    //@@author
 
     /**
      * Tags coloring

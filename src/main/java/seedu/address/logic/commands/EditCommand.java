@@ -113,6 +113,7 @@ public class EditCommand extends UndoableCommand {
         Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
         Avatar updatedAvatar = personToEdit.getAvatar(); // edit command does not allow editing avatar
 
+        //@@author karrui
         if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
             return new Person(updatedName, updatedPhone, updatedEmail,
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
@@ -125,6 +126,7 @@ public class EditCommand extends UndoableCommand {
             return new Person(updatedName, updatedPhone, updatedEmail,
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
         }
+        //@@author
     }
 
     @Override

@@ -657,7 +657,7 @@ image::FindCommand.png[]
 
 The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate through `ParserUtil` and calls the relevant `ThemeCommand` to switch the application `theme`.
 
-When the application run, `MainWindow` will execute `ThemeCommand.setRegion` in allowing ThemeCommand to retrieve the application root.
+`ThemeCommand` relies on `ChangeThemeRequestEvent` which is handled by `MainWindow` in allowing the application to set theme.
 
 [NOTE]
 By default if no index are present, theme command will return an invalid message.
@@ -666,7 +666,22 @@ By default if no index are present, theme command will return an invalid message
 [NOTE]
 When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
 
-`ThemeCommandParser` code snippet to determine if user's input contains any index:
+`ThemeCommand` code snippet to ensure input index is not more than the specified theme list and calls the relevant `ChangeThemeRequestEvent` handler to switch theme based on the input index:
+[source,java]
+----
+public CommandResult execute() throws CommandException {
+    String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+
+    if (targetIndex.getZeroBased() >= themeList.length) {
+        throw new CommandException(Messages.MESSAGE_INVALID_THEME_INDEX);
+    }
+
+    EventsCenter.getInstance().post(new ChangeThemeRequestEvent(targetIndex));
+    return new CommandResult(String.format(MESSAGE_THEME_SUCCESS, targetIndex.getOneBased()));
+}
+----
+
+`ThemeCommandParser` code snippet to determine if user's input contains any index and returns message for invalid input or format:
 [source,java]
 ----
 try {
@@ -679,28 +694,51 @@ try {
 ...
 ----
 
-`ThemeCommand` code snippet to determine the existence of CSS file and clear the current layout before using the new CSS file:
+`ChangeThemeRequestEvent` code snippet that receive and convert the Index parse from `ThemeCommand` and set to integer targetIndex:
 [source,java]
 ----
-public void setTheme(String args) throws CommandException {
-    if (MainApp.class.getResource("/view/" + args + ".css") == null) {
+public final int targetIndex;
+
+public ChangeThemeRequestEvent(Index targetIndex) {
+    this.targetIndex = targetIndex.getOneBased();
+}
+----
+
+`MainWindow` code snippet that handles `ChangeThemeRequestEvent` and call the method `setWindowTheme` to switch theme:
+[source,java]
+----
+private void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) throws CommandException {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    setWindowTheme(event.targetIndex);
+}
+----
+
+`setWindowTheme` method code snippet that check for file existence before clearing the current style and applying the newly selected style :
+[source,java]
+----
+private void setWindowTheme(int targetIndex) throws CommandException  {
+    String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+    String selectedTheme = new String();
+
+    switch (targetIndex) {
+    case 1:
+        selectedTheme = themeList[0];
+        break;
+    case 2:
+        selectedTheme = themeList[1];
+        break;
+    case 3:
+        selectedTheme = themeList[2];
+        break;
+    default:
+        break;
+    }
+
+    if (MainApp.class.getResource("/view/" + selectedTheme + ".css") == null) {
         throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
     }
-    region.getStylesheets().clear();
-    region.getStylesheets().add("/view/" + args + ".css");
-}
-
-public static void setRegion(Region region) {
-    ThemeCommand.region = region;
-}
-----
-
-`MainWindow` code snippet to give/set ThemeCommand `Region`:
-[source,java]
-----
-public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
-    ...
-    ThemeCommand.setRegion(getRoot());
+    getRoot().getStylesheets().clear();
+    getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
 }
 ----
 
@@ -718,22 +756,23 @@ private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedE
 }
 ----
 
-The following sequence diagram shows how the theme (ThemeCommandParser) operation works:
-
-image::ThemeCommandParser.png[]
-
 The following sequence diagram shows how the theme (ThemeCommand) operation works:
 
 image::ThemeCommand.png[]
 
+The following sequence diagram shows how the theme (ThemeCommandParser) operation works:
+
+image::ThemeCommandParser.png[]
+
+
 ==== Design Considerations
 *Aspect:* Implementation of ThemeCommand +
-*Alternative 1 (Current choice):* Enable `MainWindow` at start to set/give ThemeCommand its `Region` before utilizing setTheme method to switch stylesheet. +
-*Pros:* Prevent unnecessary re-access to retrieve application `Region` or access to other `class` file. Check if file exist and clear current stylesheet before changing the new style. +
-*Cons:* There are many other ways to change the styling of application (e.g. Utilizing `ChangeThemeRequestEvent` and call methods in `MainWindow`) +
-*Alternative 2:* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to change theme. +
-*Pros:* ThemeCommand will have lesser responsibility and checks to validate. +
-*Cons:* A class should follow `Single Responsibility Principle`. Method that is not supposed to be called through `MainWindow` should be avoided.
+*Alternative 1 (Current choice):* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to change application theme. +
+*Pros:* ThemeCommand will have lesser responsibility and checks to validate (efficiency). +
+*Cons:* There are other effective way in changing the application theme without the process of parsing and event handling whereby new programmer may find it difficult to understand the behavior. +
+*Alternative 2:* Allow `MainWindow` at start to instantiate ThemeCommand and pass/set its `Region` to ThemeCommand, allowing accessibility from within. After which, utilize setTheme method in ThemeCommand to switch application theme. +
+*Pros:* Straight forward, easier for new programmer to understand. +
+*Cons:* There could be a breach in security as `ThemeCommand` should not be allowed to obtain `MainWindow` `Region` and hold it indefinitely.
 
 // end::theme[]
 
