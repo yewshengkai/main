@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import guitests.guihandles.PersonCardHandle;
 import guitests.guihandles.PersonListPanelHandle;
+import guitests.guihandles.PersonSideCardHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import seedu.address.model.person.ReadOnlyPerson;
 
@@ -28,6 +29,16 @@ public class GuiTestAssert {
      * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
      */
     public static void assertCardDisplaysPerson(ReadOnlyPerson expectedPerson, PersonCardHandle actualCard) {
+        assertEquals(expectedPerson.getName().fullName, actualCard.getName());
+        assertEquals(expectedPerson.getPhone().value, actualCard.getPhone());
+        assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
+                actualCard.getTags());
+    }
+
+    /**
+     * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
+     */
+    public static void assertCardDisplaysPerson(ReadOnlyPerson expectedPerson, PersonSideCardHandle actualCard) {
         assertEquals(expectedPerson.getName().fullName, actualCard.getName());
         assertEquals(expectedPerson.getPhone().value, actualCard.getPhone());
         assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
