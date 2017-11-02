@@ -776,7 +776,6 @@ image::ThemeCommandParser.png[]
 
 // end::theme[]
 
-<<<<<<< HEAD
 // tag::recent[]
 === Recent command mechanism
 
