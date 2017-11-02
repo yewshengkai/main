@@ -26,6 +26,7 @@ import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.GmapCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -248,6 +249,19 @@ public class AddressBookParserTest {
             ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
         }
     }
+
+    //@@author yewshengkai
+    @Test
+    public void parseCommand_gmap() throws Exception {
+        GmapCommand command = (GmapCommand) parser.parseCommand(
+                GmapCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new GmapCommand(INDEX_FIRST_PERSON), command);
+
+        GmapCommand aliasCommand = (GmapCommand) parser.parseCommand(
+                GmapCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new GmapCommand(INDEX_FIRST_PERSON), aliasCommand);
+    }
+    //@@author
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() throws Exception {
