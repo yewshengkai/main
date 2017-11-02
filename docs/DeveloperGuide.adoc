@@ -825,7 +825,7 @@ image::GmapCommandParser.png[]
 *Aspect:* Implementation of GmapCommand +
 *Alternative 1 (Current choice):* Utilizes event handler and ensure that web browser won't be obstruct by person side card panel permanently by implementing extra event handler +
 *Pros:* Better user experience. +
-*Cons:* We could always implement library to deal with sliding person side card panel. +
+*Cons:* We could always implement library to deal with person side card panel. +
 
 // end::gmap[]
 
