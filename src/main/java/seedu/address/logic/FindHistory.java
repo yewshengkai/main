@@ -8,7 +8,7 @@ import java.util.List;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Stores the names of persons returned by FindCommand.
+ * Stores the persons returned by FindCommand.
  */
 public class FindHistory {
     private LinkedList<ReadOnlyPerson> userFindHistory;
