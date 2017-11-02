@@ -59,9 +59,11 @@ E.g. Adding a person : `add`, `a`
 
 Format: `help`
 
+// tag::about[]
 === Viewing About us : `about`
 
 Format: `about`
+// end::about[]
 
 // tag::add[]
 === Adding a person: `add`, `a`
@@ -383,6 +385,7 @@ Selects the 2nd person in the address book and map its address to Google Map.
 `gm 1` +
 Selects the 1st person in the results of the `find` command and map its address to Google Map.
 // end::gmap[]
+
 
 === Clearing all entries : `clear`, `c`
 

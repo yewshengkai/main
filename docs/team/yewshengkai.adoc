@@ -94,6 +94,32 @@ include::../DeveloperGuide.adoc[tag=gmap]
 #End of Extract#
 ---
 
+=== Enhancement Added: About
+
+==== External behavior
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=about]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+Allow user to view the About Us page and contact the developers for bugs and improvement.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=about]
+
+#End of Extract#
+---
+
 
 === Other contributions
 

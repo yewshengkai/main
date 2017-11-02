@@ -813,21 +813,66 @@ private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent ev
 }
 ----
 
-The following sequence diagram shows how the theme (GmapCommand) operation works:
+The following sequence diagram shows how the (GmapCommand) operation works:
 
 image::GmapCommand.png[]
 
-The following sequence diagram shows how the theme (GmapCommandParser) operation works:
+The following sequence diagram shows how the (GmapCommandParser) operation works:
 
 image::GmapCommandParser.png[]
 
 ==== Design Considerations
 *Aspect:* Implementation of GmapCommand +
-*Alternative 1 (Current choice):* Utilizes event handler and ensure that web browser won't be obstruct by person side card panel permanently by implementing extra event handler +
+*Alternative 1 (Current choice):* Utilizes event handler to call and ensure the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
 *Pros:* Better user experience. +
-*Cons:* We could always implement library to deal with person side card panel. +
+*Cons:* We could always utilizes library and implement the `PersonSideCard` panel. +
 
 // end::gmap[]
+
+// tag::about[]
+=== About mechanism
+
+The about mechanism is facilitated by the `AboutCommand`.
+
+`AboutCommand` relies on `ShowAboutRequestEvent` which is handled by `MainWindow` to call the appropriate method to load the `AboutWindow`.
+
+`AboutCommand` code snippet that calls the relevant `ShowAboutRequestEvent` handler to open `AboutWindow`:
+[source,java]
+----
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new ShowAboutRequestEvent());
+        return new CommandResult(SHOWING_ABOUT_MESSAGE);
+    }
+----
+
+`MainWindow` code snippet that handle `ShowAboutRequestEvent` and call the method to display `AboutWindow`:
+[source,java]
+----
+@FXML
+public void handleAbout() {
+    AboutWindow aboutWindow = new AboutWindow();
+    aboutWindow.show();
+}
+@Subscribe
+private void handleShowAboutEvent(ShowAboutRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    handleAbout();
+}
+----
+
+The following sequence diagram shows how the (AboutCommand) operation works:
+
+image::AboutCommand.png[]
+
+The following sequence diagram shows how the `MainWindow` that handles ShowAboutRequestEvent operation and call `AboutWindow`:
+
+image::MainWindowHandleAbout.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of AboutCommand +
+*Alternative 1 (Current choice):* Utilizes event handler and ensure that method that open `AboutWindow` will be called.
+
+// end::about[]
 
 == Documentation
 
