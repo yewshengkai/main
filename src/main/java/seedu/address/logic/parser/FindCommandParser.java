@@ -23,6 +23,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
+    //@@author yewshengkai
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
      * and returns an FindCommand object for execution.
@@ -86,7 +87,9 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String userInput) throws ParseException {
         return FindCommandParser.this.parse(userInput, true);
     }
+    //@@author
 
+    //@@author yewshengkai-reused
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }

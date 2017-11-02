@@ -48,10 +48,12 @@ public class BrowserPanel extends UiPart<Region> {
         loadPage(person.getHomepage().toString());
     }
 
+    //@@author yewshengkai
     private void loadPersonMap(ReadOnlyPerson targetPerson) {
         loadPage(GOOGLE_MAP_SEARCH_URL_PREFIX + targetPerson.getAddress().value
                 .replaceAll(",", ""));
     }
+    //@@author
 
     public void loadPage(String url) {
         Platform.runLater(() -> browser.getEngine().load(url));
@@ -79,6 +81,7 @@ public class BrowserPanel extends UiPart<Region> {
         browser.setOpacity(100);
     }
 
+    //@@author yewshengkai
     @Subscribe
     private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));

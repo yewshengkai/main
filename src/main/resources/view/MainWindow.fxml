@@ -16,6 +16,7 @@
         <URL value="@Extensions.css" />
     </stylesheets>
 
+    <!-- @@author yewshengkai generated -->
     <MenuBar fx:id="menuBar" minHeight="30.0" prefHeight="25.0" VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
@@ -27,6 +28,7 @@
             <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#handleAbout" text="About iungo" />
         </Menu>
     </MenuBar>
+    <!-- @@author -->
     <VBox>
         <children>
 
@@ -44,11 +46,13 @@
                     <children>
                   <HBox>
                      <children>
+                        <!-- @@author yewshengkai generated -->
                         <StackPane fx:id="sidePersonPlaceholder">
                            <HBox.margin>
                               <Insets bottom="10.0" left="5.0" top="10.0" />
                            </HBox.margin>
                         </StackPane>
+                         <!-- @@author -->
                               <StackPane fx:id="browserPlaceholder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

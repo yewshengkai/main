@@ -31,6 +31,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class FindCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    //@@author yewshengkai
     @Test
     public void equals() {
         PersonContainsKeywordsPredicate firstPredicate =
@@ -39,6 +40,7 @@ public class FindCommandTest {
         PersonContainsKeywordsPredicate secondPredicate =
                 new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Collections.singletonList("second"), false);
+        //@@author
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);

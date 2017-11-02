@@ -20,6 +20,7 @@ import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PersonSideCardRequestEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author yewshengkai
 /**
  * An UI component that displays information of a {@code Person}.
  */
@@ -30,14 +31,6 @@ public class PersonSideCard extends UiPart<Region> {
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
     private final Logger logger = LogsCenter.getLogger(PersonSideCard.class);
-
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
 
     @FXML
     private Label name;
@@ -65,7 +58,9 @@ public class PersonSideCard extends UiPart<Region> {
         getRoot().setOpacity(0);
 
     }
+    //@@author
 
+    //@@author yewshengkai-reused
     private static String getColorForTag(String tagValue) {
         if (!tagColors.containsKey(tagValue)) {
             tagColors.put(tagValue, colors[random.nextInt(colors.length)]);
@@ -128,7 +123,9 @@ public class PersonSideCard extends UiPart<Region> {
             tags.getChildren().add(tagLabel);
         });
     }
+    //@@author
 
+    //@@author yewshengkai
     /**
      * Make PersonSideCard Panel visible or invisible to save a portion of GUi space for WebView
      */

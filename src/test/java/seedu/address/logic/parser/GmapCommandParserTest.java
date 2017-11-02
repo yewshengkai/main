@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import seedu.address.logic.commands.GmapCommand;
 
+//@@author yewshengkai
 /**
  * Test scope: similar to {@code DeleteCommandParserTest}.
  * @see DeleteCommandParserTest

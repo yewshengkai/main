@@ -138,6 +138,7 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
+    //@@author yewshengkai
     /**
      * Fills up all the placeholders of this window.
      */
@@ -147,6 +148,7 @@ public class MainWindow extends UiPart<Region> {
 
         browserPlaceholder.getChildren().add(browserPanel.getRoot());
         sidePersonPlaceholder.getChildren().add(personSideCard.getRoot());
+        //@@author
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
@@ -162,6 +164,7 @@ public class MainWindow extends UiPart<Region> {
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
     }
+    //@@author
 
     void hide() {
         primaryStage.hide();
@@ -213,6 +216,7 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
+    //@@author yewshengkai
     /**
      * Opens the about window.
      */
@@ -221,6 +225,7 @@ public class MainWindow extends UiPart<Region> {
         AboutWindow aboutWindow = new AboutWindow();
         aboutWindow.show();
     }
+    //@@author
 
     void show() {
         primaryStage.show();
@@ -234,6 +239,7 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
+    //@@author yewshengkai-reused
     /**
      * Open a file
      */
@@ -279,6 +285,7 @@ public class MainWindow extends UiPart<Region> {
 
         }
     }
+    //@@author
 
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;
@@ -294,6 +301,7 @@ public class MainWindow extends UiPart<Region> {
         handleHelp();
     }
 
+    //@@author yewshengkai
     @Subscribe
     private void handleShowAboutEvent(ShowAboutRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));

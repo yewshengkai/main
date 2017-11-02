@@ -31,9 +31,11 @@ public class FindCommand extends Command {
 
     private final PersonContainsKeywordsPredicate predicate;
 
+    //@@author yewshengkai
     public FindCommand(PersonContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
+    //@@author
 
     @Override
     public CommandResult execute() {

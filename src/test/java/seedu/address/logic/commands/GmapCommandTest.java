@@ -26,6 +26,7 @@ import seedu.address.model.UserPrefs;
 import seedu.address.testutil.TypicalPersons;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
+//@@author yewshengkai
 /**
  * Contains integration tests (interaction with the Model) for {@code GmapCommand}.
  */

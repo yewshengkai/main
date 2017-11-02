@@ -35,6 +35,7 @@ public class GuiTestAssert {
                 actualCard.getTags());
     }
 
+    //@@author yewshengkai
     /**
      * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
      */
@@ -44,6 +45,7 @@ public class GuiTestAssert {
         assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
                 actualCard.getTags());
     }
+    //@@author
 
     /**
      * Asserts that the list in {@code personListPanelHandle} displays the details of {@code persons} correctly and
