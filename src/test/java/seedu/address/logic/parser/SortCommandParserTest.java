@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import seedu.address.logic.commands.SortCommand;
 
+//@@author karrui
 public class SortCommandParserTest {
 
     private SortCommandParser parser = new SortCommandParser();

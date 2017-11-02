@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 
+//@@author karrui
 /**
  * Represents a Person's avatar in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidPath(String)}
@@ -28,8 +29,6 @@ public class Avatar {
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "./data/avatar/";
     public final String path;
     public final String initialUrl;
-
-
 
     /**
      * Validates given avatar.

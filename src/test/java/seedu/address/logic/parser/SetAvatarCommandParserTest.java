@@ -17,6 +17,7 @@ import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.model.person.Avatar;
 import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 
+//@@author karrui
 public class SetAvatarCommandParserTest {
     private SetAvatarCommandParser parser = new SetAvatarCommandParser();
     private ArrayList<String> filesCreated = new ArrayList<>();
