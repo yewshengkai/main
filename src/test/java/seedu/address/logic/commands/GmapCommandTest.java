@@ -18,6 +18,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.MapToListRequestEvent;
 import seedu.address.logic.CommandHistory;
+import seedu.address.logic.FindHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -138,7 +139,7 @@ public class GmapCommandTest {
      */
     private GmapCommand prepareCommand(Index index) {
         GmapCommand gmapCommand = new GmapCommand(index);
-        gmapCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        gmapCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         return gmapCommand;
     }
 }

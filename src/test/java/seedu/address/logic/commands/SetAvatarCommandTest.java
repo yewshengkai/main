@@ -20,6 +20,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.CommandHistory;
+import seedu.address.logic.FindHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -137,7 +138,7 @@ public class SetAvatarCommandTest {
      */
     private SetAvatarCommand prepareCommand(Index index, String path) throws IllegalValueException {
         SetAvatarCommand setAvatarCommand = new SetAvatarCommand(index, new Avatar(path));
-        setAvatarCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        setAvatarCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         filesCreated.add(setAvatarCommand.getAvatar().path);
         return setAvatarCommand;
     }

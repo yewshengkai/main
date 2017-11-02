@@ -364,8 +364,16 @@ Examples:
 Select and load the first theme in the results of the `themelist` command.
 * `t` +
 `theme 2` +
-Select and load the second theme in the results of the `tlist` command.
+Select and load the second theme in the results of the `themelist` command.
 // end::theme[]
+
+// tag::recent[]
+=== Display recently searched contacts : `recent`, `rc`
+
+Shows a list of all contacts that was returned by `find` command since application was started. +
+Format: `recent`
+// end::recent[]
+
 
 // tag::gmap[]
 === Selecting a person : `gmap`, `gm`
@@ -388,7 +396,6 @@ Selects the 2nd person in the address book and map its address to Google Map.
 `gm 1` +
 Selects the 1st person in the results of the `find` command and map its address to Google Map.
 // end::gmap[]
-
 
 === Clearing all entries : `clear`, `c`
 
@@ -443,6 +450,8 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Recent* : `recent`
+* *Remark* : `remark INDEX [re/REMARK]`
 * *Set avatar* : `setavatar`
 * *Change theme* : `theme`
 
@@ -461,5 +470,7 @@ e.g.`select 2`
 * *History* : `h`
 * *Undo* : `u`
 * *Redo* : `r`
+* *Recent* : `rc`
+* *Remark* : `re INDEX [re/REMARK]`
 * *Set avatar* : `sa`
 * *Change theme* : `t`
