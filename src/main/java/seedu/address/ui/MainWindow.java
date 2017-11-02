@@ -17,15 +17,18 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seedu.address.MainApp;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowAboutRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
-import seedu.address.logic.commands.ThemeCommand;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -47,6 +50,7 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
+    private PersonSideCard personSideCard;
     private Config config;
     private UserPrefs prefs;
 
@@ -71,6 +75,9 @@ public class MainWindow extends UiPart<Region> {
     @FXML
     private StackPane statusbarPlaceholder;
 
+    @FXML
+    private StackPane sidePersonPlaceholder;
+
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML);
@@ -88,7 +95,6 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
-        ThemeCommand.setRegion(getRoot());
 
         setAccelerators();
         registerAsAnEventHandler(this);
@@ -134,12 +140,17 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
+    //@@author yewshengkai
     /**
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
         browserPanel = new BrowserPanel();
+        personSideCard = new PersonSideCard();
+
         browserPlaceholder.getChildren().add(browserPanel.getRoot());
+        sidePersonPlaceholder.getChildren().add(personSideCard.getRoot());
+        //@@author
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
@@ -153,7 +164,9 @@ public class MainWindow extends UiPart<Region> {
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
     }
+    //@@author
 
     void hide() {
         primaryStage.hide();
@@ -189,6 +202,35 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
+     * Sets the default size based on user preferences.
+     */
+    private void setWindowTheme(int targetIndex) throws CommandException  {
+        String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+        String selectedTheme = "";
+
+        switch (targetIndex) {
+        case 1:
+            selectedTheme = themeList[0];
+            break;
+        case 2:
+            selectedTheme = themeList[1];
+            break;
+        case 3:
+            selectedTheme = themeList[2];
+            break;
+        default:
+            break;
+        }
+
+        if (MainApp.class.getResource("/view/" + selectedTheme + ".css") == null) {
+            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
+        }
+        getRoot().getStylesheets().clear();
+        getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
+    }
+
+
+    /**
      * Returns the current size and the position of the main Window.
      */
     GuiSettings getCurrentGuiSetting() {
@@ -205,6 +247,7 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
+    //@@author yewshengkai
     /**
      * Opens the about window.
      */
@@ -213,6 +256,7 @@ public class MainWindow extends UiPart<Region> {
         AboutWindow aboutWindow = new AboutWindow();
         aboutWindow.show();
     }
+    //@@author
 
     void show() {
         primaryStage.show();
@@ -226,6 +270,7 @@ public class MainWindow extends UiPart<Region> {
         raise(new ExitAppRequestEvent());
     }
 
+    //@@author yewshengkai-reused
     /**
      * Open a file
      */
@@ -271,6 +316,7 @@ public class MainWindow extends UiPart<Region> {
 
         }
     }
+    //@@author
 
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;
@@ -286,9 +332,16 @@ public class MainWindow extends UiPart<Region> {
         handleHelp();
     }
 
+    //@@author yewshengkai
     @Subscribe
     private void handleShowAboutEvent(ShowAboutRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleAbout();
+    }
+
+    @Subscribe
+    private void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) throws CommandException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setWindowTheme(event.targetIndex);
     }
 }

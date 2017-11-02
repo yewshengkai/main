@@ -59,9 +59,11 @@ E.g. Adding a person : `add`, `a`
 
 Format: `help`
 
+// tag::about[]
 === Viewing About us : `about`
 
 Format: `about`
+// end::about[]
 
 // tag::add[]
 === Adding a person: `add`, `a`
@@ -235,6 +237,7 @@ Selects the 2nd person in the address book.
 `s 1` +
 Selects the 1st person in the results of the `find` command.
 
+//tag::remark[]
 === Making a Remark to a person : `remark`, `re`
 
 Give a person a remark by the index number used in the last person listing. +
@@ -255,6 +258,8 @@ Give the 2nd person a remark in the address book.
 * `find Betsy` +
 `re 1 re/Owes me money` +
 Gives the 1st person in the results of the `find` command a remark.
+
+// end::remark[]
 
 //tag::avatar[]
 === Setting an avatar for a contact : `setavatar`, `sa`
@@ -340,6 +345,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `r` (reapplies the `clear` command) +
 // end::undoredo[]
 
+// tag::theme[]
 === Selecting a theme : `theme`, `t`
 
 Selects the theme identified by the index number. +
@@ -358,7 +364,38 @@ Examples:
 Select and load the first theme in the results of the `themelist` command.
 * `t` +
 `theme 2` +
-Select and load the second theme in the results of the `tlist` command.
+Select and load the second theme in the results of the `themelist` command.
+// end::theme[]
+
+// tag::recent[]
+=== Display recently searched contacts : `recent`, `rc`
+
+Shows a list of all contacts that was returned by `find` command since application was started. +
+Format: `recent`
+// end::recent[]
+
+
+// tag::gmap[]
+=== Selecting a person : `gmap`, `gm`
+
+Selects the person identified by the index number used in the last person listing and map the address to Google Map. +
+Format: `gmap INDEX`
+
+****
+* Selects the person and loads the Google map search page at the person the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* `1, 2, 3, ...`
+****
+
+Examples:
+
+* `list` +
+`gmap 2` +
+Selects the 2nd person in the address book and map its address to Google Map.
+* `find Betsy` +
+`gm 1` +
+Selects the 1st person in the results of the `find` command and map its address to Google Map.
+// end::gmap[]
 
 === Clearing all entries : `clear`, `c`
 
@@ -413,6 +450,8 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Recent* : `recent`
+* *Remark* : `remark INDEX [re/REMARK]`
 * *Set avatar* : `setavatar`
 * *Change theme* : `theme`
 
@@ -431,5 +470,7 @@ e.g.`select 2`
 * *History* : `h`
 * *Undo* : `u`
 * *Redo* : `r`
+* *Recent* : `rc`
+* *Remark* : `re INDEX [re/REMARK]`
 * *Set avatar* : `sa`
 * *Change theme* : `t`

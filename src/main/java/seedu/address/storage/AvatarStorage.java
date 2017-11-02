@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 
+//@@author karrui
 /**
  * A class to access the avatar file directory path on the hard disk.
  */

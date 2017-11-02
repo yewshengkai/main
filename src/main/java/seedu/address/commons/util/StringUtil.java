@@ -11,6 +11,7 @@ import java.io.StringWriter;
  */
 public class StringUtil {
 
+    //@@author yewshengkai
     /**
      * Returns true if the {@code sentence} contains the {@code word}.
      *   Ignores case, but a full word match is required.
@@ -42,6 +43,7 @@ public class StringUtil {
         }
         return false;
     }
+    //@@author
 
     /**
      * Returns a detailed message of the t, including the stack trace.

@@ -8,6 +8,7 @@ import org.junit.Test;
 import guitests.guihandles.AboutWindowHandle;
 import seedu.address.logic.commands.AboutCommand;
 
+//@@author yewshengkai
 public class AboutWindowTest extends AddressBookGuiTest {
     private static final String ERROR_MESSAGE = "ATTENTION!!!! : On some computers, this test may fail when run on "
             + "non-headless mode as FxRobot#clickOn(Node, MouseButton...) clicks on the wrong location. We suspect "

@@ -7,11 +7,13 @@ import static seedu.address.testutil.TypicalPersons.getTypicalDescendingOrderAdd
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
+import seedu.address.logic.FindHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 
+//@@author karrui
 /**
  * Contains integration tests (interaction with the Model) and unit tests for SortCommand.
  */
@@ -47,7 +49,7 @@ public class SortCommandTest {
 
     private SortCommand prepareCommand(boolean isDescendingSort) {
         SortCommand sortCommand = new SortCommand(isDescendingSort);
-        sortCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        sortCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         return sortCommand;
     }
 }
