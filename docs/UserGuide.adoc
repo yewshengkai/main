@@ -237,6 +237,7 @@ Selects the 2nd person in the address book.
 `s 1` +
 Selects the 1st person in the results of the `find` command.
 
+//tag::remark[]
 === Making a Remark to a person : `remark`, `re`
 
 Give a person a remark by the index number used in the last person listing. +
@@ -257,6 +258,8 @@ Give the 2nd person a remark in the address book.
 * `find Betsy` +
 `re 1 re/Owes me money` +
 Gives the 1st person in the results of the `find` command a remark.
+
+// end::remark[]
 
 //tag::avatar[]
 === Setting an avatar for a contact : `setavatar`, `sa`

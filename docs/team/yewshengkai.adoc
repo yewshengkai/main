@@ -24,9 +24,9 @@ include::../UserGuide.adoc[tag=find]
 
 ==== Justification
 
-Previous behaviour of find operation did not allow the user to search for other details except for their name.
+Previous behaviour of find operation does not allow user to search for other details except for their name.
 
-This implementation now enhances the usability of the application by allowing the user to utilizes different prefixes to search
+This implementation enhances the usability of the application by allowing the user to utilizes different prefixes to search
 for single/multiple contact details or a portion of details.
 
 ==== Implementation
@@ -116,6 +116,32 @@ Allow user to view the About Us page and contact the developers for bugs and imp
 #Start of Extract [from: Developer Guide]#
 
 include::../DeveloperGuide.adoc[tag=about]
+
+#End of Extract#
+---
+
+=== Enhancement Added: Remark
+
+==== External behavior
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=remark]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+Previous application utilizes tag to briefly describe their contacts. The remark enhancement allow user to leave a long string of characters that is able to describe their contact.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=remark]
 
 #End of Extract#
 ---

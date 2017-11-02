@@ -823,9 +823,12 @@ image::GmapCommandParser.png[]
 
 ==== Design Considerations
 *Aspect:* Implementation of GmapCommand +
-*Alternative 1 (Current choice):* Utilizes event handler to call and ensure the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
-*Pros:* Better user experience. +
+*Alternative 1 (Current choice):* Utilizes event handler to call and load the person address on Google Map.  +
+*Pros:* Better user experience. And ensures that the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
 *Cons:* We could always utilizes library and implement the `PersonSideCard` panel. +
+*Alternative 2:* Load the person address on Google Map on `select` command.  +
+*Pros:* Reduce the need of having extra command to load person address +
+*Cons:* Only able to do one search feature using the web browser +
 
 // end::gmap[]
 
@@ -873,6 +876,72 @@ image::MainWindowHandleAbout.png[]
 *Alternative 1 (Current choice):* Utilizes event handler and ensure that method that open `AboutWindow` will be called.
 
 // end::about[]
+
+// tag::remark[]
+=== Remark mechanism
+
+The remark mechanism is facilitated by the `RemarkCommand` and `RemarkCommandParser`.
+
+`RemarkCommandParser` utilizes `ArgumentTokenizer` to tokenize arguments string and returns an `ArgumentMultimap` object that maps the
+ remark prefixes to its argument values.
+
+`RemarkCommand` will then execute the UndoableCommand to update the person with the input string.
+
+`RemarkCommand` code snippet that calls the relevant `UndoableCommand` and update the `Person` remark:
+[source,java]
+----
+public CommandResult executeUndoableCommand() throws CommandException {
+    List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+    if (index.getZeroBased() >= lastShownList.size()) {
+        throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+    ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
+    Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+            personToEdit.getAddress(), remark, personToEdit.getAvatar(), personToEdit.getTags());
+    try {
+        model.updatePerson(personToEdit, editedPerson);
+    ...
+}
+----
+`RemarkCommand` utilizes `model.getFilteredPersonList()` and `lastShownList.get(index.getZeroBased()` to get the selection of
+the person and add the string of remark to existing person via `model.updatePerson(personToEdit, editedPerson);`.
+
+`RemarkCommandParser` code snippet that handle `ArgumentMultimap`, check if prefixes exist and get the input string:
+[source,java]
+----
+public RemarkCommand parse(String args) throws ParseException {
+    requireNonNull(args);
+    ArgumentMultimap argMultimap =
+            ArgumentTokenizer.tokenize(args, PREFIX_REMARK);
+    Index index;
+    try {
+        index = ParserUtil.parseIndex(argMultimap.getPreamble());
+    } catch (IllegalValueException ive) {
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+    }
+    String remark = argMultimap.getValue(PREFIX_REMARK).orElse("");
+    return new RemarkCommand(index, new Remark(remark));
+}
+----
+
+The following sequence diagram shows how the (RemarkCommand) operation works:
+
+image::RemarkCommand.png[]
+
+The following sequence diagram shows how the (RemarkCommandParser) operation works:
+
+image::RemarkCommandParser.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of RemarkCommand +
+*Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to set usable prefixes and get input string value. +
+*Pros:* Allow user to add and set remark to contact anytime without the add parameter. +
+*Cons:* User who wish to add remark during the `AddCommand` process will not be possible. +
+*Alternative 2:* Include another prefixes that set remark for user during the `AddCommand` process +
+*Pros:* New user can immediately give a person remark during the `AddCommand` phase. +
+*Cons:* Can be troublesome for user to view their own input during the `AddCommand` phase as remark is usually lengthy.
+
+// end::remark[]
 
 == Documentation
 
