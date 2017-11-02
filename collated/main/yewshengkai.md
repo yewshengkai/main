@@ -145,7 +145,7 @@ public class GmapCommand extends Command {
     public static final String COMMAND_ALIAS = "gm";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects and map the person adress to google map identified by the index number used in the last "
+            + ": Selects and map the person address to Google Map identified by the index number used in the last "
             + "person listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
