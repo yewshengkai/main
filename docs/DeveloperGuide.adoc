@@ -829,7 +829,7 @@ returning the list in order user searched for contacts.
 *Cons:* Unable to use set, which is used when user edits a person.
 
 // end::recent[]
-=======
+
 // tag::gmap[]
 === Gmap mechanism
 
