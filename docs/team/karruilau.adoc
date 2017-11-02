@@ -95,7 +95,36 @@ Setting an avatar is a natural extension of an address book application
 include::../DeveloperGuide.adoc[tag=avatar]
 
 #End of Extract#
+
 ---
+
+=== Enhancement Added: Recent contacts
+
+==== External behavior
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=recent]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+Finding recently searched for contacts is a natural extension of an address book application, provides convenience to user.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=recent]
+
+#End of Extract#
+
+---
+
 
 === Other contributions
 

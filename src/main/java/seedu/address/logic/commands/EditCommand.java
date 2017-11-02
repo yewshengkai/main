@@ -85,6 +85,7 @@ public class EditCommand extends UndoableCommand {
 
         try {
             model.updatePerson(personToEdit, editedPerson);
+            findHistory.set(personToEdit, editedPerson);
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         } catch (PersonNotFoundException pnfe) {
@@ -113,6 +114,7 @@ public class EditCommand extends UndoableCommand {
         Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
         Avatar updatedAvatar = personToEdit.getAvatar(); // edit command does not allow editing avatar
 
+        //@@author karrui
         if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
             return new Person(updatedName, updatedPhone, updatedEmail,
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
@@ -125,6 +127,7 @@ public class EditCommand extends UndoableCommand {
             return new Person(updatedName, updatedPhone, updatedEmail,
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
         }
+        //@@author
     }
 
     @Override

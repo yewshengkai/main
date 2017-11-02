@@ -92,8 +92,8 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_EMAIL_DESC, Email.MESSAGE_EMAIL_CONSTRAINTS); // invalid email
         assertParseFailure(parser, "1" + INVALID_ADDRESS_DESC, Address.MESSAGE_ADDRESS_CONSTRAINTS); // invalid address
         assertParseFailure(parser, "1" + INVALID_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS); // invalid tag
+        // invalid homepage
         assertParseFailure(parser, "1" + INVALID_HOMEPAGE_DESC, Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
-
         // invalid phone followed by valid email
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_PHONE_CONSTRAINTS);
 
@@ -165,11 +165,13 @@ public class EditCommandParserTest {
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
+        //@@author karrui
         // homepage
         userInput = targetIndex.getOneBased() + HOMEPAGE_DESC_AMY;
         descriptor = new EditPersonDescriptorBuilder().withHomepage(VALID_HOMEPAGE_AMY).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
+        //@@author
 
         // tags
         userInput = targetIndex.getOneBased() + TAG_DESC_FRIEND;
@@ -222,6 +224,7 @@ public class EditCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
+    //@@author karrui
     @Test
     public void parse_resetHomepage_success() {
         Index targetIndex = INDEX_THIRD_PERSON;
