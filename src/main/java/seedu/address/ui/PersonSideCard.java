@@ -109,6 +109,12 @@ public class PersonSideCard extends UiPart<Region> {
             avatar.setFitHeight(90);
             avatar.setPreserveRatio(true);
             avatar.setCache(true);
+        } else {
+            image = new Image("images/default_avatar.png");
+            avatar.setImage(image);
+            avatar.setFitHeight(90);
+            avatar.setPreserveRatio(true);
+            avatar.setCache(true);
         }
     }
 
