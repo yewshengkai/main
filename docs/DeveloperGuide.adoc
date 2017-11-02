@@ -657,7 +657,7 @@ image::FindCommand.png[]
 
 The theme mechanism is facilitated by the `ThemeCommand`. `ThemeCommandParser` checks for the input index `1` to `3`, validate through `ParserUtil` and calls the relevant `ThemeCommand` to switch the application `theme`.
 
-When the application run, `MainWindow` will execute `ThemeCommand.setRegion` in allowing ThemeCommand to retrieve the application root.
+`ThemeCommand` relies on `ChangeThemeRequestEvent` which is handled by `MainWindow` in allowing the application to set theme.
 
 [NOTE]
 By default if no index are present, theme command will return an invalid message.
@@ -666,7 +666,22 @@ By default if no index are present, theme command will return an invalid message
 [NOTE]
 When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
 
-`ThemeCommandParser` code snippet to determine if user's input contains any index:
+`ThemeCommand` code snippet to ensure input index is not more than the specified theme list and calls the relevant `ChangeThemeRequestEvent` handler to switch theme based on the input index:
+[source,java]
+----
+public CommandResult execute() throws CommandException {
+    String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+
+    if (targetIndex.getZeroBased() >= themeList.length) {
+        throw new CommandException(Messages.MESSAGE_INVALID_THEME_INDEX);
+    }
+
+    EventsCenter.getInstance().post(new ChangeThemeRequestEvent(targetIndex));
+    return new CommandResult(String.format(MESSAGE_THEME_SUCCESS, targetIndex.getOneBased()));
+}
+----
+
+`ThemeCommandParser` code snippet to determine if user's input contains any index and returns message for invalid input or format:
 [source,java]
 ----
 try {
@@ -679,28 +694,51 @@ try {
 ...
 ----
 
-`ThemeCommand` code snippet to determine the existence of CSS file and clear the current layout before using the new CSS file:
+`ChangeThemeRequestEvent` code snippet that receive and convert the Index parse from `ThemeCommand` and set to integer targetIndex:
 [source,java]
 ----
-public void setTheme(String args) throws CommandException {
-    if (MainApp.class.getResource("/view/" + args + ".css") == null) {
+public final int targetIndex;
+
+public ChangeThemeRequestEvent(Index targetIndex) {
+    this.targetIndex = targetIndex.getOneBased();
+}
+----
+
+`MainWindow` code snippet that handles `ChangeThemeRequestEvent` and call the method `setWindowTheme` to switch theme:
+[source,java]
+----
+private void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) throws CommandException {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    setWindowTheme(event.targetIndex);
+}
+----
+
+`setWindowTheme` method code snippet that check for file existence before clearing the current style and applying the newly selected style :
+[source,java]
+----
+private void setWindowTheme(int targetIndex) throws CommandException  {
+    String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+    String selectedTheme = new String();
+
+    switch (targetIndex) {
+    case 1:
+        selectedTheme = themeList[0];
+        break;
+    case 2:
+        selectedTheme = themeList[1];
+        break;
+    case 3:
+        selectedTheme = themeList[2];
+        break;
+    default:
+        break;
+    }
+
+    if (MainApp.class.getResource("/view/" + selectedTheme + ".css") == null) {
         throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
     }
-    region.getStylesheets().clear();
-    region.getStylesheets().add("/view/" + args + ".css");
-}
-
-public static void setRegion(Region region) {
-    ThemeCommand.region = region;
-}
-----
-
-`MainWindow` code snippet to give/set ThemeCommand `Region`:
-[source,java]
-----
-public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
-    ...
-    ThemeCommand.setRegion(getRoot());
+    getRoot().getStylesheets().clear();
+    getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
 }
 ----
 
@@ -718,25 +756,27 @@ private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedE
 }
 ----
 
-The following sequence diagram shows how the theme (ThemeCommandParser) operation works:
-
-image::ThemeCommandParser.png[]
-
 The following sequence diagram shows how the theme (ThemeCommand) operation works:
 
 image::ThemeCommand.png[]
 
+The following sequence diagram shows how the theme (ThemeCommandParser) operation works:
+
+image::ThemeCommandParser.png[]
+
+
 ==== Design Considerations
 *Aspect:* Implementation of ThemeCommand +
-*Alternative 1 (Current choice):* Enable `MainWindow` at start to set/give ThemeCommand its `Region` before utilizing setTheme method to switch stylesheet. +
-*Pros:* Prevent unnecessary re-access to retrieve application `Region` or access to other `class` file. Check if file exist and clear current stylesheet before changing the new style. +
-*Cons:* There are many other ways to change the styling of application (e.g. Utilizing `ChangeThemeRequestEvent` and call methods in `MainWindow`) +
-*Alternative 2:* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to change theme. +
-*Pros:* ThemeCommand will have lesser responsibility and checks to validate. +
-*Cons:* A class should follow `Single Responsibility Principle`. Method that is not supposed to be called through `MainWindow` should be avoided.
+*Alternative 1 (Current choice):* Utilizing `ChangeThemeRequestEvent` and allow `MainWindow` to handle the RequestEvent and call method to change application theme. +
+*Pros:* ThemeCommand will have lesser responsibility and checks to validate (efficiency). +
+*Cons:* There are other effective way in changing the application theme without the process of parsing and event handling whereby new programmer may find it difficult to understand the behavior. +
+*Alternative 2:* Allow `MainWindow` at start to instantiate ThemeCommand and pass/set its `Region` to ThemeCommand, allowing accessibility from within. After which, utilize setTheme method in ThemeCommand to switch application theme. +
+*Pros:* Straight forward, easier for new programmer to understand. +
+*Cons:* There could be a breach in security as `ThemeCommand` should not be allowed to obtain `MainWindow` `Region` and hold it indefinitely.
 
 // end::theme[]
 
+<<<<<<< HEAD
 // tag::recent[]
 === Recent command mechanism
 
@@ -789,6 +829,213 @@ returning the list in order user searched for contacts.
 *Cons:* Unable to use set, which is used when user edits a person.
 
 // end::recent[]
+=======
+// tag::gmap[]
+=== Gmap mechanism
+
+The gmap mechanism is facilitated by the `GmapCommand`. `GmapCommandParser` checks for input index and validate through `ParserUtil` and calls the relevant `GmapCommand` to search for `Person` address using Google Map.
+
+`GmapCommand` relies on `MapToListRequestEvent` which is handled by `BrowserPanel` to call the appropriate method for loading `Person` address using Google Map.
+
+[NOTE]
+By default if no index are present, gmap command will return an invalid message.
+(e.g gmap "").
+
+[NOTE]
+Events which triggers `PersonSideCardRequestEvent` handler, set the visibility of `Person` side panel card (Allow more display and exposure to the Web Browser).
+
+`GmapCommand` code snippet to ensure input index is within the PersonList, and calls the relevant `MapToListRequestevent` handler to search `Person` address on Google Map:
+[source,java]
+----
+try {
+public CommandResult execute() throws CommandException {
+    List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+    if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+    EventsCenter.getInstance().post(new MapToListRequestEvent(lastShownList.get(targetIndex.getZeroBased())));
+    return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
+}
+----
+
+`GmapCommandParser` code snippet to check if user's input contains any index and returns message if there exist invalid input:
+[source,java]
+----
+public GmapCommand parse(String args) throws ParseException {
+    try {
+        Index index = ParserUtil.parseIndex(args);
+        return new GmapCommand(index);
+    } catch (IllegalValueException ive) {
+        throw new ParseException(
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, GmapCommand.MESSAGE_USAGE));
+    }
+}
+----
+
+`BrowserPanel` code snippet that handle `MapToListRequestEvent` and load the method to search on Google Map:
+[source,java]
+----
+private void loadPersonMap(ReadOnlyPerson targetPerson) {
+    loadPage(GOOGLE_MAP_SEARCH_URL_PREFIX + targetPerson.getAddress().value
+            .replaceAll(",", ""));
+}
+private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    loadPersonMap(event.targetPerson);
+    browser.setOpacity(100);
+}
+----
+
+`PersonSideCard` code snippet that handles `PersonSideCardRequestEvent` and set Person card side panel visibility:
+[source,java]
+----
+private void showSidePanel(boolean isVisible) {
+    getRoot().setManaged(isVisible);
+    int opacityLevel;
+    if (isVisible) {
+        opacityLevel =  100;
+    } else {
+        opacityLevel = 0;
+    }
+    getRoot().setOpacity(opacityLevel);
+}
+@Subscribe
+private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    showSidePanel(event.isVisible);
+}
+----
+
+The following sequence diagram shows how the (GmapCommand) operation works:
+
+image::GmapCommand.png[]
+
+The following sequence diagram shows how the (GmapCommandParser) operation works:
+
+image::GmapCommandParser.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of GmapCommand +
+*Alternative 1 (Current choice):* Utilizes event handler to call and load the person address on Google Map.  +
+*Pros:* Better user experience. And ensures that the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
+*Cons:* We could always utilizes library and implement the `PersonSideCard` panel. +
+*Alternative 2:* Load the person address on Google Map on `select` command.  +
+*Pros:* Reduce the need of having extra command to load person address +
+*Cons:* Only able to do one search feature using the web browser +
+
+// end::gmap[]
+
+// tag::about[]
+=== About mechanism
+
+The about mechanism is facilitated by the `AboutCommand`.
+
+`AboutCommand` relies on `ShowAboutRequestEvent` which is handled by `MainWindow` to call the appropriate method to load the `AboutWindow`.
+
+`AboutCommand` code snippet that calls the relevant `ShowAboutRequestEvent` handler to open `AboutWindow`:
+[source,java]
+----
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new ShowAboutRequestEvent());
+        return new CommandResult(SHOWING_ABOUT_MESSAGE);
+    }
+----
+
+`MainWindow` code snippet that handle `ShowAboutRequestEvent` and call the method to display `AboutWindow`:
+[source,java]
+----
+@FXML
+public void handleAbout() {
+    AboutWindow aboutWindow = new AboutWindow();
+    aboutWindow.show();
+}
+@Subscribe
+private void handleShowAboutEvent(ShowAboutRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    handleAbout();
+}
+----
+
+The following sequence diagram shows how the (AboutCommand) operation works:
+
+image::AboutCommand.png[]
+
+The following sequence diagram shows how the `MainWindow` that handles ShowAboutRequestEvent operation and call `AboutWindow`:
+
+image::MainWindowHandleAbout.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of AboutCommand +
+*Alternative 1 (Current choice):* Utilizes event handler and ensure that method that open `AboutWindow` will be called.
+
+// end::about[]
+
+// tag::remark[]
+=== Remark mechanism
+
+The remark mechanism is facilitated by the `RemarkCommand` and `RemarkCommandParser`.
+
+`RemarkCommandParser` utilizes `ArgumentTokenizer` to tokenize arguments string and returns an `ArgumentMultimap` object that maps the
+ remark prefixes to its argument values.
+
+`RemarkCommand` will then execute the UndoableCommand to update the person with the input string.
+
+`RemarkCommand` code snippet that calls the relevant `UndoableCommand` and update the `Person` remark:
+[source,java]
+----
+public CommandResult executeUndoableCommand() throws CommandException {
+    List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+    if (index.getZeroBased() >= lastShownList.size()) {
+        throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+    ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
+    Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+            personToEdit.getAddress(), remark, personToEdit.getAvatar(), personToEdit.getTags());
+    try {
+        model.updatePerson(personToEdit, editedPerson);
+    ...
+}
+----
+`RemarkCommand` utilizes `model.getFilteredPersonList()` and `lastShownList.get(index.getZeroBased()` to get the selection of
+the person and add the string of remark to existing person via `model.updatePerson(personToEdit, editedPerson);`.
+
+`RemarkCommandParser` code snippet that handle `ArgumentMultimap`, check if prefixes exist and get the input string:
+[source,java]
+----
+public RemarkCommand parse(String args) throws ParseException {
+    requireNonNull(args);
+    ArgumentMultimap argMultimap =
+            ArgumentTokenizer.tokenize(args, PREFIX_REMARK);
+    Index index;
+    try {
+        index = ParserUtil.parseIndex(argMultimap.getPreamble());
+    } catch (IllegalValueException ive) {
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+    }
+    String remark = argMultimap.getValue(PREFIX_REMARK).orElse("");
+    return new RemarkCommand(index, new Remark(remark));
+}
+----
+
+The following sequence diagram shows how the (RemarkCommand) operation works:
+
+image::RemarkCommand.png[]
+
+The following sequence diagram shows how the (RemarkCommandParser) operation works:
+
+image::RemarkCommandParser.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of RemarkCommand +
+*Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to set usable prefixes and get input string value. +
+*Pros:* Allow user to add and set remark to contact anytime without the add parameter. +
+*Cons:* User who wish to add remark during the `AddCommand` process will not be possible. +
+*Alternative 2:* Include another prefixes that set remark for user during the `AddCommand` process +
+*Pros:* New user can immediately give a person remark during the `AddCommand` phase. +
+*Cons:* Can be troublesome for user to view their own input during the `AddCommand` phase as remark is usually lengthy.
+
+// end::remark[]
+>>>>>>> 9b9481e03de568407d5708eb8fe51a72fba8d0cd
 
 == Documentation
 
@@ -1187,6 +1434,8 @@ favourite contacts easily
 
 |`* *` |user |add birthdays to contacts |see the birthday of my contact
 
+|`* *` |user |search contact address on google map |see the address of contact
+
 |`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
 
 |`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
@@ -1202,6 +1451,8 @@ increasing security
 |`*` |user |share contacts |I can share my contacts with other people
 
 |`*` |user who likes customization|change the theme of the application |customize the theme to my liking
+
+|`*` |user|see who create the addressbook |let the developer know bugs that I found
 
 
 
@@ -1766,6 +2017,51 @@ Use case ends.
 ** 1b1. AddressBook shows an error message.
 +
 Use case ends.
+
+[discrete]
+=== Use case: gmap a contacts address
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected and address will be search on Google Map.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and gmap to search a contact address.
+4.  AddressBook select the contact and search its address on Google Map.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: About
+
+*Guarantees:* About Us will be displayed.
+
+*MSS*
+
+1.  User request about.
+2.  AddressBook open about us in a new window.
++
+Use case ends.
+
+[discrete]
 
 {More to be added}
 

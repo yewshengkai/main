@@ -5,6 +5,7 @@ import java.net.URL;
 import guitests.GuiRobot;
 import javafx.stage.Stage;
 
+//@@author yewshengkai
 /**
  * A handle to the {@code AboutWindow} of the application.
  */

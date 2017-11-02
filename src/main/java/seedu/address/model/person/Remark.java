@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+//@@author yewshengkai-reused
 import static java.util.Objects.requireNonNull;
 
 /**

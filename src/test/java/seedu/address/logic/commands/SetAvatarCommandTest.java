@@ -31,6 +31,7 @@ import seedu.address.model.person.Person;
 import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 import seedu.address.testutil.PersonBuilder;
 
+//@@author karrui
 public class SetAvatarCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 

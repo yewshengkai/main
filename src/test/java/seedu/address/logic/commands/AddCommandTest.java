@@ -62,6 +62,7 @@ public class AddCommandTest {
         getAddCommandForPerson(validPerson, modelStub).execute();
     }
 
+    //@@author karrui
     @Test
     public void execute_person_homepageGeneratedSuccessful() {
         Person validPerson = new PersonBuilder().build();
@@ -73,6 +74,7 @@ public class AddCommandTest {
         assertEquals(defaultHomepage, validPerson.getHomepage().value);
         assertEquals(customHomepage, validPersonWithHomepage.getHomepage().value);
     }
+    //@@author
 
     @Test
     public void equals() {

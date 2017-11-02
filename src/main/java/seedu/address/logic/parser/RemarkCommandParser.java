@@ -10,6 +10,7 @@ import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Remark;
 
+//@@author yewshengkai-reused
 /**
  * Parses the given {@code String} of arguments in the context of the RemarkCommand
  * and returns an RemarkCommand object for execution.

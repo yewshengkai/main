@@ -26,6 +26,7 @@ import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.GmapCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -104,6 +105,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3") instanceof ExitCommand);
     }
 
+    //@@author yewshengkai
     @Test
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
@@ -132,6 +134,7 @@ public class AddressBookParserTest {
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
                 FindCommand.COMMAND_WORD_ANY, keywords, true)), aliasCommand);
     }
+    //@@author
 
     @Test
     public void parseCommand_help() throws Exception {
@@ -199,6 +202,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand("u 3") instanceof UndoCommand);
     }
 
+    //@@author yewshengkai-reused
     @Test
     public void parseCommand_group() throws Exception {
         final Remark remark = new Remark("Some groups.");
@@ -206,7 +210,9 @@ public class AddressBookParserTest {
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_REMARK + " " + remark.value);
         assertEquals(new RemarkCommand(INDEX_FIRST_PERSON, remark), command);
     }
+    //@@author
 
+    //@@author karrui
     @Test
     public void parseCommand_sort() throws Exception {
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD) instanceof SortCommand);
@@ -214,6 +220,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD + " d") instanceof SortCommand);
     }
 
+    //@@author yewshengkai
     @Test
     public void parseCommand_theme() throws Exception {
         ThemeCommand command = (ThemeCommand) parser.parseCommand(
@@ -224,7 +231,9 @@ public class AddressBookParserTest {
                 ThemeCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new ThemeCommand(INDEX_FIRST_PERSON), aliasCommand);
     }
+    //@@author
 
+    //@@author karrui
     @Test
     public void parseCommand_setAvatar() throws Exception {
         //setup
@@ -249,6 +258,19 @@ public class AddressBookParserTest {
             ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
         }
     }
+
+    //@@author yewshengkai
+    @Test
+    public void parseCommand_gmap() throws Exception {
+        GmapCommand command = (GmapCommand) parser.parseCommand(
+                GmapCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new GmapCommand(INDEX_FIRST_PERSON), command);
+
+        GmapCommand aliasCommand = (GmapCommand) parser.parseCommand(
+                GmapCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new GmapCommand(INDEX_FIRST_PERSON), aliasCommand);
+    }
+    //@@author
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() throws Exception {
