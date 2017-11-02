@@ -17,15 +17,18 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seedu.address.MainApp;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowAboutRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
-import seedu.address.logic.commands.ThemeCommand;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -88,7 +91,6 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
-        ThemeCommand.setRegion(getRoot());
 
         setAccelerators();
         registerAsAnEventHandler(this);
@@ -187,6 +189,35 @@ public class MainWindow extends UiPart<Region> {
         primaryStage.setMinHeight(MIN_HEIGHT);
         primaryStage.setMinWidth(MIN_WIDTH);
     }
+
+    /**
+     * Sets the default size based on user preferences.
+     */
+    private void setWindowTheme(int targetIndex) throws CommandException  {
+        String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+        String selectedTheme = "";
+
+        switch (targetIndex) {
+        case 1:
+            selectedTheme = themeList[0];
+            break;
+        case 2:
+            selectedTheme = themeList[1];
+            break;
+        case 3:
+            selectedTheme = themeList[2];
+            break;
+        default:
+            break;
+        }
+
+        if (MainApp.class.getResource("/view/" + selectedTheme + ".css") == null) {
+            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
+        }
+        getRoot().getStylesheets().clear();
+        getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
+    }
+
 
     /**
      * Returns the current size and the position of the main Window.
@@ -290,5 +321,11 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowAboutEvent(ShowAboutRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleAbout();
+    }
+
+    @Subscribe
+    private void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) throws CommandException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setWindowTheme(event.targetIndex);
     }
 }
