@@ -1244,6 +1244,8 @@ increasing security
 
 |`*` |user who likes customization|change the theme of the application |customize the theme to my liking
 
+|`*` |user|see who create the addressbook |let the developer know bugs that I found
+
 
 
 |=======================================================================
@@ -1787,6 +1789,51 @@ Use case ends.
 ** 1b1. AddressBook shows an error message.
 +
 Use case ends.
+
+[discrete]
+=== Use case: gmap a contacts address
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected and search on Google Map.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and gmap to search a contact address.
+4.  AddressBook select the contact and search its address on Google Map.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: About
+
+*Guarantees:* About Us will be displayed.
+
+*MSS*
+
+1.  User request about.
+2.  AddressBook open about us in a new window.
++
+Use case ends.
+
+[discrete]
 
 {More to be added}
 
