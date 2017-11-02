@@ -1719,6 +1719,25 @@ Use case ends.
 [discrete]
 === Use case: Recent contacts
 
+*Guarantees:* All contacts found by `FindCommand` since application startup will be listed.
+
+*MSS*
+
+1. User uses recent command to list recent contacts.
+2. AddressBook shows a list of contacts recently searched for.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Recent contacts
+
 *Guarantees:* Only contacts that has been returned by `FindCommand` will be listed.
 
 *MSS*
