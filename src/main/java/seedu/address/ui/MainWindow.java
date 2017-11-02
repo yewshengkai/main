@@ -195,7 +195,7 @@ public class MainWindow extends UiPart<Region> {
      */
     private void setWindowTheme(int targetIndex) throws CommandException  {
         String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
-        String selectedTheme = new String();
+        String selectedTheme = "";
 
         switch (targetIndex) {
         case 1:
