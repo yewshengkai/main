@@ -67,9 +67,37 @@ include::../DeveloperGuide.adoc[tag=theme]
 #End of Extract#
 ---
 
+=== Enhancement Added: Gmap
+
+==== External behavior
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=gmap]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+Previously, the application list its `Person` details using ListView. With the updated GUi, the person details will now be shown on
+the left panel beside the web browser. Gmap command is hence added so that user is able to search for `Person` details other than selecting its homepage.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=gmap]
+
+#End of Extract#
+---
+
+
 === Other contributions
 
-* Updated the GUI layout and color scheme, logo (Pull requests https://github.com[#7], https://github.com[#15], https://github.com[#10], https://github.com[#33])
+* Updated the GUI layout and color scheme, logo (Pull requests https://github.com[#7], https://github.com[#15], https://github.com[#10], https://github.com[#33], https://github.com[#63])
 * Wrote default functionality for developer guide 'Use case' (textual form) (Pull requests https://github.com[#10])
 * Wrote additional tests to increase coverage (Pull requests all)
 
