@@ -15,6 +15,7 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 
+//@@author karrui
 /**
  * Changes the avatar of an existing person in the address book
  */

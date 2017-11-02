@@ -54,12 +54,14 @@ public class AddCommandParser implements Parser<AddCommand> {
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             ReadOnlyPerson person;
 
+            //@@author karrui
             if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
                 Homepage homepage = ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).get();
                 person = new Person(name, phone, email, address, remark, avatar, tagList, homepage);
             } else {
                 person = new Person(name, phone, email, address, remark, avatar, tagList);
             }
+            //@@author
 
 
             return new AddCommand(person);

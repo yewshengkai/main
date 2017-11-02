@@ -200,6 +200,7 @@ public class AddressBookParserTest {
         assertEquals(new RemarkCommand(INDEX_FIRST_PERSON, remark), command);
     }
 
+    //@@author karrui
     @Test
     public void parseCommand_sort() throws Exception {
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD) instanceof SortCommand);
@@ -207,6 +208,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD + " d") instanceof SortCommand);
     }
 
+    //@@author
     @Test
     public void parseCommand_theme() throws Exception {
         ThemeCommand command = (ThemeCommand) parser.parseCommand(
@@ -218,6 +220,7 @@ public class AddressBookParserTest {
         assertEquals(new ThemeCommand(INDEX_FIRST_PERSON), aliasCommand);
     }
 
+    //@@author karrui
     @Test
     public void parseCommand_setAvatar() throws Exception {
         //setup

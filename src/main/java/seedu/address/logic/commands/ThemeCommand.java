@@ -1,10 +1,5 @@
 package seedu.address.logic.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.scene.layout.Region;
-import seedu.address.MainApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -29,7 +24,6 @@ public class ThemeCommand extends Command {
 
     public static final String MESSAGE_THEME_SUCCESS = "Theme updated: %1$s";
 
-    private static Region region;
     private final Index targetIndex;
     public ThemeCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
@@ -37,29 +31,12 @@ public class ThemeCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
 
-        List<String> themeList = new ArrayList<>();
-        themeList.add("NoTheme");
-        themeList.add("BlueTheme");
-        themeList.add("DarkTheme");
-
-        if (targetIndex.getZeroBased() >= themeList.size()) {
+        if (targetIndex.getZeroBased() >= themeList.length) {
             throw new CommandException(Messages.MESSAGE_INVALID_THEME_INDEX);
         }
 
-        switch (targetIndex.getOneBased()) {
-        case 1:
-            setTheme(themeList.get(0));
-            break;
-        case 2:
-            setTheme(themeList.get(1));
-            break;
-        case 3:
-            setTheme(themeList.get(2));
-            break;
-        default:
-            break;
-        }
         EventsCenter.getInstance().post(new ChangeThemeRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_THEME_SUCCESS, targetIndex.getOneBased()));
     }
@@ -71,16 +48,4 @@ public class ThemeCommand extends Command {
                 && this.targetIndex.equals(((ThemeCommand) other).targetIndex)); // state check
     }
 
-    public void setTheme(String args) throws CommandException {
-        if (MainApp.class.getResource("/view/" + args + ".css") == null) {
-            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
-        }
-        region.getStylesheets().clear();
-        region.getStylesheets().add("/view/" + args + ".css");
-
-    }
-
-    public static void setRegion(Region region) {
-        ThemeCommand.region = region;
-    }
 }
