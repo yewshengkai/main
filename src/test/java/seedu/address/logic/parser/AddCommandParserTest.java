@@ -87,7 +87,7 @@ public class AddCommandParserTest {
         //@@author karrui
         // multiple homepages - last homepage accepted
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + HOMEPAGE_DESC_AMY + HOMEPAGE_DESC_BOB + TAG_DESC_FRIEND,
+                + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB + HOMEPAGE_DESC_AMY + HOMEPAGE_DESC_BOB + TAG_DESC_FRIEND,
                 new AddCommand(expectedPerson));
 
         //@@author
@@ -169,7 +169,8 @@ public class AddCommandParserTest {
         //@@author karrui
         // invalid homepage
         assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + ADDRESS_DESC_BOB + INVALID_HOMEPAGE_DESC + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                        + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB + INVALID_HOMEPAGE_DESC + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND,
                  Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
 
         //@@author
