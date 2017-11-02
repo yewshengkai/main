@@ -1226,6 +1226,8 @@ favourite contacts easily
 
 |`* *` |user |add birthdays to contacts |see the birthday of my contact
 
+|`* *` |user |search contact address on google map |see the address of contact
+
 |`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
 
 |`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
