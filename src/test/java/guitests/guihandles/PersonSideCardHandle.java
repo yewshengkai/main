@@ -7,10 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
+//@@author yewshengkai
 /**
  * Provides a handle to a person card in the person list panel.
  */
-public class PersonCardHandle extends NodeHandle<Node> {
+public class PersonSideCardHandle extends NodeHandle<Node> {
     private static final String ID_FIELD_ID = "#id";
     private static final String NAME_FIELD_ID = "#name";
     private static final String PHONE_FIELD_ID = "#phone";
@@ -21,7 +22,7 @@ public class PersonCardHandle extends NodeHandle<Node> {
     private final Label phoneLabel;
     private final List<Label> tagLabels;
 
-    public PersonCardHandle(Node cardNode) {
+    public PersonSideCardHandle(Node cardNode) {
         super(cardNode);
 
         this.idLabel = getChildNode(ID_FIELD_ID);

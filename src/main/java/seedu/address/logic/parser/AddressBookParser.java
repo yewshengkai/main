@@ -14,6 +14,7 @@ import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.GmapCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -73,6 +74,7 @@ public class AddressBookParser {
         case ClearCommand.COMMAND_ALIAS:
             return new ClearCommand();
 
+        //@@author yewshengkai
         case FindCommand.COMMAND_WORD:
         case FindCommand.COMMAND_ALIAS:
             return new FindCommandParser().parse(arguments, false);
@@ -80,6 +82,7 @@ public class AddressBookParser {
         case FindCommand.COMMAND_WORD_ANY:
         case FindCommand.COMMAND_ALIAS_ANY:
             return new FindCommandParser().parse(arguments, true);
+        //@@author
 
         case ListCommand.COMMAND_WORD:
         case ListCommand.COMMAND_ALIAS:
@@ -106,9 +109,11 @@ public class AddressBookParser {
         case RedoCommand.COMMAND_ALIAS:
             return new RedoCommand();
 
+        //@@author yewshengkai-reused
         case RemarkCommand.COMMAND_WORD:
         case RemarkCommand.COMMAND_ALIAS:
             return new RemarkCommandParser().parse(arguments);
+        //@@author
 
         case SetAvatarCommand.COMMAND_WORD:
         case SetAvatarCommand.COMMAND_ALIAS:
@@ -117,9 +122,15 @@ public class AddressBookParser {
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(arguments);
 
+        //@@author yewshengkai
         case ThemeCommand.COMMAND_WORD:
         case ThemeCommand.COMMAND_ALIAS:
             return new ThemeCommandParser().parse(arguments);
+
+        case GmapCommand.COMMAND_WORD:
+        case GmapCommand.COMMAND_ALIAS:
+            return new GmapCommandParser().parse(arguments);
+        //@@author
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

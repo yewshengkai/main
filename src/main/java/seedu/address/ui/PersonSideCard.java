@@ -3,6 +3,9 @@ package seedu.address.ui;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
+
+import com.google.common.eventbus.Subscribe;
 
 import javafx.beans.binding.Bindings;
 
@@ -12,27 +15,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.PersonSideCardRequestEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author yewshengkai
 /**
  * An UI component that displays information of a {@code Person}.
  */
-public class PersonCard extends UiPart<Region> {
+public class PersonSideCard extends UiPart<Region> {
 
-    private static final String FXML = "PersonListCard.fxml";
+    private static final String FXML = "PersonSideCard.fxml";
     private static String[] colors = { "red", "yellow", "blue", "orange", "brown", "green", "pink", "black", "grey" };
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
-
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
-
-    public final ReadOnlyPerson person;
+    private final Logger logger = LogsCenter.getLogger(PersonSideCard.class);
 
     @FXML
     private Label name;
@@ -41,18 +39,28 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
+    private Label address;
+    @FXML
+    private Label email;
+    @FXML
     private FlowPane tags;
+    @FXML
+    private Label homepage;
+    @FXML
+    private Label remark;
     @FXML
     private ImageView avatar;
 
-    public PersonCard(ReadOnlyPerson person, int displayedIndex) {
+    public PersonSideCard() {
         super(FXML);
-        this.person = person;
-        id.setText(displayedIndex + ". ");
-        initTags(person);
-        bindListeners(person);
-    }
+        registerAsAnEventHandler(this);
+        getRoot().setManaged(false);
+        getRoot().setOpacity(0);
 
+    }
+    //@@author
+
+    //@@author yewshengkai-reused
     private static String getColorForTag(String tagValue) {
         if (!tagColors.containsKey(tagValue)) {
             tagColors.put(tagValue, colors[random.nextInt(colors.length)]);
@@ -68,15 +76,20 @@ public class PersonCard extends UiPart<Region> {
     private void bindListeners(ReadOnlyPerson person) {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
-        person.tagProperty().addListener((observable, oldValue, newValue) -> {
-            tags.getChildren().clear();
-            initTags(person);
+        address.textProperty().bind(Bindings.convert(person.addressProperty()));
+        email.textProperty().bind(Bindings.convert(person.emailProperty()));
+        remark.textProperty().bind(Bindings.convert(person.remarkProperty()));
+        tags.getChildren().clear();
+        person.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
+            tags.getChildren().add(tagLabel);
         });
+        homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
 
         initImage(person);
     }
 
-    //@@author karrui
     /**
      * Binds the correct image to the person.
      * If url is "", default display picture will be assigned, else image from URL will be assigned
@@ -91,9 +104,14 @@ public class PersonCard extends UiPart<Region> {
             avatar.setFitHeight(90);
             avatar.setPreserveRatio(true);
             avatar.setCache(true);
+        } else {
+            image = new Image("images/default_avatar.png");
+            avatar.setImage(image);
+            avatar.setFitHeight(90);
+            avatar.setPreserveRatio(true);
+            avatar.setCache(true);
         }
     }
-    //@@author
 
     /**
      * Tags coloring
@@ -105,22 +123,32 @@ public class PersonCard extends UiPart<Region> {
             tags.getChildren().add(tagLabel);
         });
     }
+    //@@author
 
-    @Override
-    public boolean equals(Object other) {
-        // short circuit if same object
-        if (other == this) {
-            return true;
+    //@@author yewshengkai
+    /**
+     * Make PersonSideCard Panel visible or invisible to save a portion of GUi space for WebView
+     */
+    private void showSidePanel(boolean isVisible) {
+        getRoot().setManaged(isVisible);
+        int opacityLevel;
+        if (isVisible) {
+            opacityLevel =  100;
+        } else {
+            opacityLevel = 0;
         }
+        getRoot().setOpacity(opacityLevel);
+    }
 
-        // instanceof handles nulls
-        if (!(other instanceof PersonCard)) {
-            return false;
-        }
+    @Subscribe
+     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        bindListeners(event.getNewSelection().person);
+    }
 
-        // state check
-        PersonCard card = (PersonCard) other;
-        return id.getText().equals(card.id.getText())
-                && person.equals(card.person);
+    @Subscribe
+    private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        showSidePanel(event.isVisible);
     }
 }

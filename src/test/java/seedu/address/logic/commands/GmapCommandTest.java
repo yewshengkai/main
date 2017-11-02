@@ -16,19 +16,21 @@ import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.ui.JumpToListRequestEvent;
+import seedu.address.commons.events.ui.MapToListRequestEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.testutil.TypicalPersons;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
+//@@author yewshengkai
 /**
- * Contains integration tests (interaction with the Model) for {@code SelectCommand}.
+ * Contains integration tests (interaction with the Model) for {@code GmapCommand}.
  */
-public class SelectCommandTest {
+public class GmapCommandTest {
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
@@ -75,67 +77,68 @@ public class SelectCommandTest {
 
     @Test
     public void equals() {
-        SelectCommand selectFirstCommand = new SelectCommand(INDEX_FIRST_PERSON);
-        SelectCommand selectSecondCommand = new SelectCommand(INDEX_SECOND_PERSON);
+        GmapCommand gmapFirstCommand = new GmapCommand(INDEX_FIRST_PERSON);
+        GmapCommand gmapecondCommand = new GmapCommand(INDEX_SECOND_PERSON);
 
         // same object -> returns true
-        assertTrue(selectFirstCommand.equals(selectFirstCommand));
+        assertTrue(gmapFirstCommand.equals(gmapFirstCommand));
 
         // same values -> returns true
-        SelectCommand selectFirstCommandCopy = new SelectCommand(INDEX_FIRST_PERSON);
-        assertTrue(selectFirstCommand.equals(selectFirstCommandCopy));
+        GmapCommand gmapFirstCommandCopy = new GmapCommand(INDEX_FIRST_PERSON);
+        assertTrue(gmapFirstCommand.equals(gmapFirstCommandCopy));
 
         // different types -> returns false
-        assertFalse(selectFirstCommand.equals(1));
+        assertFalse(gmapFirstCommand.equals(1));
 
         // null -> returns false
-        assertFalse(selectFirstCommand.equals(null));
+        assertFalse(gmapFirstCommand.equals(null));
 
         // different person -> returns false
-        assertFalse(selectFirstCommand.equals(selectSecondCommand));
+        assertFalse(gmapFirstCommand.equals(gmapecondCommand));
     }
 
     /**
-     * Executes a {@code SelectCommand} with the given {@code index}, and checks that {@code JumpToListRequestEvent}
+     * Executes a {@code GmapCommand} with the given {@code index}, and checks that {@code JumpToListRequestEvent}
      * is raised with the correct index.
      */
     private void assertExecutionSuccess(Index index) {
-        SelectCommand selectCommand = prepareCommand(index);
+        GmapCommand gmapCommand = prepareCommand(index);
 
         try {
-            CommandResult commandResult = selectCommand.execute();
-            assertEquals(String.format(SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS, index.getOneBased()),
+            CommandResult commandResult = gmapCommand.execute();
+            assertEquals(String.format(GmapCommand.MESSAGE_SELECT_PERSON_SUCCESS, index.getOneBased()),
                     commandResult.feedbackToUser);
         } catch (CommandException ce) {
             throw new IllegalArgumentException("Execution of command should not fail.", ce);
         }
 
-        JumpToListRequestEvent lastEvent = (JumpToListRequestEvent) eventsCollectorRule.eventsCollector.getMostRecent();
-        assertEquals(index, Index.fromZeroBased(lastEvent.targetIndex));
+        MapToListRequestEvent lastEvent = (MapToListRequestEvent) eventsCollectorRule.eventsCollector.getMostRecent();
+        assertEquals(TypicalPersons.getTypicalAddressBook().getPersonList().get(index.getZeroBased()),
+                lastEvent.targetPerson);
     }
 
     /**
-     * Executes a {@code SelectCommand} with the given {@code index}, and checks that a {@code CommandException}
+     * Executes a {@code GmapCommand} with the given {@code index}, and checks that a {@code CommandException}
      * is thrown with the {@code expectedMessage}.
      */
     private void assertExecutionFailure(Index index, String expectedMessage) {
-        SelectCommand selectCommand = prepareCommand(index);
+        GmapCommand gmapCommand = prepareCommand(index);
 
         try {
-            selectCommand.execute();
+            gmapCommand.execute();
             fail("The expected CommandException was not thrown.");
         } catch (CommandException ce) {
             assertEquals(expectedMessage, ce.getMessage());
-            assertFalse(eventsCollectorRule.eventsCollector.isEmpty());
+            assertTrue(eventsCollectorRule.eventsCollector.isEmpty());
         }
     }
 
     /**
-     * Returns a {@code SelectCommand} with parameters {@code index}.
+     * Returns a {@code GmapCommand} with parameters {@code index}.
      */
-    private SelectCommand prepareCommand(Index index) {
-        SelectCommand selectCommand = new SelectCommand(index);
-        selectCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return selectCommand;
+    private GmapCommand prepareCommand(Index index) {
+        GmapCommand gmapCommand = new GmapCommand(index);
+        gmapCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return gmapCommand;
     }
 }
