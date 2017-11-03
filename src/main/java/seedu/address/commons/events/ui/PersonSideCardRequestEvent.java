@@ -1,6 +1,7 @@
 package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
+import seedu.address.model.person.ReadOnlyPerson;
 
 //@@author yewshengkai
 /**
@@ -9,9 +10,16 @@ import seedu.address.commons.events.BaseEvent;
 public class PersonSideCardRequestEvent extends BaseEvent {
 
     public final boolean isVisible;
+    public final ReadOnlyPerson targetPerson;
 
     public PersonSideCardRequestEvent(boolean isVisible) {
+        this.targetPerson = null;
         this.isVisible = isVisible;
+    }
+
+    public PersonSideCardRequestEvent(ReadOnlyPerson targetPerson) {
+        this.isVisible = true;
+        this.targetPerson = targetPerson;
     }
 
     @Override

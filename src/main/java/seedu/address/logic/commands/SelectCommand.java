@@ -2,13 +2,17 @@ package seedu.address.logic.commands;
 
 import java.util.List;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
+import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PersonSideCardRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.ui.PersonCard;
 
 /**
  * Selects a person identified using it's last displayed index from the address book.
@@ -31,6 +35,7 @@ public class SelectCommand extends Command {
         this.targetIndex = targetIndex;
     }
 
+    //@@author yewshengkai
     @Override
     public CommandResult execute() throws CommandException {
 
@@ -42,10 +47,11 @@ public class SelectCommand extends Command {
         }
 
         EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true));
+        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(lastShownList.get(targetIndex.getOneBased())));
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
-
     }
+    //@@author
 
     @Override
     public boolean equals(Object other) {
