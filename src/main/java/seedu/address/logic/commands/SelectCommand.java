@@ -31,6 +31,7 @@ public class SelectCommand extends Command {
         this.targetIndex = targetIndex;
     }
 
+    //@@author yewshengkai
     @Override
     public CommandResult execute() throws CommandException {
 
@@ -42,10 +43,11 @@ public class SelectCommand extends Command {
         }
 
         EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true));
+        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(lastShownList.get(targetIndex.getZeroBased())));
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
-
     }
+    //@@author
 
     @Override
     public boolean equals(Object other) {
