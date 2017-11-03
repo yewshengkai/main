@@ -43,7 +43,7 @@ public class SelectCommand extends Command {
         }
 
         EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true));
-        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(lastShownList.get(targetIndex.getOneBased())));
+        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(lastShownList.get(targetIndex.getZeroBased())));
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
     }
