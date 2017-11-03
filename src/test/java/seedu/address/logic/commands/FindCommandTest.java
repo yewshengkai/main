@@ -16,6 +16,7 @@ import java.util.List;
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
+import seedu.address.logic.FindHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -29,8 +30,13 @@ import seedu.address.model.person.ReadOnlyPerson;
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
  */
 public class FindCommandTest {
+    private static final CommandHistory EMPTY_COMMAND_HISTORY = new CommandHistory();
+    private static final FindHistory EMPTY_FIND_HISTORY = new FindHistory();
+    private static final UndoRedoStack EMPTY_STACK = new UndoRedoStack();
+
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+    //@@author yewshengkai
     @Test
     public void equals() {
         PersonContainsKeywordsPredicate firstPredicate =
@@ -39,6 +45,7 @@ public class FindCommandTest {
         PersonContainsKeywordsPredicate secondPredicate =
                 new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Collections.singletonList("second"), false);
+        //@@author
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
@@ -136,38 +143,37 @@ public class FindCommandTest {
      * Parses {@code userInput} into a {@code FindCommand}.
      */
     private FindCommand prepareCommand(String commandPrefix, String userInput) {
-
         switch (commandPrefix) {
 
         case FindCommand.COMMAND_WORD:
             FindCommand command = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD, Arrays.asList(userInput.split("\\s+")), false));
-            command.setData(model, new CommandHistory(), new UndoRedoStack());
+            command.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
             return command;
         case FindCommand.COMMAND_WORD_ADDRESS:
             FindCommand command2 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList(userInput.split("\\s+")), false));
-            command2.setData(model, new CommandHistory(), new UndoRedoStack());
+            command2.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
             return command2;
         case FindCommand.COMMAND_WORD_EMAIL:
             FindCommand command3 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_EMAIL, Arrays.asList(userInput.split("\\s+")), false));
-            command3.setData(model, new CommandHistory(), new UndoRedoStack());
+            command3.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
             return command3;
         case FindCommand.COMMAND_WORD_HOMEPAGE:
             FindCommand command4 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_HOMEPAGE, Arrays.asList(userInput.split("\\s+")), false));
-            command4.setData(model, new CommandHistory(), new UndoRedoStack());
+            command4.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
             return command4;
         case FindCommand.COMMAND_WORD_PHONE:
             FindCommand command5 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_PHONE, Arrays.asList(userInput.split("\\s+")), false));
-            command5.setData(model, new CommandHistory(), new UndoRedoStack());
+            command5.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
             return command5;
         case FindCommand.COMMAND_WORD_TAG:
             FindCommand command6 = new FindCommand(new PersonContainsKeywordsPredicate(
                     FindCommand.COMMAND_WORD_TAG, Arrays.asList(userInput.split("\\s+")), false));
-            command6.setData(model, new CommandHistory(), new UndoRedoStack());
+            command6.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
             return command6;
 
         default:

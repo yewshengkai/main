@@ -12,6 +12,7 @@ import org.testfx.api.FxToolkit;
 import guitests.guihandles.AboutWindowHandle;
 import javafx.stage.Stage;
 
+//@@author yewshengkai
 public class AboutWindowTest extends GuiUnitTest {
 
     private AboutWindow aboutWindow;

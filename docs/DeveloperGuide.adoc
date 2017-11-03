@@ -776,6 +776,268 @@ image::ThemeCommandParser.png[]
 
 // end::theme[]
 
+// tag::recent[]
+=== Recent command mechanism
+
+`RecentCommand` uses a backing list from the `FindHistory` class to create predicates on which the `Model` will filter on and display to the user. +
+`FindHistory` is implemented with a LinkedList which is updated when relevant commands change persons returned by `FindCommand`.
+
+When `FindCommand` is invoked, the `LogicManager` adds the entired `FilteredList` into the LinkedList in `FindHistory`.
+
+image::RecentCommandLogicManagerSequenceDiagram.png[]
+
+When `EditCommand` is invoked, the `set` method in `FindHistory` is invoked to replace the old `Person` with the edited `Person`.
+
+image::RecentCommandEditCommandSequenceDiagram.png[]
+
+The code snippet for the `set` method follows:
+[source,java]
+----
+/**
+* Changes {@code person} to {@code newPerson}
+*/
+public void set(ReadOnlyPerson person, ReadOnlyPerson newPerson) {
+    if (userFindHistory.contains(person)) {
+        userFindHistory.set(userFindHistory.indexOf(person), newPerson);
+    }
+}
+----
+
+When `DeleteCommand` is invoked, the `deletePerson` method in `FindHistory` is invoked to remove the person from the LinkedList.
+
+image::RecentCommandDeleteCommandSequenceDiagram.png[]
+
+A snapshot of the the LinkedList is also saved into `previousFindHistory` when an `UndoableCommand` is invoked, to preserve the
+changes in the backing list.
+
+==== Design Considerations
+*Aspect:* Order of list view to show to user +
+*Alternative 1:* Shows the list reverse order of persons returned by FindCommand (similar to HistoryCommand) +
+*Pros:* Intuitive for user, better UX +
+*Cons:* Requires an additional hook to `Model` to swap between two lists (addressbook and findhistory), additional complexity and chance of regressions +
+*Alternative 2 (Current choice):* Shows the list in current order of addressbook backing list. +
+*Pros:* Follows design logic of all commands that shows the list to user, allowing new developers to easily understand implementation. +
+*Cons:* Worse UX.
+
+---
+
+*Aspect:* Data structure to store `FindHistory` backing list +
+*Alternative 1 (Current choice):* LinkedList +
+*Pros:* Preserves order, fast add, able to use set to preserve ordering when mutating elements. Good for future implementations (if any) of
+returning the list in order user searched for contacts. +
+*Cons:* Slightly slower than competition when traversing and deleting. +
+*Alternative 2:* LinkedHashMap or LinkedHashSet +
+*Pros:* Keeps order, faster than LinkedList +
+*Cons:* Unable to use set, which is used when user edits a person.
+
+// end::recent[]
+
+// tag::gmap[]
+=== Gmap mechanism
+
+The gmap mechanism is facilitated by the `GmapCommand`. `GmapCommandParser` checks for input index and validate through `ParserUtil` and calls the relevant `GmapCommand` to search for `Person` address using Google Map.
+
+`GmapCommand` relies on `MapToListRequestEvent` which is handled by `BrowserPanel` to call the appropriate method for loading `Person` address using Google Map.
+
+[NOTE]
+By default if no index are present, gmap command will return an invalid message.
+(e.g gmap "").
+
+[NOTE]
+Events which triggers `PersonSideCardRequestEvent` handler, set the visibility of `Person` side panel card (Allow more display and exposure to the Web Browser).
+
+`GmapCommand` code snippet to ensure input index is within the PersonList, and calls the relevant `MapToListRequestevent` handler to search `Person` address on Google Map:
+[source,java]
+----
+try {
+public CommandResult execute() throws CommandException {
+    List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+    if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+    EventsCenter.getInstance().post(new MapToListRequestEvent(lastShownList.get(targetIndex.getZeroBased())));
+    return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
+}
+----
+
+`GmapCommandParser` code snippet to check if user's input contains any index and returns message if there exist invalid input:
+[source,java]
+----
+public GmapCommand parse(String args) throws ParseException {
+    try {
+        Index index = ParserUtil.parseIndex(args);
+        return new GmapCommand(index);
+    } catch (IllegalValueException ive) {
+        throw new ParseException(
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, GmapCommand.MESSAGE_USAGE));
+    }
+}
+----
+
+`BrowserPanel` code snippet that handle `MapToListRequestEvent` and load the method to search on Google Map:
+[source,java]
+----
+private void loadPersonMap(ReadOnlyPerson targetPerson) {
+    loadPage(GOOGLE_MAP_SEARCH_URL_PREFIX + targetPerson.getAddress().value
+            .replaceAll(",", ""));
+}
+private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    loadPersonMap(event.targetPerson);
+    browser.setOpacity(100);
+}
+----
+
+`PersonSideCard` code snippet that handles `PersonSideCardRequestEvent` and set Person card side panel visibility:
+[source,java]
+----
+private void showSidePanel(boolean isVisible) {
+    getRoot().setManaged(isVisible);
+    int opacityLevel;
+    if (isVisible) {
+        opacityLevel =  100;
+    } else {
+        opacityLevel = 0;
+    }
+    getRoot().setOpacity(opacityLevel);
+}
+@Subscribe
+private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    showSidePanel(event.isVisible);
+}
+----
+
+The following sequence diagram shows how the (GmapCommand) operation works:
+
+image::GmapCommand.png[]
+
+The following sequence diagram shows how the (GmapCommandParser) operation works:
+
+image::GmapCommandParser.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of GmapCommand +
+*Alternative 1 (Current choice):* Utilizes event handler to call and load the person address on Google Map.  +
+*Pros:* Better user experience. And ensures that the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
+*Cons:* We could always utilizes library and implement the `PersonSideCard` panel. +
+*Alternative 2:* Load the person address on Google Map on `select` command.  +
+*Pros:* Reduce the need of having extra command to load person address +
+*Cons:* Only able to do one search feature using the web browser +
+
+// end::gmap[]
+
+// tag::about[]
+=== About mechanism
+
+The about mechanism is facilitated by the `AboutCommand`.
+
+`AboutCommand` relies on `ShowAboutRequestEvent` which is handled by `MainWindow` to call the appropriate method to load the `AboutWindow`.
+
+`AboutCommand` code snippet that calls the relevant `ShowAboutRequestEvent` handler to open `AboutWindow`:
+[source,java]
+----
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new ShowAboutRequestEvent());
+        return new CommandResult(SHOWING_ABOUT_MESSAGE);
+    }
+----
+
+`MainWindow` code snippet that handle `ShowAboutRequestEvent` and call the method to display `AboutWindow`:
+[source,java]
+----
+@FXML
+public void handleAbout() {
+    AboutWindow aboutWindow = new AboutWindow();
+    aboutWindow.show();
+}
+@Subscribe
+private void handleShowAboutEvent(ShowAboutRequestEvent event) {
+    logger.info(LogsCenter.getEventHandlingLogMessage(event));
+    handleAbout();
+}
+----
+
+The following sequence diagram shows how the (AboutCommand) operation works:
+
+image::AboutCommand.png[]
+
+The following sequence diagram shows how the `MainWindow` that handles ShowAboutRequestEvent operation and call `AboutWindow`:
+
+image::MainWindowHandleAbout.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of AboutCommand +
+*Alternative 1 (Current choice):* Utilizes event handler and ensure that method that open `AboutWindow` will be called.
+
+// end::about[]
+
+// tag::remark[]
+=== Remark mechanism
+
+The remark mechanism is facilitated by the `RemarkCommand` and `RemarkCommandParser`.
+
+`RemarkCommandParser` utilizes `ArgumentTokenizer` to tokenize arguments string and returns an `ArgumentMultimap` object that maps the
+ remark prefixes to its argument values.
+
+`RemarkCommand` will then execute the UndoableCommand to update the person with the input string.
+
+`RemarkCommand` code snippet that calls the relevant `UndoableCommand` and update the `Person` remark:
+[source,java]
+----
+public CommandResult executeUndoableCommand() throws CommandException {
+    List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+    if (index.getZeroBased() >= lastShownList.size()) {
+        throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+    ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
+    Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+            personToEdit.getAddress(), remark, personToEdit.getAvatar(), personToEdit.getTags());
+    try {
+        model.updatePerson(personToEdit, editedPerson);
+    ...
+}
+----
+`RemarkCommand` utilizes `model.getFilteredPersonList()` and `lastShownList.get(index.getZeroBased()` to get the selection of
+the person and add the string of remark to existing person via `model.updatePerson(personToEdit, editedPerson);`.
+
+`RemarkCommandParser` code snippet that handle `ArgumentMultimap`, check if prefixes exist and get the input string:
+[source,java]
+----
+public RemarkCommand parse(String args) throws ParseException {
+    requireNonNull(args);
+    ArgumentMultimap argMultimap =
+            ArgumentTokenizer.tokenize(args, PREFIX_REMARK);
+    Index index;
+    try {
+        index = ParserUtil.parseIndex(argMultimap.getPreamble());
+    } catch (IllegalValueException ive) {
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE));
+    }
+    String remark = argMultimap.getValue(PREFIX_REMARK).orElse("");
+    return new RemarkCommand(index, new Remark(remark));
+}
+----
+
+The following sequence diagram shows how the (RemarkCommand) operation works:
+
+image::RemarkCommand.png[]
+
+The following sequence diagram shows how the (RemarkCommandParser) operation works:
+
+image::RemarkCommandParser.png[]
+
+==== Design Considerations
+*Aspect:* Implementation of RemarkCommand +
+*Alternative 1 (Current choice):* Utilize ArgumentMultimap and ArgumentTokenizer to set usable prefixes and get input string value. +
+*Pros:* Allow user to add and set remark to contact anytime without the add parameter. +
+*Cons:* User who wish to add remark during the `AddCommand` process will not be possible. +
+*Alternative 2:* Include another prefixes that set remark for user during the `AddCommand` process +
+*Pros:* New user can immediately give a person remark during the `AddCommand` phase. +
+*Cons:* Can be troublesome for user to view their own input during the `AddCommand` phase as remark is usually lengthy.
+
+// end::remark[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
@@ -1173,6 +1435,8 @@ favourite contacts easily
 
 |`* *` |user |add birthdays to contacts |see the birthday of my contact
 
+|`* *` |user |search contact address on google map |see the address of contact
+
 |`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
 
 |`* *` |risk-adverse user |get a warning to confirm the execution of the delete command |not accidentally delete a person
@@ -1188,6 +1452,8 @@ increasing security
 |`*` |user |share contacts |I can share my contacts with other people
 
 |`*` |user who likes customization|change the theme of the application |customize the theme to my liking
+
+|`*` |user|see who create the addressbook |let the developer know bugs that I found
 
 
 
@@ -1450,6 +1716,45 @@ Use case ends.
 * 1a. The list is empty.
 +
 Use case ends.
+
+[discrete]
+=== Use case: Recent contacts
+
+*Guarantees:* All contacts found by `FindCommand` since application startup will be listed.
+
+*MSS*
+
+1. User uses recent command to list recent contacts.
+2. AddressBook shows a list of contacts recently searched for.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list is empty.
++
+Use case ends.
+
+[discrete]
+=== Use case: Recent contacts
+
+*Guarantees:* Only contacts that has been returned by `FindCommand` will be listed.
+
+*MSS*
+
+1. User requests to list recently found contacts.
+2. AddressBook shows a list of contacts recently found.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The list is empty.
++
+Use case ends.
+
 
 [discrete]
 === Use case: Help
@@ -1732,6 +2037,51 @@ Use case ends.
 ** 1b1. AddressBook shows an error message.
 +
 Use case ends.
+
+[discrete]
+=== Use case: gmap a contacts address
+
+*Preconditions:* AddressBook is not empty.
+
+*Guarantees:* Specified index of contact will be selected and address will be search on Google Map.
+
+*MSS*
+
+1.  User request to list contacts.
+2.  AddressBook shows a list of contacts.
+3.  User request and gmap to search a contact address.
+4.  AddressBook select the contact and search its address on Google Map.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty.
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+Use case ends.
+
+[discrete]
+=== Use case: About
+
+*Guarantees:* About Us will be displayed.
+
+*MSS*
+
+1.  User request about.
+2.  AddressBook open about us in a new window.
++
+Use case ends.
+
+[discrete]
 
 {More to be added}
 
