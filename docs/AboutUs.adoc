@@ -30,8 +30,8 @@ Responsibilities: Logic, Model, Storage
 image::yewshengkai.png[width="150", align="left"]
 {empty}[http://github.com/yewshengkai[github]][<<yewshengkai#, portfolio>>]
 
-Role: Developer +
-Responsibilities: UI
+Role: Deliverables n deadline, Integration, Schedule and tracking, Developer +
+Responsibilities: Logic, Ui, Model
 
 '''
 
