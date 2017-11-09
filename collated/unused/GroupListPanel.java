@@ -1,6 +1,3 @@
-//@@author yewshengkai-unused
-/*Was told group feature with selection on side panel to list person
- is no different than tag feature. Hence, removed implementation.*/
 package seedu.address.ui;
 
 import java.util.logging.Logger;
@@ -20,6 +17,9 @@ import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author yewshengkai-unused
+/*Was told group feature with selection on side panel to list person
+ is no different than tag feature. Hence, removed implementation.*/
 /**
  * Panel containing the list of groups.
  */

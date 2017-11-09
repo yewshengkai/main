@@ -1,6 +1,3 @@
-//@@author yewshengkai-unused
-/*Since having buttons to open windows form and
- executing different command is not graded, these features are removed.*/
 package seedu.address.ui;
 
 import java.util.logging.Logger;
@@ -11,7 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 
-
+//@@author yewshengkai-unused
+/*Since having buttons to open windows form and
+ executing different command is not graded, these features are removed.*/
 /**
  * Panel containing all the buttons.
  */
