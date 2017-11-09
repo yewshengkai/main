@@ -181,5 +181,18 @@ public class ParserUtil {
     public static Optional<String> parseValues(Optional<String> value) {
         return Optional.of(value.orElse(STRING_IF_EMPTY));
     }
-    //@@author
+
+    //@@author yewshengkai
+    /**
+     * Parse parameters tag, if exist, return value. If tag does not exist, return empty string.
+     */
+    public static Optional<Tag> parseTag(Optional<String> tag) throws IllegalValueException {
+        requireNonNull(tag);
+        if (tag.isPresent()) {
+            return Optional.of(new Tag(tag.get()));
+        }
+        else {
+            throw new IllegalValueException(MESSAGE_INVALID_INDEX);
+        }
+    }
 }
