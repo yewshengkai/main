@@ -190,8 +190,7 @@ public class ParserUtil {
         requireNonNull(tag);
         if (tag.isPresent()) {
             return Optional.of(new Tag(tag.get()));
-        }
-        else {
+        } else {
             throw new IllegalValueException(MESSAGE_INVALID_INDEX);
         }
     }
