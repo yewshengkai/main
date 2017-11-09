@@ -69,7 +69,7 @@ public class CommandTestUtil {
 
     public static final String INVALID_AVATAR_URL_MISSING_FILETYPE = "https://i.imgur.com/xPHOeWL"; // missing filetype
     public static final String INVALID_AVATAR_URL_MISSING_HTTP = "i.imgur.com/xPHOeWL.png"; // missing http header
-    public static final String INVALID_AVATAR_URL_LARGE_IMAGE = "https://i.imgur.com/4BrdIR2.png"; // large image
+    public static final String INVALID_AVATAR_URL_LARGE_IMAGE = "https://i.imgur.com/EqZj35k.jpg"; // large image
 
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
