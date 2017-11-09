@@ -105,7 +105,6 @@ public class MainWindow extends UiPart<Region> {
     }
 
     private void setAccelerators() {
-
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
         setAccelerator(aboutMenuItem, KeyCombination.valueOf("F9"));
     }
@@ -164,7 +163,6 @@ public class MainWindow extends UiPart<Region> {
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-
     }
     //@@author
 
@@ -201,6 +199,7 @@ public class MainWindow extends UiPart<Region> {
         primaryStage.setMinWidth(MIN_WIDTH);
     }
 
+    //@@author yewshengkai
     /**
      * Sets the default size based on user preferences.
      */
@@ -228,7 +227,7 @@ public class MainWindow extends UiPart<Region> {
         getRoot().getStylesheets().clear();
         getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
     }
-
+    //@@author
 
     /**
      * Returns the current size and the position of the main Window.

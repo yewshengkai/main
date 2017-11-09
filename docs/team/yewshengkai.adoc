@@ -54,7 +54,7 @@ include::../UserGuide.adoc[tag=theme]
 
 ==== Justification
 
-Previously, the application only support one theme which makes the address book looks dull and may not be suitable to be viewed by
+The default addressbook application only support one theme which makes the address book looks dull and may not be suitable to be viewed by
 user under certain circumstances (e.g. At certain time or day, user might opt for brighter look and feel on the address book)
 
 ==== Implementation
@@ -146,11 +146,18 @@ include::../DeveloperGuide.adoc[tag=remark]
 #End of Extract#
 ---
 
+==== Enhancement Proposed: Import/Export addressbook data to different format (e.g. .xml, .pdf, .xlxs)
+---
+=== Justification
+
+User might want to print the contacts of addressbook in hardcopy, or export data to switch usage to other computers.
 
 === Other contributions
 
-* Updated the GUI layout and color scheme, logo (Pull requests https://github.com[#7], https://github.com[#15], https://github.com[#10], https://github.com[#33], https://github.com[#63])
+* Updated the GUI layout and color scheme, logo (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/[#7], https://github.com/CS2103AUG2017-F11-B3/main/[#10], https://github.com/CS2103AUG2017-F11-B3/main/[#15], https://github.com/CS2103AUG2017-F11-B3/main/pull/[#20], https://github.com/CS2103AUG2017-F11-B3/main/[#33], https://github.com/CS2103AUG2017-F11-B3/main/[#63])
 * Wrote default functionality for developer guide 'Use case' (textual form) (Pull requests https://github.com[#10])
-* Wrote additional tests to increase coverage (Pull requests all)
+* Wrote additional tests to increase coverage (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/[#33], https://github.com/CS2103AUG2017-F11-B3/main/[#35], https://github.com/CS2103AUG2017-F11-B3/main/pull/[#47], https://github.com/CS2103AUG2017-F11-B3/main/pull/[#48], https://github.com/CS2103AUG2017-F11-B3/main/pull/[#63])
+* Assisted group mate RemoveTag feature (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/[#14], https://github.com/CS2103AUG2017-F11-B3/main/[#78])
+* Bugs reported in other team's product (Issues https://github.com/CS2103AUG2017-W10-B2/main/issues/[#127], https://github.com/CS2103AUG2017-W10-B2/main/issues/[#128], https://github.com/CS2103AUG2017-W10-B2/main/issues/[#129], https://github.com/CS2103AUG2017-W10-B2/main/issues/[#130], https://github.com/CS2103AUG2017-W10-B2/main/issues/[#131])
 
 {To be included in the future}
