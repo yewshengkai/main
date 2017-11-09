@@ -77,7 +77,7 @@ public class RemarkCommandTest {
      */
     private RemarkCommand prepareCommand(Index index, String groups) {
         RemarkCommand remarkCommand = new RemarkCommand(index, new Remark(groups));
-        remarkCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        remarkCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         return remarkCommand;
     }
 }

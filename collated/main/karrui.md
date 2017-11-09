@@ -14,6 +14,50 @@
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
         }
 ```
+###### \java\seedu\address\logic\commands\EditCommand.java
+``` java
+        public void setHomepage(Homepage homepage) {
+            this.homepage = homepage;
+        }
+
+        public Optional<Homepage> getHomepage() {
+            return Optional.ofNullable(homepage);
+        }
+```
+###### \java\seedu\address\logic\commands\RecentCommand.java
+``` java
+/**
+ * Lists all the persons searched by user from the start of app launch.
+ */
+public class RecentCommand extends Command {
+    public static final String COMMAND_WORD = "recent";
+    public static final String COMMAND_ALIAS = "rc";
+    public static final String MESSAGE_SUCCESS = "Searched persons listed";
+    public static final String MESSAGE_NO_RECENT = "You have not yet searched for any persons.";
+
+
+
+    @Override
+    public CommandResult execute() {
+        List<ReadOnlyPerson> previousFinds = findHistory.getHistory();
+
+        if (previousFinds.isEmpty()) {
+            return new CommandResult(MESSAGE_NO_RECENT);
+        }
+
+        model.updateFilteredPersonList(new PersonContainsRecentPredicate(previousFinds));
+        return new CommandResult(MESSAGE_SUCCESS);
+    }
+
+    @Override
+    public void setData(Model model, CommandHistory history, FindHistory findHistory, UndoRedoStack undoRedoStack) {
+        requireNonNull(findHistory);
+        requireNonNull(model);
+        this.model = model;
+        this.findHistory = findHistory;
+    }
+}
+```
 ###### \java\seedu\address\logic\commands\SetAvatarCommand.java
 ``` java
 /**
@@ -167,6 +211,55 @@ public class SortCommand extends UndoableCommand {
     }
 }
 ```
+###### \java\seedu\address\logic\FindHistory.java
+``` java
+/**
+ * Stores the persons returned by FindCommand.
+ */
+public class FindHistory {
+    private LinkedList<ReadOnlyPerson> userFindHistory;
+
+    public FindHistory() {
+        userFindHistory = new LinkedList<>();
+    }
+
+    /**
+     * Adds {@code person} to the list of persons user found with FindCommand.
+     */
+    public void add(ReadOnlyPerson person) {
+        requireNonNull(person);
+        userFindHistory.add(person);
+    }
+
+    /**
+     * Changes {@code person} to {@code newPerson}
+     */
+    public void set(ReadOnlyPerson person, ReadOnlyPerson newPerson) {
+        if (userFindHistory.contains(person)) {
+            userFindHistory.set(userFindHistory.indexOf(person), newPerson);
+        }
+    }
+
+    /**
+     * Removes {@code person} from userFindHistory
+     */
+    public void deletePerson(ReadOnlyPerson person) {
+        userFindHistory.remove(person);
+    }
+
+    public void resetData(LinkedList<ReadOnlyPerson> newData) {
+        this.userFindHistory = newData;
+    }
+
+    /**
+     * Returns a defensive copy of {@code userInputHistory}.
+     */
+    public List<ReadOnlyPerson> getHistory() {
+        return new LinkedList<>(userFindHistory);
+    }
+
+}
+```
 ###### \java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
             if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
@@ -175,6 +268,66 @@ public class SortCommand extends UndoableCommand {
             } else {
                 person = new Person(name, phone, email, address, remark, avatar, tagList);
             }
+```
+###### \java\seedu\address\logic\parser\AddressBookParser.java
+``` java
+        case RecentCommand.COMMAND_WORD:
+        case RecentCommand.COMMAND_ALIAS:
+            return new RecentCommand();
+```
+###### \java\seedu\address\logic\parser\AddressBookParser.java
+``` java
+        case SetAvatarCommand.COMMAND_WORD:
+        case SetAvatarCommand.COMMAND_ALIAS:
+            return new SetAvatarCommandParser().parse(arguments);
+
+        case SortCommand.COMMAND_WORD:
+            return new SortCommandParser().parse(arguments);
+```
+###### \java\seedu\address\logic\parser\ParserUtil.java
+``` java
+    /**
+     * Parses a {@code Optional<String> homepage} into an {@code Optional<Homepage>} if {@code homepage} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Homepage> parseHomepage(Optional<String> homepage) throws IllegalValueException {
+        requireNonNull(homepage);
+        if (homepage.isPresent()) {
+            if (homepage.get().equals("")) {
+                return Optional.of(new Homepage());
+            } else {
+                return Optional.of(new Homepage(homepage.get()));
+            }
+        } else {
+            return Optional.empty();
+        }
+    }
+```
+###### \java\seedu\address\logic\parser\ParserUtil.java
+``` java
+    /** Parses {@code sortOrder} into a {@code boolean} and returns it.
+    * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
+    */
+    public static boolean parseSort(String sortOrder) throws IllegalValueException {
+        String trimmedSortParameter = sortOrder.trim();
+        switch (trimmedSortParameter) {
+        case "":
+        case "a":
+            return false;
+        case "d":
+            return true;
+        default:
+            throw new IllegalValueException(MESSAGE_INVALID_ARG);
+        }
+    }
+
+    /**
+     * Parse parameters provided, if exist, return value. If value does not exist, return empty string.
+     */
+    public static Optional<String> parseValues(Optional<String> value) {
+        return Optional.of(value.orElse(STRING_IF_EMPTY));
+    }
+
 ```
 ###### \java\seedu\address\logic\parser\SetAvatarCommandParser.java
 ``` java
@@ -235,6 +388,39 @@ public class SortCommandParser implements Parser<SortCommand> {
     }
 }
 ```
+###### \java\seedu\address\model\AddressBook.java
+``` java
+    public void sortAddressBook(boolean isDescendingSort) {
+        persons.sort(isDescendingSort);
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public void removeTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException {
+        for (int i = 0; i < addressBook.getPersonList().size(); i++) {
+            ReadOnlyPerson oldPerson = addressBook.getPersonList().get(i);
+
+            Person newPerson;
+            if (oldPerson.isHomepageManuallySet()) {
+                newPerson = new Person(oldPerson, oldPerson.getHomepage());
+            } else {
+                newPerson = new Person(oldPerson);
+            }
+            Set<Tag> newTags = new HashSet<Tag>(newPerson.getTags());
+            newTags.remove(tag);
+            newPerson.setTags(newTags);
+            addressBook.updatePerson(oldPerson, newPerson);
+            indicateAddressBookChanged();
+        }
+    }
+
+    @Override
+    public void sortContactList(boolean isDescendingSort) {
+        addressBook.sortAddressBook(isDescendingSort);
+        indicateAddressBookChanged();
+    }
+```
 ###### \java\seedu\address\model\person\Avatar.java
 ``` java
 /**
@@ -246,8 +432,8 @@ public class Avatar {
 
     public static final String MESSAGE_IMAGE_CONSTRAINTS =
             "Image not found/ image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"\n"
-            + "Image might also be too big";
-    public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 10KB or lower";
+            + "Image must also be 50KB or smaller";
+    public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 50KB or lower";
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "./data/avatar/";
     public final String path;
     public final String initialUrl;
@@ -297,7 +483,7 @@ public class Avatar {
     }
 
     /**
-     * Returns true if image is smaller than 20KB.
+     * Returns true if image is smaller than 50KB.
      * (This is because if the image is too big, the application will start slowing down)
      */
     public static boolean isImageCorrectSize(String path) {
@@ -309,10 +495,10 @@ public class Avatar {
             url = new URL(path);
         } catch (MalformedURLException e) {
             // invalid URL, or is file path, check file size instead
-            return ((new File(path).length()) / 1024) < 20;
+            return ((new File(path).length()) / 1024) < 50;
         }
         int fileSize = getFileSize(url) / 1024;     // file size in KBs
-        return fileSize < 20 && fileSize > 0;
+        return fileSize < 50 && fileSize > 0;
     }
 
     /**
@@ -413,6 +599,34 @@ public class Homepage {
     }
 }
 ```
+###### \java\seedu\address\model\person\PersonContainsRecentPredicate.java
+``` java
+/**
+ * Tests that a {@code ReadOnlyPerson} matches any of the persons in the backing list.
+ */
+public class PersonContainsRecentPredicate implements Predicate<ReadOnlyPerson> {
+    private final List<ReadOnlyPerson> recentPersons;
+
+    public PersonContainsRecentPredicate(List<ReadOnlyPerson> recentPersons) {
+        this.recentPersons = recentPersons;
+    }
+
+    /**
+     * Tests that a {@code ReadOnlyPerson} matches any of the persons in the backing list.
+     */
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        return recentPersons.stream().anyMatch(p -> p.equals(person));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof PersonContainsRecentPredicate// instanceof handles nulls
+                && this.recentPersons.equals(((PersonContainsRecentPredicate) other).recentPersons)); // state check
+    }
+}
+```
 ###### \java\seedu\address\storage\AvatarStorage.java
 ``` java
 /**
@@ -455,6 +669,13 @@ public class AvatarStorage {
 ```
 ###### \java\seedu\address\storage\util\ProcessImageFromUrlToFileForAvatar.java
 ``` java
+/**
+ * Utility class to write an image from an URL to a file for the Avatar class
+ */
+public class ProcessImageFromUrlToFileForAvatar {
+    public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
+    private static final Logger logger = LogsCenter.getLogger(ProcessImageFromUrlToFileForAvatar.class);
+
     /**
      * Writes the image URL path provided into an image file
      */
@@ -473,9 +694,11 @@ public class AvatarStorage {
             while (file.exists()) {
                 file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
             }
+            logger.fine("Attempting to write image to file: " + file.getName());
             ImageIO.write(image, "jpg", file);
             return file.getPath().replace('\\', '/');
         } catch (IOException ioe) {
+            logger.info("Failed to create image from path: " + path);
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
     }
@@ -485,7 +708,7 @@ public class AvatarStorage {
      */
     public static void removeImageFromStorage(String path) {
         File file = new File(path);
-
+        logger.info("File at path: " + path + " will be deleted from disk on application exit");
         file.deleteOnExit();    // so as to allow undoable command
     }
 }
