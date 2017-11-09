@@ -66,6 +66,8 @@ public class HelpWindow extends UiPart<Region> {
      */
     public void show() {
         logger.fine("Showing help page about the application.");
+        //@@author khooroko-reused
         dialogStage.show();
+        //@@author
     }
 }
