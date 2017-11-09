@@ -2,7 +2,6 @@ package seedu.address.ui;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 
