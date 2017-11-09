@@ -125,6 +125,33 @@ include::../DeveloperGuide.adoc[tag=recent]
 
 ---
 
+=== Enhancement Added: Optional add command
+
+==== External behavior
+---
+#Start of Extract [from: User Guide] written by original author as my enhancement is just a modification of the method#
+
+include::../UserGuide.adoc[tag=add]
+
+
+#End of Extract#
+
+---
+
+==== Justification
+
+User might not always have all the details of the contact he/she wants to add. Only the name and phone number is compulsory.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=optadd]
+
+#End of Extract#
+
+---
 
 === Other contributions
 ==== Volunteering own features for reuse

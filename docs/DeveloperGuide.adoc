@@ -1038,6 +1038,15 @@ image::RemarkCommandParser.png[]
 
 // end::remark[]
 
+// tag::optadd[]
+=== Optional Add mechanism
+The enhancement is based on the existing `AddCommand`, with a more relaxed restriction of only the `Name` and `Phone` fields being
+mandatory.
+
+The relevant modifications are as follows:
+
+// end::optadd[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
