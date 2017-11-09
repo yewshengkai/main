@@ -18,10 +18,6 @@ public class PersonSideCardRequestEvent extends BaseEvent {
         this.isVisible = isVisible;
     }
 
-    public PersonSideCardRequestEvent(ReadOnlyPerson targetPerson) {
-        this.isVisible = true;
-        this.targetPerson = targetPerson;
-    }
 
     public PersonSideCardRequestEvent(boolean isVisible) throws ParseException {
         this.isVisible = isVisible;
