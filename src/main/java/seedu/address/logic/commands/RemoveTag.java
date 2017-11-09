@@ -1,13 +1,13 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 
+//@@author yewshengkai
 /**
  * Remove tag of all person in the address book.
  */
@@ -18,7 +18,7 @@ public class RemoveTag extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Remove tag of all person in the address book. "
             + "Parameters: "
-            + PREFIX_TAG + "friends ";
+            + COMMAND_WORD + "friends ";
 
     public static final String MESSAGE_SUCCESS = "All person with specified tag removed: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
