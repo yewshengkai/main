@@ -12,8 +12,8 @@ public class PersonSideCardRequestEvent extends BaseEvent {
     public final boolean isVisible;
     public final ReadOnlyPerson targetPerson;
 
-    public PersonSideCardRequestEvent(boolean isVisible) {
-        this.targetPerson = null;
+    public PersonSideCardRequestEvent(boolean isVisible, ReadOnlyPerson targetPerson) {
+        this.targetPerson = targetPerson;
         this.isVisible = isVisible;
     }
 
