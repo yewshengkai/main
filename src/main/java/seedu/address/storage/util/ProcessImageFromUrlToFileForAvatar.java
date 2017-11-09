@@ -7,9 +7,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
@@ -17,6 +19,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class ProcessImageFromUrlToFileForAvatar {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
+    private static final Logger logger = LogsCenter.getLogger(ProcessImageFromUrlToFileForAvatar.class);
 
     //@@author karrui
     /**
@@ -37,9 +40,11 @@ public class ProcessImageFromUrlToFileForAvatar {
             while (file.exists()) {
                 file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
             }
+            logger.fine("Attempting to write image to file: " + file.getName());
             ImageIO.write(image, "jpg", file);
             return file.getPath().replace('\\', '/');
         } catch (IOException ioe) {
+            logger.info("Failed to create image from path: " + path);
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
     }
@@ -49,7 +54,7 @@ public class ProcessImageFromUrlToFileForAvatar {
      */
     public static void removeImageFromStorage(String path) {
         File file = new File(path);
-
+        logger.info("File at path: " + path + " will be deleted from disk on application exit");
         file.deleteOnExit();    // so as to allow undoable command
     }
 }
