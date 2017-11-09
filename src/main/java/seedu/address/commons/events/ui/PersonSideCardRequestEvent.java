@@ -1,10 +1,6 @@
 package seedu.address.commons.events.ui;
 
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import seedu.address.commons.events.BaseEvent;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.ReadOnlyPerson;
 
