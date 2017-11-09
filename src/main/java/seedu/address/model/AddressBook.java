@@ -124,9 +124,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.setPerson(target, editedPerson);
     }
 
+    //@@author karrui
     public void sortAddressBook(boolean isDescendingSort) {
         persons.sort(isDescendingSort);
     }
+    //@@author
 
     /**
      * Ensures that every tag in this person:
