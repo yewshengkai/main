@@ -20,7 +20,7 @@ public class RemoveTag extends UndoableCommand {
             + "Parameters: "
             + COMMAND_WORD + "friends ";
 
-    public static final String MESSAGE_SUCCESS = "All person with specified tag removed: %1$s";
+    public static final String MESSAGE_SUCCESS = "Tag specified removed from addressbook: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
     public static final String MESSAGE_PERSON_TAG_NOT_FOUND = "Person with specified tag does "
             + "not exist in addressbook.";
