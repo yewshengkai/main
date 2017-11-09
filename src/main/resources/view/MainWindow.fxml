@@ -44,7 +44,7 @@
                     <children>
                   <HBox>
                      <children>
-                        <!-- @@author yewshengkai generated -->
+                        <!-- @@author generated -->
                         <StackPane fx:id="sidePersonPlaceholder">
                            <HBox.margin>
                               <Insets bottom="10.0" left="5.0" top="10.0" />

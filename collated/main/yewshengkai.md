@@ -1229,14 +1229,6 @@ public class PersonSideCard extends UiPart<Region> {
     -fx-text-fill:white;
 }
 ```
-###### \resources\view\MainWindow.fxml
-``` fxml
-                        <StackPane fx:id="sidePersonPlaceholder">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="5.0" top="10.0" />
-                           </HBox.margin>
-                        </StackPane>
-```
 ###### \resources\view\NoTheme.css
 ``` css
 #sidePersonPlaceholder {
