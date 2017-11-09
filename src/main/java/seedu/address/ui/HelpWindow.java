@@ -66,7 +66,7 @@ public class HelpWindow extends UiPart<Region> {
      */
     public void show() {
         logger.fine("Showing help page about the application.");
-        //@@author khooroko-reused
+        //@@author yewshengkai-reused
         dialogStage.show();
         //@@author
     }

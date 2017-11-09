@@ -57,7 +57,7 @@ public class PersonSideCard extends UiPart<Region> {
     }
     //@@author
 
-    //@@author Choony93-reused
+    //@@author yewshengkai-reused
     private static String getColorForTag(String tagValue) {
         if (!tagColors.containsKey(tagValue)) {
             int multiplier = 1;
