@@ -95,6 +95,7 @@ public class ModelManager extends ComponentManager implements Model {
             newPerson.setTags(newTags);
             addressBook.updatePerson(oldPerson, newPerson);
         }
+    }
       
     @Override
     public void sortContactList(boolean isDescendingSort) {
