@@ -24,8 +24,8 @@ public class Avatar {
 
     public static final String MESSAGE_IMAGE_CONSTRAINTS =
             "Image not found/ image extension not supported! Only supports \"BMP\", \"GIF\", \"JPEG\", and \"PNG\"\n"
-            + "Image might also be too big";
-    public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 10KB or lower";
+            + "Image must also be 50KB or smaller";
+    public static final String MESSAGE_IMAGESIZE_CONSTRAINTS = "Image is too big! Please keep size to 50KB or lower";
     public static final String DEFAULT_AVATAR_FILE_LOCATION = "./data/avatar/";
     public final String path;
     public final String initialUrl;
@@ -75,7 +75,7 @@ public class Avatar {
     }
 
     /**
-     * Returns true if image is smaller than 20KB.
+     * Returns true if image is smaller than 50KB.
      * (This is because if the image is too big, the application will start slowing down)
      */
     public static boolean isImageCorrectSize(String path) {
@@ -87,10 +87,10 @@ public class Avatar {
             url = new URL(path);
         } catch (MalformedURLException e) {
             // invalid URL, or is file path, check file size instead
-            return ((new File(path).length()) / 1024) < 20;
+            return ((new File(path).length()) / 1024) < 50;
         }
         int fileSize = getFileSize(url) / 1024;     // file size in KBs
-        return fileSize < 20 && fileSize > 0;
+        return fileSize < 50 && fileSize > 0;
     }
 
     /**

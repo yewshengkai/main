@@ -64,8 +64,11 @@ public class AboutWindow extends UiPart<Region> {
      *     </li>
      * </ul>
      */
+
     public void show() {
         logger.fine("Showing about page.");
-        dialogStage.showAndWait();
+        //@@author yewshengkai-reused
+        dialogStage.show();
+        //@@author
     }
 }

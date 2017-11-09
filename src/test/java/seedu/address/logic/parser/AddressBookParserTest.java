@@ -167,11 +167,13 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_ALIAS + " 3") instanceof ListCommand);
     }
 
+    //@@author karrui
     @Test
     public void parseCommand_recent() throws Exception {
         assertTrue(parser.parseCommand(RecentCommand.COMMAND_WORD) instanceof RecentCommand);
         assertTrue(parser.parseCommand(RecentCommand.COMMAND_ALIAS) instanceof RecentCommand);
     }
+    //@@author
 
     @Test
     public void parseCommand_select() throws Exception {
