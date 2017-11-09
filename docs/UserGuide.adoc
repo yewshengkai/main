@@ -278,7 +278,7 @@ This requires an active Internet connection to work, as the application requires
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* `1, 2, 3, ...`
 * If `AVATAR_URL` is empty; i.e `""`, the avatar will be removed and the default avatar will be shown
-* The image size *must not be bigger than 20KB*.
+* The image size *must not be bigger than 50KB*.
 ****
 
 Examples:
@@ -371,6 +371,7 @@ Select and load the second theme in the results of the `themelist` command.
 
 // tag::recent[]
 === Display recently searched contacts : `recent`, `rc`
+{since v1.4)
 
 Shows a list of all contacts that was returned by `find` command since application was started. +
 Format: `recent`

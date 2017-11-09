@@ -139,6 +139,7 @@ public class FindCommandTest {
         assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
     }
 
+    //@@author yewshengkai
     /**
      * Parses {@code userInput} into a {@code FindCommand}.
      */
@@ -182,6 +183,7 @@ public class FindCommandTest {
 
         return null;
     }
+    //@@author
 
     /**
      * Asserts that {@code command} is successfully executed, and<br>

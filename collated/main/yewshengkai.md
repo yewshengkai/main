@@ -9,7 +9,7 @@ public class ChangeThemeRequestEvent extends BaseEvent {
     public final int targetIndex;
 
     public ChangeThemeRequestEvent(Index targetIndex) {
-        this.targetIndex = targetIndex.getZeroBased();
+        this.targetIndex = targetIndex.getOneBased();
     }
 
     @Override
@@ -47,9 +47,18 @@ public class MapToListRequestEvent extends BaseEvent {
 public class PersonSideCardRequestEvent extends BaseEvent {
 
     public final boolean isVisible;
+    public final ReadOnlyPerson targetPerson;
 
-    public PersonSideCardRequestEvent(boolean isVisible) {
+    public PersonSideCardRequestEvent(boolean isVisible, ReadOnlyPerson targetPerson) {
+        this.targetPerson = targetPerson;
         this.isVisible = isVisible;
+    }
+
+
+    public PersonSideCardRequestEvent(boolean isVisible) throws ParseException {
+        this.isVisible = isVisible;
+        this.targetPerson = null;
+
     }
 
     @Override
@@ -130,6 +139,35 @@ public class AboutCommand extends Command {
 ```
 ###### \java\seedu\address\logic\commands\FindCommand.java
 ``` java
+/**
+ * Finds and lists all persons in address book whose name contains any of the argument keywords.
+ * Keyword matching is case sensitive.
+ */
+public class FindCommand extends Command {
+
+    public static final String COMMAND_WORD = "find";
+    public static final String COMMAND_WORD_ADDRESS = "find a/";
+    public static final String COMMAND_WORD_EMAIL = "find e/";
+    public static final String COMMAND_WORD_HOMEPAGE = "find h/";
+    public static final String COMMAND_WORD_PHONE = "find p/";
+    public static final String COMMAND_WORD_TAG = "find t/";
+    public static final String COMMAND_ALIAS = "f";
+
+    public static final String COMMAND_WORD_ANY = "findany";
+    public static final String COMMAND_ALIAS_ANY = "fa";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose contacts contain any of "
+            + "the specified keywords (non case-sensitive) and displays them as a list with index numbers.\n"
+            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Example: " + COMMAND_WORD + " alice bob charlie\n"
+            + "Example: " + COMMAND_WORD_ADDRESS + " kingstreet somerse 123456t\n"
+            + "Example: " + COMMAND_WORD_EMAIL + " alice@mail.com alice gmail.com\n"
+            + "Example: " + COMMAND_WORD_HOMEPAGE + " nus.com github 2103\n"
+            + "Example: " + COMMAND_WORD_PHONE + " 91234567 81234567\n"
+            + "Example: " + COMMAND_WORD_TAG + " friends family";
+
+    private final PersonContainsKeywordsPredicate predicate;
+
     public FindCommand(PersonContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
@@ -180,6 +218,72 @@ public class GmapCommand extends Command {
     }
 }
 ```
+###### \java\seedu\address\logic\commands\RemoveTag.java
+``` java
+/**
+ * Tag specified will be removed from addressbook.
+ */
+public class RemoveTag extends UndoableCommand {
+
+    public static final String COMMAND_WORD = "removetag";
+    public static final String COMMAND_ALIAS = "rt";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Tag specified will be removed from addressbook. "
+            + "Parameters: "
+            + COMMAND_WORD + "friends ";
+
+    public static final String MESSAGE_SUCCESS = "Tag specified removed from addressbook: %1$s";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_PERSON_TAG_NOT_FOUND = "Person with specified tag does "
+            + "not exist in addressbook.";
+
+    private Tag tags;
+
+    /**
+     * Creates an RemoveTag to remove the specified {@code tag}
+     */
+    public RemoveTag(Tag tags) {
+        this.tags = tags;
+    }
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        requireNonNull(model);
+        try {
+            model.removeTag(tags);
+            return new CommandResult(String.format(MESSAGE_SUCCESS, tags));
+        } catch (DuplicatePersonException e) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException e) {
+            throw new CommandException(MESSAGE_PERSON_TAG_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof RemoveTag // instanceof handles nulls
+                && tags.equals(((RemoveTag) other).tags));
+    }
+}
+```
+###### \java\seedu\address\logic\commands\SelectCommand.java
+``` java
+    @Override
+    public CommandResult execute() throws CommandException {
+
+        List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+
+        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true,
+                lastShownList.get(targetIndex.getZeroBased())));
+        EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
+        return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
+    }
+```
 ###### \java\seedu\address\logic\commands\ThemeCommand.java
 ``` java
 /**
@@ -200,7 +304,6 @@ public class ThemeCommand extends Command {
 
     public static final String MESSAGE_THEME_SUCCESS = "Theme updated: %1$s";
 
-    private static Region region;
     private final Index targetIndex;
     public ThemeCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
@@ -208,29 +311,12 @@ public class ThemeCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+        String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
 
-        List<String> themeList = new ArrayList<>();
-        themeList.add("NoTheme");
-        themeList.add("BlueTheme");
-        themeList.add("DarkTheme");
-
-        if (targetIndex.getZeroBased() >= themeList.size()) {
+        if (targetIndex.getZeroBased() >= themeList.length) {
             throw new CommandException(Messages.MESSAGE_INVALID_THEME_INDEX);
         }
 
-        switch (targetIndex.getOneBased()) {
-        case 1:
-            setTheme(themeList.get(0));
-            break;
-        case 2:
-            setTheme(themeList.get(1));
-            break;
-        case 3:
-            setTheme(themeList.get(2));
-            break;
-        default:
-            break;
-        }
         EventsCenter.getInstance().post(new ChangeThemeRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_THEME_SUCCESS, targetIndex.getOneBased()));
     }
@@ -242,18 +328,6 @@ public class ThemeCommand extends Command {
                 && this.targetIndex.equals(((ThemeCommand) other).targetIndex)); // state check
     }
 
-    public void setTheme(String args) throws CommandException {
-        if (MainApp.class.getResource("/view/" + args + ".css") == null) {
-            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
-        }
-        region.getStylesheets().clear();
-        region.getStylesheets().add("/view/" + args + ".css");
-
-    }
-
-    public static void setRegion(Region region) {
-        ThemeCommand.region = region;
-    }
 }
 ```
 ###### \java\seedu\address\logic\parser\AddressBookParser.java
@@ -275,6 +349,10 @@ public class ThemeCommand extends Command {
         case GmapCommand.COMMAND_WORD:
         case GmapCommand.COMMAND_ALIAS:
             return new GmapCommandParser().parse(arguments);
+
+        case RemoveTag.COMMAND_WORD:
+        case RemoveTag.COMMAND_ALIAS:
+            return new RemoveTagParser().parse(arguments);
 ```
 ###### \java\seedu\address\logic\parser\FindCommandParser.java
 ``` java
@@ -363,6 +441,47 @@ public class GmapCommandParser implements Parser<GmapCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, GmapCommand.MESSAGE_USAGE));
         }
     }
+}
+```
+###### \java\seedu\address\logic\parser\ParserUtil.java
+``` java
+    /**
+     * Parse parameters tag, if exist, return value. If tag does not exist, return empty string.
+     */
+    public static Optional<Tag> parseTag(Optional<String> tag) throws IllegalValueException {
+        requireNonNull(tag);
+        if (tag.isPresent()) {
+            return Optional.of(new Tag(tag.get()));
+        } else {
+            throw new IllegalValueException(MESSAGE_INVALID_INDEX);
+        }
+    }
+}
+```
+###### \java\seedu\address\logic\parser\RemoveTagParser.java
+``` java
+/**
+ * Parses input arguments and creates a new RemoveTag object
+ */
+public class RemoveTagParser implements Parser<RemoveTag> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the RemoveTag
+     * and returns an RemoveTag object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public RemoveTag parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_NONE);
+        try {
+            Tag tag = ParserUtil.parseTag(argMultimap.getValue(PREFIX_NONE)).get();
+            return new RemoveTag(tag);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveTag.MESSAGE_USAGE));
+        }
+    }
+
 }
 ```
 ###### \java\seedu\address\logic\parser\ThemeCommandParser.java
@@ -507,11 +626,9 @@ public class AboutWindow extends UiPart<Region> {
      *     </li>
      * </ul>
      */
+
     public void show() {
         logger.fine("Showing about page.");
-        dialogStage.showAndWait();
-    }
-}
 ```
 ###### \java\seedu\address\ui\BrowserPanel.java
 ``` java
@@ -522,6 +639,13 @@ public class AboutWindow extends UiPart<Region> {
 ```
 ###### \java\seedu\address\ui\BrowserPanel.java
 ``` java
+    @Subscribe
+    private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        loadPersonPage(event.targetPerson);
+        browser.setOpacity(100);
+    }
+
     @Subscribe
     private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -545,6 +669,36 @@ public class AboutWindow extends UiPart<Region> {
 ###### \java\seedu\address\ui\MainWindow.java
 ``` java
     /**
+     * Sets the default size based on user preferences.
+     */
+    private void setWindowTheme(int targetIndex) throws CommandException  {
+        String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+        String selectedTheme = "";
+
+        switch (targetIndex) {
+        case 1:
+            selectedTheme = themeList[0];
+            break;
+        case 2:
+            selectedTheme = themeList[1];
+            break;
+        case 3:
+            selectedTheme = themeList[2];
+            break;
+        default:
+            break;
+        }
+
+        if (MainApp.class.getResource("/view/" + selectedTheme + ".css") == null) {
+            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
+        }
+        getRoot().getStylesheets().clear();
+        getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
+    }
+```
+###### \java\seedu\address\ui\MainWindow.java
+``` java
+    /**
      * Opens the about window.
      */
     @FXML
@@ -560,6 +714,12 @@ public class AboutWindow extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleAbout();
     }
+
+    @Subscribe
+    private void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) throws CommandException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setWindowTheme(event.targetIndex);
+    }
 }
 ```
 ###### \java\seedu\address\ui\PersonSideCard.java
@@ -570,9 +730,7 @@ public class AboutWindow extends UiPart<Region> {
 public class PersonSideCard extends UiPart<Region> {
 
     private static final String FXML = "PersonSideCard.fxml";
-    private static String[] colors = { "red", "yellow", "blue", "orange", "brown", "green", "pink", "black", "grey" };
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
-    private static Random random = new Random();
     private final Logger logger = LogsCenter.getLogger(PersonSideCard.class);
 
     @FXML
@@ -601,6 +759,26 @@ public class PersonSideCard extends UiPart<Region> {
         getRoot().setOpacity(0);
 
     }
+```
+###### \java\seedu\address\ui\PersonSideCard.java
+``` java
+    /**
+     * Binds the individual UI elements to observe their respective {@code Person} properties
+     * so that they will be notified of any changes.
+     */
+    private void bindListeners(ReadOnlyPerson person) {
+        name.textProperty().bind(Bindings.convert(person.nameProperty()));
+        phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
+        address.textProperty().bind(Bindings.convert(person.addressProperty()));
+        email.textProperty().bind(Bindings.convert(person.emailProperty()));
+        remark.textProperty().bind(Bindings.convert(person.remarkProperty()));
+        tags.getChildren().clear();
+        initTags(person);
+        homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
+
+        initImage(person);
+    }
+
 ```
 ###### \java\seedu\address\ui\PersonSideCard.java
 ``` java
@@ -1051,28 +1229,6 @@ public class PersonSideCard extends UiPart<Region> {
     -fx-text-fill:white;
 }
 ```
-###### \resources\view\MainWindow.fxml
-``` fxml
-    <MenuBar fx:id="menuBar" minHeight="30.0" prefHeight="25.0" VBox.vgrow="NEVER">
-        <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
-            <MenuItem mnemonicParsing="false" onAction="#handleExport" text="Export" />
-            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
-            <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#handleAbout" text="About iungo" />
-        </Menu>
-    </MenuBar>
-```
-###### \resources\view\MainWindow.fxml
-``` fxml
-                        <StackPane fx:id="sidePersonPlaceholder">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="5.0" top="10.0" />
-                           </HBox.margin>
-                        </StackPane>
-```
 ###### \resources\view\NoTheme.css
 ``` css
 #sidePersonPlaceholder {
@@ -1082,135 +1238,4 @@ public class PersonSideCard extends UiPart<Region> {
     -fx-border-width: 1;
 }
 
-```
-###### \resources\view\PersonSideCard.fxml
-``` fxml
-<GridPane alignment="CENTER" minWidth="280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints fillWidth="false" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints fillHeight="false" />
-   </rowConstraints>
-   <children>
-      <VBox alignment="CENTER" minWidth="200.0" prefWidth="200.0" GridPane.columnIndex="0">
-         <children>
-            <ImageView fx:id="avatar" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/default_avatar.png" />
-               </image>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </ImageView>
-            <HBox alignment="TOP_CENTER">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets bottom="1.0" />
-               </VBox.margin>
-               <children>
-                  <Label fx:id="id" styleClass="cell_big_label">
-                     <minWidth>
-                        <Region fx:constant="USE_PREF_SIZE" />
-                     </minWidth>
-                  </Label>
-                  <Label fx:id="name" styleClass="cell_big_label" text="\$first" textAlignment="CENTER" wrapText="true" />
-               </children>
-            </HBox>
-            <FlowPane fx:id="tags" alignment="CENTER">
-               <VBox.margin>
-                  <Insets bottom="40.0" />
-               </VBox.margin>
-            </FlowPane>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../docs/images/phone.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" wrapText="true">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../docs/images/address.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="address" styleClass="cell_small_label" text="\$address" wrapText="true">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../docs/images/email.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="email" styleClass="cell_small_label" text="\$email" wrapText="true">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../docs/images/homepage.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="homepage" styleClass="cell_small_label" text="\$homepage" underline="true" wrapText="true">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../docs/images/remark.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="remark" styleClass="cell_small_label" text="\$remark" wrapText="true">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
-</GridPane>
 ```

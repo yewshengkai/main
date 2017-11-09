@@ -14,7 +14,7 @@ it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and
 ==== External behavior
 
 ---
-#Start of Extract [from: User Guide]#
+#Start of Extract [from: User Guide] written primarily by original author, with relevant homepage information by me#
 
 include::../UserGuide.adoc[tag=edit]
 
@@ -125,7 +125,49 @@ include::../DeveloperGuide.adoc[tag=recent]
 
 ---
 
+=== Enhancement Added: Optional add command
+
+==== External behavior
+---
+#Start of Extract [from: User Guide] written by original author as my enhancement is just a modification of the method#
+
+include::../UserGuide.adoc[tag=add]
+
+
+#End of Extract#
+
+---
+
+==== Justification
+
+User might not always have all the details of the contact he/she wants to add. Only the name and phone number is compulsory.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=optadd]
+
+#End of Extract#
+
+---
 
 === Other contributions
+==== Wrote user stories for iungo
+
+==== Volunteering own features for reuse
+
+*Recent command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/168[forum post]] +
+*Sort functionality:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/117[forum post]] +
+*Avatar command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/120#issuecomment-339020868[forum post]]
+
+==== Helped in finding bugs
+Bug discovered in AB4: [https://github.com/se-edu/addressbook-level4/issues/727[forum post]] +
+Bugs discovered in Planno: [https://github.com/CS2103AUG2017-W14-B4/main/issues/created_by/karrui[issues page]]
+
+==== Helping others with issues
+Posts: [https://github.com/nus-cs2103-AY1718S1/forum/issues?utf8=%E2%9C%93&q=is%3Aissue%20commenter%3Akarrui[issues page]]
+
 
 {To be included in the future}

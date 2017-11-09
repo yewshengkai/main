@@ -47,8 +47,15 @@ public class RemarkCommand extends UndoableCommand {
         }
 
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), remark, personToEdit.getAvatar(), personToEdit.getTags());
+        Person editedPerson;
+        if (personToEdit.isHomepageManuallySet()) {
+            editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+                    personToEdit.getAddress(), remark, personToEdit.getAvatar(), personToEdit.getTags(),
+                    personToEdit.getHomepage());
+        } else {
+            editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+                    personToEdit.getAddress(), remark, personToEdit.getAvatar(), personToEdit.getTags());
+        }
 
         try {
             model.updatePerson(personToEdit, editedPerson);
@@ -97,13 +104,6 @@ public class RemarkCommand extends UndoableCommand {
         case RemarkCommand.COMMAND_ALIAS:
             return new RemarkCommandParser().parse(arguments);
 ```
-###### \java\seedu\address\logic\parser\FindCommandParser.java
-``` java
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-}
-```
 ###### \java\seedu\address\logic\parser\RemarkCommandParser.java
 ``` java
 /**
@@ -139,8 +139,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
 ```
 ###### \java\seedu\address\model\person\Remark.java
 ``` java
-import static java.util.Objects.requireNonNull;
-
 /**
  * Represents a Person's Groups in the address book.
  * Guarantees: immutable; is always valid
@@ -175,116 +173,34 @@ public class Remark {
     }
 }
 ```
-###### \java\seedu\address\ui\MainWindow.java
+###### \java\seedu\address\ui\AboutWindow.java
 ``` java
-    /**
-     * Open a file
-     */
-    @FXML
-    private void handleImport() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Import from...");
-        fileChooser.showOpenDialog(primaryStage);
-    }
-
-    /**
-     * Save file to specific format
-     */
-    @FXML
-    private void handleExport() {
-        FileChooser fileChooser = new FileChooser();
-
-        FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx");
-        FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
-        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("XML Data (*.xml)", "*.xml");
-        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
-
-        fileChooser.getExtensionFilters().add(excelFilter);
-        fileChooser.getExtensionFilters().add(pdfFilter);
-        fileChooser.getExtensionFilters().add(xmlFilter);
-        fileChooser.getExtensionFilters().add(textFilter);
-
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setTitle("Export to..");
-        fileChooser.setInitialFileName("iungoAB");
-        File file = fileChooser.showSaveDialog(primaryStage);
-
-        if (file != null) {
-            String content = "Prep_data_save_to_excel";
-            try {
-                FileWriter fileWriter = null;
-                fileWriter = new FileWriter(file);
-                fileWriter.write(content);
-                fileWriter.close();
-            } catch (Exception ex) {
-                System.out.println(ex.toString());
-            }
-
-        }
-    }
+        dialogStage.show();
+```
+###### \java\seedu\address\ui\HelpWindow.java
+``` java
+        dialogStage.show();
 ```
 ###### \java\seedu\address\ui\PersonSideCard.java
 ``` java
     private static String getColorForTag(String tagValue) {
         if (!tagColors.containsKey(tagValue)) {
-            tagColors.put(tagValue, colors[random.nextInt(colors.length)]);
+            int multiplier = 1;
+            int asciiSum = (tagValue.hashCode() > 1) ? tagValue.hashCode() : tagValue.hashCode() * -1;
+
+            int colorRed = asciiSum % 256;
+            int colorGreen = (asciiSum / 2) % 256;
+            int colorBlue = (asciiSum / 3) % 256;
+            while ((colorRed + colorGreen + colorBlue) > 700) {
+                asciiSum = (asciiSum / multiplier) * ++multiplier;
+                colorRed = asciiSum % 256;
+                colorGreen = (asciiSum / 2) % 256;
+                colorBlue = (asciiSum / 3) % 256;
+            }
+            String colorString = String.format("#%02x%02x%02x", colorRed, colorGreen, colorBlue);
+            tagColors.put(tagValue, colorString);
         }
 
         return tagColors.get(tagValue);
-    }
-
-    /**
-     * Binds the individual UI elements to observe their respective {@code Person} properties
-     * so that they will be notified of any changes.
-     */
-    private void bindListeners(ReadOnlyPerson person) {
-        name.textProperty().bind(Bindings.convert(person.nameProperty()));
-        phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
-        address.textProperty().bind(Bindings.convert(person.addressProperty()));
-        email.textProperty().bind(Bindings.convert(person.emailProperty()));
-        remark.textProperty().bind(Bindings.convert(person.remarkProperty()));
-        tags.getChildren().clear();
-        person.getTags().forEach(tag -> {
-            Label tagLabel = new Label(tag.tagName);
-            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
-            tags.getChildren().add(tagLabel);
-        });
-        homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
-
-        initImage(person);
-    }
-
-    /**
-     * Binds the correct image to the person.
-     * If url is "", default display picture will be assigned, else image from URL will be assigned
-     */
-    private void initImage(ReadOnlyPerson person) {
-        String path = person.getAvatar().toString();
-        Image image;
-        if (!"".equals(path)) {   // not default image
-            File file = new File(path);
-            image = new Image(file.toURI().toString());
-            avatar.setImage(image);
-            avatar.setFitHeight(90);
-            avatar.setPreserveRatio(true);
-            avatar.setCache(true);
-        } else {
-            image = new Image("images/default_avatar.png");
-            avatar.setImage(image);
-            avatar.setFitHeight(90);
-            avatar.setPreserveRatio(true);
-            avatar.setCache(true);
-        }
-    }
-
-    /**
-     * Tags coloring
-     */
-    private void initTags(ReadOnlyPerson person) {
-        person.getTags().forEach(tag -> {
-            Label tagLabel = new Label(tag.tagName);
-            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
-            tags.getChildren().add(tagLabel);
-        });
     }
 ```

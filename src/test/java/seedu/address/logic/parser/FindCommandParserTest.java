@@ -25,6 +25,7 @@ public class FindCommandParserTest {
         assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
+    //@author yewshengkai
     @Test
     @OverridingMethodsMustInvokeSuper
     public void parse_validArgs_returnsFindCommand() throws IllegalValueException {
@@ -57,6 +58,7 @@ public class FindCommandParserTest {
                 new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, false));
         assertParseSuccess(parser, "bob", expectedPerson);
 
+        //@@author
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
         assertParseSuccess(parser, " \n wall \n \t michegan  \t", expectedAddressFindCommand);
