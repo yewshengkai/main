@@ -15,19 +15,17 @@ which was developed by the https://se-edu.github.io/docs/Team.html[se-edu] team.
 {empty} +
 We are a team based in the http://www.comp.nus.edu.sg[School of Computing, National University of Singapore].
 
-// TODO: Finalize team roles
 == Project Team
 
 === Lau Kar Rui
 image::karrui.jpg[width="150", align="left"]
 {empty}[https://github.com/karrui[github]][<<karruilau#, portfolio>>]
 
-Role: Developer +
-Responsibilities: Logic
+Roles: Team Lead, Testing, Code Quality, Developer +
+Responsibilities: Logic, Model, Storage
 
 '''
 
-// TODO: Update to a higher resolution profile picture
 === Yew Sheng Kai
 image::yewshengkai.png[width="150", align="left"]
 {empty}[http://github.com/yewshengkai[github]][<<yewshengkai#, portfolio>>]
@@ -39,10 +37,7 @@ Responsibilities: UI
 
 // TODO: Add profile picture
 === Basyir B Othman
-image::basyir.jpg[width="150", align="left"]
 {empty}[http://github.com/basyiro[github]]
-
-Role: Developer +
-Responsibilities: Model
+Role: Developer
 
 '''
