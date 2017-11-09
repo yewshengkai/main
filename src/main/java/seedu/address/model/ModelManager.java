@@ -91,6 +91,11 @@ public class ModelManager extends ComponentManager implements Model {
             ReadOnlyPerson oldPerson = addressBook.getPersonList().get(i);
 
             Person newPerson = new Person(oldPerson);
+            if (oldPerson.isHomepageManuallySet()) {
+                newPerson = new Person(oldPerson, newPerson.getHomepage());
+            } else {
+                newPerson = new Person(oldPerson);
+            }
             Set<Tag> newTags = new HashSet<Tag>(newPerson.getTags());
             newTags.remove(tag);
             newPerson.setTags(newTags);
