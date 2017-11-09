@@ -85,6 +85,7 @@ public class ParserUtil {
         return email.isPresent() ? Optional.of(new Email(email.get())) : Optional.empty();
     }
 
+    //@@author karrui
     /**
      * Parses a {@code Optional<String> homepage} into an {@code Optional<Homepage>} if {@code homepage} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
@@ -101,6 +102,7 @@ public class ParserUtil {
             return Optional.empty();
         }
     }
+    //@@author
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
@@ -158,6 +160,7 @@ public class ParserUtil {
         return detailList;
     }
 
+    //@@author karrui
     /** Parses {@code sortOrder} into a {@code boolean} and returns it.
     * @throws IllegalValueException if the specified parameter is invalid (not "a", "d", or "").
     */
@@ -174,7 +177,6 @@ public class ParserUtil {
         }
     }
 
-    //@@author karrui
     /**
      * Parse parameters provided, if exist, return value. If value does not exist, return empty string.
      */

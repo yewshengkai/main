@@ -151,10 +151,12 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        //@@author karrui
         @Override
         public void sortContactList(boolean isDescendingSort) {
             fail("This method should not be called.");
         }
+        //@@author
     }
 
     /**

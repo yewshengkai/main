@@ -93,9 +93,11 @@ public class AddressBookParser {
         case HistoryCommand.COMMAND_ALIAS:
             return new HistoryCommand();
 
+        //@@author karrui
         case RecentCommand.COMMAND_WORD:
         case RecentCommand.COMMAND_ALIAS:
             return new RecentCommand();
+        //@@author
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
@@ -120,12 +122,15 @@ public class AddressBookParser {
             return new RemarkCommandParser().parse(arguments);
         //@@author
 
+
+        //@@author karrui
         case SetAvatarCommand.COMMAND_WORD:
         case SetAvatarCommand.COMMAND_ALIAS:
             return new SetAvatarCommandParser().parse(arguments);
 
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(arguments);
+        //@@author
 
         //@@author yewshengkai
         case ThemeCommand.COMMAND_WORD:

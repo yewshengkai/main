@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
 
+//@@author karrui
 /**
  * Utility class to write an image from an URL to a file for the Avatar class
  */
@@ -21,7 +22,6 @@ public class ProcessImageFromUrlToFileForAvatar {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
     private static final Logger logger = LogsCenter.getLogger(ProcessImageFromUrlToFileForAvatar.class);
 
-    //@@author karrui
     /**
      * Writes the image URL path provided into an image file
      */

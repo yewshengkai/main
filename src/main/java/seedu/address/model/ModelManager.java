@@ -81,11 +81,13 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author karrui
     @Override
     public void sortContactList(boolean isDescendingSort) {
         addressBook.sortAddressBook(isDescendingSort);
         indicateAddressBookChanged();
     }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 
