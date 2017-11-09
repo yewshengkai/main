@@ -9,14 +9,14 @@ import seedu.address.model.tag.Tag;
 
 //@@author yewshengkai
 /**
- * Tag specified will be remove from addressbook.
+ * Tag specified will be removed from addressbook.
  */
 public class RemoveTag extends UndoableCommand {
 
     public static final String COMMAND_WORD = "removetag";
     public static final String COMMAND_ALIAS = "rt";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Tag specified will be remove from addressbook. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Tag specified will be removed from addressbook. "
             + "Parameters: "
             + COMMAND_WORD + "friends ";
 
