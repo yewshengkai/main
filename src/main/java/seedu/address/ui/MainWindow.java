@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -13,14 +15,20 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seedu.address.MainApp;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ShowAboutRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -29,10 +37,10 @@ import seedu.address.model.UserPrefs;
  */
 public class MainWindow extends UiPart<Region> {
 
-    private static final String ICON = "/images/address_book_32.png";
+    private static final String ICON = "/images/iungo-logo.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
-    private static final int MIN_WIDTH = 450;
+    private static final int MIN_WIDTH = 740;
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -42,6 +50,7 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
+    private PersonSideCard personSideCard;
     private Config config;
     private UserPrefs prefs;
 
@@ -55,6 +64,9 @@ public class MainWindow extends UiPart<Region> {
     private MenuItem helpMenuItem;
 
     @FXML
+    private MenuItem aboutMenuItem;
+
+    @FXML
     private StackPane personListPanelPlaceholder;
 
     @FXML
@@ -62,6 +74,10 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private StackPane sidePersonPlaceholder;
+
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML);
@@ -89,7 +105,9 @@ public class MainWindow extends UiPart<Region> {
     }
 
     private void setAccelerators() {
+
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
+        setAccelerator(aboutMenuItem, KeyCombination.valueOf("F9"));
     }
 
     /**
@@ -122,12 +140,17 @@ public class MainWindow extends UiPart<Region> {
         });
     }
 
+    //@@author yewshengkai
     /**
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
         browserPanel = new BrowserPanel();
+        personSideCard = new PersonSideCard();
+
         browserPlaceholder.getChildren().add(browserPanel.getRoot());
+        sidePersonPlaceholder.getChildren().add(personSideCard.getRoot());
+        //@@author
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
@@ -135,12 +158,15 @@ public class MainWindow extends UiPart<Region> {
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath());
+        StatusBarFooter statusBarFooter = new StatusBarFooter(prefs.getAddressBookFilePath(),
+                logic.getFilteredPersonList().size());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
     }
+    //@@author
 
     void hide() {
         primaryStage.hide();
@@ -176,6 +202,35 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
+     * Sets the default size based on user preferences.
+     */
+    private void setWindowTheme(int targetIndex) throws CommandException  {
+        String[] themeList = {"NoTheme", "BlueTheme", "DarkTheme"};
+        String selectedTheme = "";
+
+        switch (targetIndex) {
+        case 1:
+            selectedTheme = themeList[0];
+            break;
+        case 2:
+            selectedTheme = themeList[1];
+            break;
+        case 3:
+            selectedTheme = themeList[2];
+            break;
+        default:
+            break;
+        }
+
+        if (MainApp.class.getResource("/view/" + selectedTheme + ".css") == null) {
+            throw new CommandException(Messages.MESSAGE_UNKNOWN_FILEPATH);
+        }
+        getRoot().getStylesheets().clear();
+        getRoot().getStylesheets().add("/view/" + selectedTheme + ".css");
+    }
+
+
+    /**
      * Returns the current size and the position of the main Window.
      */
     GuiSettings getCurrentGuiSetting() {
@@ -192,6 +247,17 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
+    //@@author yewshengkai
+    /**
+     * Opens the about window.
+     */
+    @FXML
+    public void handleAbout() {
+        AboutWindow aboutWindow = new AboutWindow();
+        aboutWindow.show();
+    }
+    //@@author
+
     void show() {
         primaryStage.show();
     }
@@ -203,6 +269,54 @@ public class MainWindow extends UiPart<Region> {
     private void handleExit() {
         raise(new ExitAppRequestEvent());
     }
+
+    //@@author yewshengkai-reused
+    /**
+     * Open a file
+     */
+    @FXML
+    private void handleImport() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import from...");
+        fileChooser.showOpenDialog(primaryStage);
+    }
+
+    /**
+     * Save file to specific format
+     */
+    @FXML
+    private void handleExport() {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Excel Workbook (*.xlsx)", "*.xlsx");
+        FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf");
+        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("XML Data (*.xml)", "*.xml");
+        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+
+        fileChooser.getExtensionFilters().add(excelFilter);
+        fileChooser.getExtensionFilters().add(pdfFilter);
+        fileChooser.getExtensionFilters().add(xmlFilter);
+        fileChooser.getExtensionFilters().add(textFilter);
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setTitle("Export to..");
+        fileChooser.setInitialFileName("iungoAB");
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            String content = "Prep_data_save_to_excel";
+            try {
+                FileWriter fileWriter = null;
+                fileWriter = new FileWriter(file);
+                fileWriter.write(content);
+                fileWriter.close();
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
+
+        }
+    }
+    //@@author
 
     public PersonListPanel getPersonListPanel() {
         return this.personListPanel;
@@ -216,5 +330,18 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    //@@author yewshengkai
+    @Subscribe
+    private void handleShowAboutEvent(ShowAboutRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleAbout();
+    }
+
+    @Subscribe
+    private void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) throws CommandException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setWindowTheme(event.targetIndex);
     }
 }
