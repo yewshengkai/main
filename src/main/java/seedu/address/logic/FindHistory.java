@@ -7,6 +7,7 @@ import java.util.List;
 
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author karrui
 /**
  * Stores the persons returned by FindCommand.
  */

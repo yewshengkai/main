@@ -219,6 +219,7 @@ public class EditCommand extends UndoableCommand {
             return Optional.ofNullable(tags);
         }
 
+        //@@author karrui
         public void setHomepage(Homepage homepage) {
             this.homepage = homepage;
         }
@@ -226,6 +227,7 @@ public class EditCommand extends UndoableCommand {
         public Optional<Homepage> getHomepage() {
             return Optional.ofNullable(homepage);
         }
+        //@@author
 
         @Override
         public boolean equals(Object other) {

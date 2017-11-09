@@ -1,6 +1,7 @@
 package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.ReadOnlyPerson;
 
 //@@author yewshengkai
@@ -12,14 +13,16 @@ public class PersonSideCardRequestEvent extends BaseEvent {
     public final boolean isVisible;
     public final ReadOnlyPerson targetPerson;
 
-    public PersonSideCardRequestEvent(boolean isVisible) {
-        this.targetPerson = null;
+    public PersonSideCardRequestEvent(boolean isVisible, ReadOnlyPerson targetPerson) {
+        this.targetPerson = targetPerson;
         this.isVisible = isVisible;
     }
 
-    public PersonSideCardRequestEvent(ReadOnlyPerson targetPerson) {
-        this.isVisible = true;
-        this.targetPerson = targetPerson;
+
+    public PersonSideCardRequestEvent(boolean isVisible) throws ParseException {
+        this.isVisible = isVisible;
+        this.targetPerson = null;
+
     }
 
     @Override

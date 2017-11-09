@@ -61,6 +61,7 @@ public class CommandTestUtil {
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
     public static final String INVALID_HOMEPAGE_DESC = " " + PREFIX_HOMEPAGE + "abcdefg.www"; // not a valid url
 
+    //@@author karrui
     // publicly hosted test avatar image by imgur
     public static final String VALID_AVATAR_IMAGE_URL_ONE = "https://i.imgur.com/o4VkosH.png";
     public static final String VALID_AVATAR_IMAGE_URL_TWO = "https://i.imgur.com/xPHOeWL.png";
@@ -69,7 +70,8 @@ public class CommandTestUtil {
 
     public static final String INVALID_AVATAR_URL_MISSING_FILETYPE = "https://i.imgur.com/xPHOeWL"; // missing filetype
     public static final String INVALID_AVATAR_URL_MISSING_HTTP = "i.imgur.com/xPHOeWL.png"; // missing http header
-    public static final String INVALID_AVATAR_URL_LARGE_IMAGE = "https://i.imgur.com/4BrdIR2.png"; // large image
+    public static final String INVALID_AVATAR_URL_LARGE_IMAGE = "https://i.imgur.com/EqZj35k.jpg"; // large image
+    //@@author
 
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;

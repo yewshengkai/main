@@ -2,7 +2,6 @@ package seedu.address.ui;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 
@@ -20,10 +19,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-    private static String[] colors = { "red", "yellow", "blue", "orange", "brown", "green", "pink", "black", "grey" };
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
-    private static Random random = new Random();
-
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -53,9 +49,23 @@ public class PersonCard extends UiPart<Region> {
         bindListeners(person);
     }
 
+    //@author yewshengkai-reused
     private static String getColorForTag(String tagValue) {
         if (!tagColors.containsKey(tagValue)) {
-            tagColors.put(tagValue, colors[random.nextInt(colors.length)]);
+            int multiplier = 1;
+            int asciiSum = (tagValue.hashCode() > 1) ? tagValue.hashCode() : tagValue.hashCode() * -1;
+
+            int colorRed = asciiSum % 256;
+            int colorGreen = (asciiSum / 2) % 256;
+            int colorBlue = (asciiSum / 3) % 256;
+            while ((colorRed + colorGreen + colorBlue) > 700) {
+                asciiSum = (asciiSum / multiplier) * ++multiplier;
+                colorRed = asciiSum % 256;
+                colorGreen = (asciiSum / 2) % 256;
+                colorBlue = (asciiSum / 3) % 256;
+            }
+            String colorString = String.format("#%02x%02x%02x", colorRed, colorGreen, colorBlue);
+            tagColors.put(tagValue, colorString);
         }
 
         return tagColors.get(tagValue);

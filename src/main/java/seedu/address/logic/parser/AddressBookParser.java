@@ -21,6 +21,7 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RecentCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.RemarkCommand;
+import seedu.address.logic.commands.RemoveTag;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.logic.commands.SortCommand;
@@ -93,9 +94,11 @@ public class AddressBookParser {
         case HistoryCommand.COMMAND_ALIAS:
             return new HistoryCommand();
 
+        //@@author karrui
         case RecentCommand.COMMAND_WORD:
         case RecentCommand.COMMAND_ALIAS:
             return new RecentCommand();
+        //@@author
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
@@ -120,12 +123,15 @@ public class AddressBookParser {
             return new RemarkCommandParser().parse(arguments);
         //@@author
 
+
+        //@@author karrui
         case SetAvatarCommand.COMMAND_WORD:
         case SetAvatarCommand.COMMAND_ALIAS:
             return new SetAvatarCommandParser().parse(arguments);
 
         case SortCommand.COMMAND_WORD:
             return new SortCommandParser().parse(arguments);
+        //@@author
 
         //@@author yewshengkai
         case ThemeCommand.COMMAND_WORD:
@@ -135,6 +141,10 @@ public class AddressBookParser {
         case GmapCommand.COMMAND_WORD:
         case GmapCommand.COMMAND_ALIAS:
             return new GmapCommandParser().parse(arguments);
+
+        case RemoveTag.COMMAND_WORD:
+        case RemoveTag.COMMAND_ALIAS:
+            return new RemoveTagParser().parse(arguments);
         //@@author
 
         default:
