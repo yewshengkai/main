@@ -31,21 +31,22 @@ public class SelectCommand extends Command {
         this.targetIndex = targetIndex;
     }
 
+    //@@author yewshengkai
     @Override
     public CommandResult execute() throws CommandException {
 
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            EventsCenter.getInstance().post(new PersonSideCardRequestEvent(false));
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true));
+        EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true,
+                lastShownList.get(targetIndex.getZeroBased())));
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
-
     }
+    //@@author
 
     @Override
     public boolean equals(Object other) {

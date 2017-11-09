@@ -27,6 +27,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -112,7 +113,7 @@ public class AddCommandTest {
     /**
      * A default model stub that have all of the methods failing.
      */
-    private class ModelStub implements Model {
+    private abstract class ModelStub implements Model {
         @Override
         public void addPerson(ReadOnlyPerson person) throws DuplicatePersonException {
             fail("This method should not be called.");
@@ -141,6 +142,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void removeTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException {
+            fail("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<ReadOnlyPerson> getFilteredPersonList() {
             fail("This method should not be called.");
             return null;
@@ -151,10 +157,12 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        //@@author karrui
         @Override
         public void sortContactList(boolean isDescendingSort) {
             fail("This method should not be called.");
         }
+        //@@author
     }
 
     /**

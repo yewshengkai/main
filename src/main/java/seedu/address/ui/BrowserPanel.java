@@ -14,6 +14,7 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.MapToListRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.PersonSideCardRequestEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -82,6 +83,14 @@ public class BrowserPanel extends UiPart<Region> {
     }
 
     //@@author yewshengkai
+    @Subscribe
+    private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        loadPersonPage(event.targetPerson);
+        browser.setOpacity(100);
+    }
+
+
     @Subscribe
     private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
