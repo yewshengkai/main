@@ -97,7 +97,7 @@ public class ModelManager extends ComponentManager implements Model {
             addressBook.updatePerson(oldPerson, newPerson);
         }
     }
-      
+
     @Override
     public void sortContactList(boolean isDescendingSort) {
         addressBook.sortAddressBook(isDescendingSort);
