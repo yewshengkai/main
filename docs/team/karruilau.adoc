@@ -154,6 +154,8 @@ include::../DeveloperGuide.adoc[tag=optadd]
 ---
 
 === Other contributions
+==== Wrote user stories for iungo
+
 ==== Volunteering own features for reuse
 
 *Recent command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/168[forum post]] +
