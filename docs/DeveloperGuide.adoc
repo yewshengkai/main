@@ -1038,6 +1038,46 @@ image::RemarkCommandParser.png[]
 
 // end::remark[]
 
+// tag::optadd[]
+=== Optional Add mechanism
+The enhancement is based on the existing `AddCommandParser`, with a more relaxed restriction of only the `Name` and `Phone` fields being
+mandatory.
+
+The relevant modifications are as follows:
+[source,java]
+----
+public AddCommand parse(String args) throws ParseException {
+    // ... other logic ...
+    // only name and phone are compulsory
+    if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)) {
+        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+    }
+    try {
+        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME)).get();
+        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE)).get();
+        Email email = ParserUtil.parseEmail(ParserUtil.parseValues(argMultimap.getValue(PREFIX_EMAIL))).get();
+        Address address = ParserUtil.parseAddress(ParserUtil.parseValues(argMultimap.getValue(PREFIX_ADDRESS))).get();
+        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        // ... other logic ...
+        return new AddCommand(person);
+    } catch (IllegalValueException ive) {
+        throw new ParseException(ive.getMessage(), ive);
+    }
+}
+----
+
+`parse()` utilizes `ParserUtil.parseValues(...)` to return an empty string if no such parameters were entered by the user, as seen below:
+[source,java]
+----
+public static Optional<String> parseValues(Optional<String> value) {
+    return Optional.of(value.orElse(STRING_IF_EMPTY));
+}
+----
+
+The relevant parameters are then passed to create a `Person` object.
+
+// end::optadd[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
