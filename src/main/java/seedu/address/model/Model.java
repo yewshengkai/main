@@ -51,7 +51,7 @@ public interface Model {
      * @throws PersonNotFoundException or DuplicatePersonException if {@code tag} is null or duplicated.
      */
     void removeTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException;
-  
+
     /**
      * Sorts the current person list in model.
      */
