@@ -92,11 +92,7 @@ public class PersonSideCard extends UiPart<Region> {
         email.textProperty().bind(Bindings.convert(person.emailProperty()));
         remark.textProperty().bind(Bindings.convert(person.remarkProperty()));
         tags.getChildren().clear();
-        person.getTags().forEach(tag -> {
-            Label tagLabel = new Label(tag.tagName);
-            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
-            tags.getChildren().add(tagLabel);
-        });
+        initTags(person);
         homepage.textProperty().bind(Bindings.convert(person.homepageProperty()));
 
         initImage(person);
@@ -126,6 +122,17 @@ public class PersonSideCard extends UiPart<Region> {
         }
     }
     //@@author
+
+    /**
+     * Tags coloring
+     */
+    private void initTags(ReadOnlyPerson person) {
+        person.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
+            tags.getChildren().add(tagLabel);
+        });
+    }
 
     //@@author yewshengkai
     /**
