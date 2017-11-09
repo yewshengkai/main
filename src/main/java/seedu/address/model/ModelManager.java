@@ -95,6 +95,7 @@ public class ModelManager extends ComponentManager implements Model {
             newTags.remove(tag);
             newPerson.setTags(newTags);
             addressBook.updatePerson(oldPerson, newPerson);
+            indicateAddressBookChanged();
         }
     }
 
