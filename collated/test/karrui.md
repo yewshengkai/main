@@ -13,6 +13,74 @@
         assertEquals(customHomepage, validPersonWithHomepage.getHomepage().value);
     }
 ```
+###### \java\seedu\address\logic\commands\AddCommandTest.java
+``` java
+        @Override
+        public void sortContactList(boolean isDescendingSort) {
+            fail("This method should not be called.");
+        }
+```
+###### \java\seedu\address\logic\commands\CommandTestUtil.java
+``` java
+    // publicly hosted test avatar image by imgur
+    public static final String VALID_AVATAR_IMAGE_URL_ONE = "https://i.imgur.com/o4VkosH.png";
+    public static final String VALID_AVATAR_IMAGE_URL_TWO = "https://i.imgur.com/xPHOeWL.png";
+
+    public static final String VALID_AVATAR_FILEPATH = "src/test/resources/avatarTest/testAvatar.png";
+
+    public static final String INVALID_AVATAR_URL_MISSING_FILETYPE = "https://i.imgur.com/xPHOeWL"; // missing filetype
+    public static final String INVALID_AVATAR_URL_MISSING_HTTP = "i.imgur.com/xPHOeWL.png"; // missing http header
+    public static final String INVALID_AVATAR_URL_LARGE_IMAGE = "https://i.imgur.com/EqZj35k.jpg"; // large image
+```
+###### \java\seedu\address\logic\commands\EditPersonDescriptorTest.java
+``` java
+        // different homepage -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withHomepage(VALID_HOMEPAGE_BOB).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+```
+###### \java\seedu\address\logic\commands\RecentCommandTest.java
+``` java
+public class RecentCommandTest {
+    private RecentCommand recentCommand;
+    private FindHistory findHistory;
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    @Before
+    public void setUp() {
+        findHistory = new FindHistory();
+        recentCommand = new RecentCommand();
+        recentCommand.setData(model, new CommandHistory(), findHistory, new UndoRedoStack());
+    }
+
+    @Test
+    public void execute() {
+        String expectedMessage = RecentCommand.MESSAGE_SUCCESS;
+        assertCommandResult(recentCommand, RecentCommand.MESSAGE_NO_RECENT);    // nothing in findHistory yet
+        findHistory.add(ALICE);
+        assertCommandSuccess(Collections.singletonList(ALICE)); // backing list should be equals to argument
+        assertCommandResult(recentCommand, expectedMessage); // success message
+    }
+
+    /**
+     * Asserts that the result message from the execution of {@code recentCommand} equals to {@code expectedMessage}
+     */
+    private void assertCommandResult(RecentCommand recentCommand, String expectedMessage) {
+        assertEquals(expectedMessage, recentCommand.execute().feedbackToUser);
+    }
+
+    /**
+     * Asserts that
+     *     - the {@code FilteredList<ReadOnlyPerson>} is equal to {@code expectedList}<br>
+     *     - the {@code AddressBook} in model remains the same after executing the {@code command}
+     */
+    private void assertCommandSuccess(List<ReadOnlyPerson> expectedList) {
+        AddressBook expectedAddressBook = new AddressBook(model.getAddressBook());
+        recentCommand.execute();
+        assertEquals(expectedList, model.getFilteredPersonList());
+        assertEquals(expectedAddressBook, model.getAddressBook());
+    }
+}
+```
 ###### \java\seedu\address\logic\commands\SetAvatarCommandTest.java
 ``` java
 public class SetAvatarCommandTest {
@@ -121,7 +189,7 @@ public class SetAvatarCommandTest {
      */
     private SetAvatarCommand prepareCommand(Index index, String path) throws IllegalValueException {
         SetAvatarCommand setAvatarCommand = new SetAvatarCommand(index, new Avatar(path));
-        setAvatarCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        setAvatarCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         filesCreated.add(setAvatarCommand.getAvatar().path);
         return setAvatarCommand;
     }
@@ -164,8 +232,54 @@ public class SortCommandTest {
 
     private SortCommand prepareCommand(boolean isDescendingSort) {
         SortCommand sortCommand = new SortCommand(isDescendingSort);
-        sortCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        sortCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         return sortCommand;
+    }
+}
+```
+###### \java\seedu\address\logic\FindHistoryTest.java
+``` java
+public class FindHistoryTest {
+    private final Person alice = new PersonBuilder().build();
+    private final Person bob = new PersonBuilder().withName("Bob").build();
+    private final Person charlie = new PersonBuilder().withName("Charlie").build();
+    private FindHistory findHistory;
+
+    @Before
+    public void setUp() {
+        findHistory = new FindHistory();
+    }
+
+    @Test
+    public void add() {
+        findHistory.add(alice);
+        assertEquals(Collections.singletonList(alice), findHistory.getHistory());
+    }
+
+    @Test
+    public void set() {
+        findHistory.add(alice);
+        findHistory.set(alice, bob);
+        assertEquals(Collections.singletonList(bob), findHistory.getHistory());
+    }
+
+    @Test
+    public void deletePerson() {
+        findHistory.add(alice);
+        findHistory.deletePerson(alice);
+        assertEquals(Collections.emptyList(), findHistory.getHistory());
+    }
+
+    @Test
+    public void resetData() {
+        LinkedList<ReadOnlyPerson> newData = new LinkedList<>();
+        newData.add(alice);
+        newData.add(bob);
+
+        findHistory.add(charlie);
+        assertEquals(Collections.singletonList(charlie), findHistory.getHistory());
+        findHistory.resetData(newData);
+        assertEquals(Arrays.asList(alice, bob), findHistory.getHistory());
     }
 }
 ```
@@ -179,11 +293,39 @@ public class SortCommandTest {
 ```
 ###### \java\seedu\address\logic\parser\AddCommandParserTest.java
 ``` java
+        // all optional fields missing
+        expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withAddress(
+                EMPTY_STRING).withEmail(EMPTY_STRING).withTags().build();
+        assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY,
+                new AddCommand(expectedPerson));
+
+        // address missing
+        expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withAddress(
+                EMPTY_STRING).withEmail(VALID_EMAIL_AMY).withTags().build();
+        assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
+                + EMAIL_DESC_AMY, new AddCommand(expectedPerson));
+
+        // email missing
+        expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withAddress(
+                VALID_ADDRESS_AMY).withEmail(EMPTY_STRING).withTags().build();
+        assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
+                + ADDRESS_DESC_AMY, new AddCommand(expectedPerson));
+```
+###### \java\seedu\address\logic\parser\AddCommandParserTest.java
+``` java
         // invalid homepage
         assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                         + ADDRESS_DESC_BOB + INVALID_HOMEPAGE_DESC + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                  Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
 
+```
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+``` java
+    @Test
+    public void parseCommand_recent() throws Exception {
+        assertTrue(parser.parseCommand(RecentCommand.COMMAND_WORD) instanceof RecentCommand);
+        assertTrue(parser.parseCommand(RecentCommand.COMMAND_ALIAS) instanceof RecentCommand);
+    }
 ```
 ###### \java\seedu\address\logic\parser\AddressBookParserTest.java
 ``` java
@@ -222,20 +364,6 @@ public class SortCommandTest {
         }
     }
 
-    @Test
-    public void parseCommand_unrecognisedInput_throwsParseException() throws Exception {
-        thrown.expect(ParseException.class);
-        thrown.expectMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
-        parser.parseCommand("");
-    }
-
-    @Test
-    public void parseCommand_unknownCommand_throwsParseException() throws Exception {
-        thrown.expect(ParseException.class);
-        thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
-        parser.parseCommand("unknownCommand");
-    }
-}
 ```
 ###### \java\seedu\address\logic\parser\EditCommandParserTest.java
 ``` java
@@ -258,6 +386,14 @@ public class SortCommandTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 }
+```
+###### \java\seedu\address\logic\parser\ParserUtilTest.java
+``` java
+        Homepage expectedHomepage = new Homepage(VALID_HOMEPAGE);
+        ArrayList<String> homepageList = ParserUtil.parseAllDetail(Arrays.asList(
+                VALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
+        assertEquals(expectedHomepage.value, homepageList.toString().replaceAll(
+                "['\\[\\]']", ""));
 ```
 ###### \java\seedu\address\logic\parser\SetAvatarCommandParserTest.java
 ``` java
@@ -324,6 +460,87 @@ public class SortCommandParserTest {
     }
 }
 ```
+###### \java\seedu\address\model\person\AvatarTest.java
+``` java
+public class AvatarTest {
+    @Test
+    public void isValidAvatar() {
+        // invalid avatars
+        assertFalse(Avatar.isValidPath("abcde")); // not an image path
+        assertFalse(Avatar.isValidPath(" ")); // spaces only
+        assertFalse(Avatar.isValidPath(INVALID_AVATAR_URL_MISSING_HTTP)); //no "http://" header
+        assertFalse(Avatar.isValidPath(INVALID_AVATAR_URL_MISSING_FILETYPE)); // no filetype trailer
+        assertFalse(Avatar.isValidPath("https://hopefullydoesnotexist.com/doesnotexist.png")); // image does not exist
+        assertFalse(Avatar.isValidPath(INVALID_AVATAR_URL_LARGE_IMAGE)); // image is too large
+
+        // valid avatars
+        assertTrue(Avatar.isValidPath(VALID_AVATAR_IMAGE_URL_ONE)); // valid URL
+        assertTrue(Avatar.isValidPath(VALID_AVATAR_FILEPATH));  // valid filepath
+        assertTrue(Avatar.isValidPath("")); //nothing, default avatar
+    }
+}
+```
+###### \java\seedu\address\model\person\HomepageTest.java
+``` java
+public class HomepageTest {
+
+    @Test
+    public void isValidHomepage() {
+        // invalid homepages
+        assertFalse(Homepage.isValidHomepage("")); // empty string
+        assertFalse(Homepage.isValidHomepage(" ")); // spaces only
+        assertFalse(Homepage.isValidHomepage("www.google.com")); // no "http://" prefix
+
+        // valid homepages
+        assertTrue(Homepage.isValidHomepage("http://www.google.com"));
+        assertTrue(Homepage.isValidHomepage("http://w")); // one character
+    }
+}
+```
+###### \java\seedu\address\model\person\PersonContainsRecentPredicateTest.java
+``` java
+public class PersonContainsRecentPredicateTest {
+    private final Person alice = new PersonBuilder().build();
+    private final Person bob = new PersonBuilder().withName("Bob").build();
+
+    @Test
+    public void equals() {
+        List<ReadOnlyPerson> firstPredicatePersonList = Collections.singletonList(alice);
+        List<ReadOnlyPerson> secondPredicatePersonList = Arrays.asList(alice, bob);
+
+        PersonContainsRecentPredicate firstPredicate = new PersonContainsRecentPredicate(firstPredicatePersonList);
+        PersonContainsRecentPredicate secondPredicate = new PersonContainsRecentPredicate(secondPredicatePersonList);
+
+        // same object -> returns true
+        assertTrue(firstPredicate.equals(firstPredicate));
+
+        // same values -> returns true
+        PersonContainsRecentPredicate firstPredicateCopy = new PersonContainsRecentPredicate(firstPredicatePersonList);
+        assertTrue(firstPredicate.equals(firstPredicateCopy));
+
+        // different types -> returns false
+        assertFalse(firstPredicate.equals(1));
+
+        // null -> returns false
+        assertFalse(firstPredicate.equals(null));
+
+        // different person -> returns false
+        assertFalse(firstPredicate.equals(secondPredicate));
+    }
+
+    @Test
+    public void test_returnsTrue() {
+        PersonContainsRecentPredicate predicate = new PersonContainsRecentPredicate(Collections.singletonList(alice));
+        assertTrue(predicate.test(new PersonBuilder().build()));
+    }
+
+    @Test
+    public void test_returnsFalse() {
+        PersonContainsRecentPredicate predicate = new PersonContainsRecentPredicate(Collections.emptyList());
+        assertFalse(predicate.test(new PersonBuilder().build()));
+    }
+}
+```
 ###### \java\seedu\address\ui\PersonCardTest.java
 ``` java
     @Test
@@ -339,4 +556,34 @@ public class SortCommandParserTest {
         assertCardDisplay(personCard, personWithAvatar, 1);
     }
 
+    /**
+     * Asserts that {@code personCard} displays the details of {@code expectedPerson} correctly and matches
+     * {@code expectedId}.
+     */
+    private void assertCardDisplay(PersonCard personCard, ReadOnlyPerson expectedPerson, int expectedId) {
+        guiRobot.pauseForHuman();
+
+        PersonCardHandle personCardHandle = new PersonCardHandle(personCard.getRoot());
+
+        // verify id is displayed correctly
+        assertEquals(Integer.toString(expectedId) + ". ", personCardHandle.getId());
+
+        // verify person details are displayed correctly
+        assertCardDisplaysPerson(expectedPerson, personCardHandle);
+    }
+}
+```
+###### \java\systemtests\AddCommandSystemTest.java
+``` java
+        /* Case: missing email -> added */
+        toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(EMPTY_STRING)
+                .withAddress(VALID_ADDRESS_AMY).withTags().build();
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY;
+        assertCommandSuccess(command, toAdd);
+
+        /* Case: missing address -> added */
+        toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
+                .withAddress(EMPTY_STRING).withTags().build();
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY;
+        assertCommandSuccess(command, toAdd);
 ```

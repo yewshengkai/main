@@ -90,7 +90,6 @@ public class BrowserPanel extends UiPart<Region> {
         browser.setOpacity(100);
     }
 
-
     @Subscribe
     private void handlePersonPanelGmapChangedEvent(MapToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));

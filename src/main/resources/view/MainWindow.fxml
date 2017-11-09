@@ -16,11 +16,9 @@
         <URL value="@Extensions.css" />
     </stylesheets>
 
-    <!-- @@author yewshengkai generated -->
+    <!-- @@author generated -->
     <MenuBar fx:id="menuBar" minHeight="30.0" prefHeight="25.0" VBox.vgrow="NEVER">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
-            <MenuItem mnemonicParsing="false" onAction="#handleExport" text="Export" />
             <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
@@ -46,7 +44,7 @@
                     <children>
                   <HBox>
                      <children>
-                        <!-- @@author yewshengkai generated -->
+                        <!-- @@author generated -->
                         <StackPane fx:id="sidePersonPlaceholder">
                            <HBox.margin>
                               <Insets bottom="10.0" left="5.0" top="10.0" />
