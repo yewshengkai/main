@@ -90,9 +90,9 @@ public class ModelManager extends ComponentManager implements Model {
         for (int i = 0; i < addressBook.getPersonList().size(); i++) {
             ReadOnlyPerson oldPerson = addressBook.getPersonList().get(i);
 
-            Person newPerson = new Person(oldPerson);
+            Person newPerson;
             if (oldPerson.isHomepageManuallySet()) {
-                newPerson = new Person(oldPerson, newPerson.getHomepage());
+                newPerson = new Person(oldPerson, oldPerson.getHomepage());
             } else {
                 newPerson = new Person(oldPerson);
             }
