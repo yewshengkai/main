@@ -41,10 +41,10 @@ public class PersonCardTest extends GuiUnitTest {
     //@@author karrui
     @Test
     public void avatarCheck() {
-            Person personWithNoAvatar = new PersonBuilder().withAvatar("").build();
-            PersonCard personCard = new PersonCard(personWithNoAvatar, 1);
-            uiPartRule.setUiPart(personCard);
-            assertCardDisplay(personCard, personWithNoAvatar, 1);
+        Person personWithNoAvatar = new PersonBuilder().withAvatar("").build();
+        PersonCard personCard = new PersonCard(personWithNoAvatar, 1);
+        uiPartRule.setUiPart(personCard);
+        assertCardDisplay(personCard, personWithNoAvatar, 1);
 
         Person personWithAvatar = null;
         try {
