@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_ONE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_TWO;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_HOMEPAGE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
@@ -38,13 +37,13 @@ import seedu.address.testutil.PersonBuilder;
 //@@author karrui
 public class SetAvatarCommandTest {
     private Model model;
+    private ArrayList<String> filesCreated = new ArrayList<>();
 
     @Before
     public void setup() {
         model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     }
 
-    private ArrayList<String> filesCreated = new ArrayList<>();
 
     @After
     public void cleanup() {
@@ -59,7 +58,6 @@ public class SetAvatarCommandTest {
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
         model.updatePerson(firstPerson, editedPerson);
-        filesCreated.add(editedPerson.getAvatar().path);
         SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, "");
 
         String expectedMessage = String.format(SetAvatarCommand.MESSAGE_REMOVE_AVATAR_SUCCESS, editedPerson);
@@ -77,7 +75,6 @@ public class SetAvatarCommandTest {
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).withBooleanHomepageManuallySet(true).build();
         model.updatePerson(firstPerson, editedPerson);
-        filesCreated.add(editedPerson.getAvatar().path);
         SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, "");
 
         String expectedMessage = String.format(SetAvatarCommand.MESSAGE_REMOVE_AVATAR_SUCCESS, editedPerson);
