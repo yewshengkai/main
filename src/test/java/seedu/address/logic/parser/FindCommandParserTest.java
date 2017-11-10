@@ -86,18 +86,20 @@ public class FindCommandParserTest {
 
     //@@author yewshengkai
     @Test
-    public void parse() throws Exception {
+    public void parse_parseAllDetails() throws Exception {
         Address expectedAddress = new Address(VALID_ADDRESS);
         ArrayList<String> addressList = ParserUtil.parseAllDetail(
                 Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
         assertEquals(expectedAddress.value, addressList.toString().replaceAll(
                 "['\\[\\],']", ""));
+        ParserUtil.parseAllDetail(addressList, FindCommand.COMMAND_WORD_ADDRESS);
 
         Email expectedEmail = new Email(VALID_EMAIL);
         ArrayList<String> emailList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
         assertEquals(expectedEmail.value, emailList.toString().replaceAll(
                 "['\\[\\]']", ""));
+        ParserUtil.parseAllDetail(emailList, FindCommand.COMMAND_WORD_EMAIL);
 
         //@@author karrui
         Homepage expectedHomepage = new Homepage(VALID_HOMEPAGE);
@@ -107,17 +109,19 @@ public class FindCommandParserTest {
                 "['\\[\\]']", ""));
 
         //@@author yewshengkai
+        ParserUtil.parseAllDetail(homepageList, FindCommand.COMMAND_WORD_HOMEPAGE);
         Phone expectedPhone = new Phone(VALID_PHONE);
         ArrayList<String> phoneList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
         assertEquals(expectedPhone.value, phoneList.toString().replaceAll(
                 "['\\[\\]']", ""));
+        ParserUtil.parseAllDetail(phoneList, FindCommand.COMMAND_WORD_PHONE);
 
         Tag expectedTag = new Tag(VALID_TAG_1);
         ArrayList<String> tagList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_TAG_1), FindCommand.COMMAND_WORD_TAG);
         assertEquals(expectedTag.tagName, tagList.toString().replaceAll(
                 "['\\[\\]']", ""));
+        ParserUtil.parseAllDetail(tagList, FindCommand.COMMAND_WORD_TAG);
     }
-    //@@author
 }
