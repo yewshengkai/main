@@ -196,7 +196,6 @@ public class ParserUtilTest {
     //@@author yewshengkai
     @Test
     public void parseAllDetail_withValidDetails_throwIllegalValueException() throws Exception {
-        thrown.expect(IllegalValueException.class);
         Address expectedAddress = new Address(VALID_ADDRESS);
         ArrayList<String> addressList = ParserUtil.parseAllDetail(
                 Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
