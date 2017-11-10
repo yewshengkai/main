@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -18,28 +19,23 @@ import seedu.address.commons.exceptions.IllegalValueException;
 /**
  * Utility class to write an image from an URL to a file for the Avatar class
  */
-public class ProcessImageFromUrlToFileForAvatar {
+public class ProcessImage {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
-    private static final Logger logger = LogsCenter.getLogger(ProcessImageFromUrlToFileForAvatar.class);
+    private static final Logger logger = LogsCenter.getLogger(ProcessImage.class);
 
     /**
      * Writes the image URL path provided into an image file
      */
-    public static String writeImageToFile(String path) throws IllegalValueException {
+    public static String writeImageToStorage(String path) throws IllegalValueException {
         String standardPath = path.replace('\\', '/');
         if ("".equals(standardPath) || standardPath.startsWith(DEFAULT_AVATAR_FILE_LOCATION)) {
             return standardPath;
         }
         try {
-            int i = 1;
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
 
-            // Using hashCode() + checking if file exists assures uniqueness of name of created file
-            File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
-            while (file.exists()) {
-                file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
-            }
+            File file = getUniqueFile();
             ImageIO.write(image, "jpg", file);
             logger.info("Image from " + path + " written to to file: " + file.getName());
             return file.getPath().replace('\\', '/');
@@ -47,6 +43,19 @@ public class ProcessImageFromUrlToFileForAvatar {
             logger.info("Failed to create image from path: " + path);
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
+    }
+
+    /**
+     * Returns a File with an unique file path by using {@code Random} class.
+     */
+    private static File getUniqueFile() {
+        Random random = new Random();
+        // Using hashCode() + checking if file exists assures uniqueness of name of created file
+        File file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
+        while (file.exists()) {
+            file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
+        }
+        return file;
     }
 
     /**
