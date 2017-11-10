@@ -36,7 +36,6 @@ public class FindCommandParserTest {
     public final ExpectedException thrown = ExpectedException.none();
 
     private FindCommandParser parser = new FindCommandParser();
-    private FindCommandParser parser2 = new FindCommandParser();
 
     @Test
     public void parse_emptyArg_throwsParseException() {
