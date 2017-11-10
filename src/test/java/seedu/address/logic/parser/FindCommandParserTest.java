@@ -25,11 +25,6 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 public class FindCommandParserTest {
-    private static final String INVALID_PHONE = "+6512A34";
-    private static final String INVALID_ADDRESS = "%$";
-    private static final String INVALID_EMAIL = "//@$example.com";
-    private static final String INVALID_TAG = "#$@friend";
-    private static final String INVALID_HOMEPAGE = "%#google.ga";
 
     private static final String VALID_PHONE = "123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
@@ -41,6 +36,7 @@ public class FindCommandParserTest {
     public final ExpectedException thrown = ExpectedException.none();
 
     private FindCommandParser parser = new FindCommandParser();
+    private FindCommandParser parser2 = new FindCommandParser();
 
     @Test
     public void parse_emptyArg_throwsParseException() {
@@ -90,16 +86,11 @@ public class FindCommandParserTest {
 
     //@@author yewshengkai
     @Test
-    public void parseAllDetail_returnsFindCommand() throws Exception {
-        thrown.expect(IllegalValueException.class);
+    public void parse() throws Exception {
         Address expectedAddress = new Address(VALID_ADDRESS);
         ArrayList<String> addressList = ParserUtil.parseAllDetail(
                 Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
         assertEquals(expectedAddress.value, addressList.toString().replaceAll(
-                "['\\[\\],']", ""));
-        ArrayList<String> invalidAddress = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
-        assertEquals(expectedAddress.value, invalidAddress.toString().replaceAll(
                 "['\\[\\],']", ""));
 
         Email expectedEmail = new Email(VALID_EMAIL);
@@ -107,10 +98,6 @@ public class FindCommandParserTest {
                 VALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
         assertEquals(expectedEmail.value, emailList.toString().replaceAll(
                 "['\\[\\]']", ""));
-        ArrayList<String> invalidEmail = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
-        assertEquals(expectedEmail.value, invalidEmail.toString().replaceAll(
-                "['\\[\\],']", ""));
 
         //@@author karrui
         Homepage expectedHomepage = new Homepage(VALID_HOMEPAGE);
@@ -120,30 +107,17 @@ public class FindCommandParserTest {
                 "['\\[\\]']", ""));
 
         //@@author yewshengkai
-        ArrayList<String> invalidHomepage = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
-        assertEquals(expectedHomepage.value, invalidHomepage.toString().replaceAll(
-                "['\\[\\],']", ""));
-
         Phone expectedPhone = new Phone(VALID_PHONE);
         ArrayList<String> phoneList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
         assertEquals(expectedPhone.value, phoneList.toString().replaceAll(
                 "['\\[\\]']", ""));
-        ArrayList<String> invalidPhone = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
-        assertEquals(expectedPhone.value, invalidPhone.toString().replaceAll(
-                "['\\[\\],']", ""));
 
         Tag expectedTag = new Tag(VALID_TAG_1);
         ArrayList<String> tagList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_TAG_1), FindCommand.COMMAND_WORD_TAG);
         assertEquals(expectedTag.tagName, tagList.toString().replaceAll(
                 "['\\[\\]']", ""));
-        ArrayList<String> invalidTag = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_TAG), FindCommand.COMMAND_WORD_TAG);
-        assertEquals(expectedTag.tagName, invalidTag.toString().replaceAll(
-                "['\\[\\],']", ""));
     }
     //@@author
 }

@@ -202,20 +202,12 @@ public class ParserUtilTest {
                 Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
         assertEquals(expectedAddress.value, addressList.toString().replaceAll(
                 "['\\[\\],']", ""));
-        ArrayList<String> invalidAddress = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
-        assertEquals(expectedAddress.value, invalidAddress.toString().replaceAll(
-                "['\\[\\],']", ""));
 
         Email expectedEmail = new Email(VALID_EMAIL);
         ArrayList<String> emailList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
         assertEquals(expectedEmail.value, emailList.toString().replaceAll(
                 "['\\[\\]']", ""));
-        ArrayList<String> invalidEmail = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
-        assertEquals(expectedEmail.value, invalidEmail.toString().replaceAll(
-                "['\\[\\],']", ""));
 
         //@@author karrui
         Homepage expectedHomepage = new Homepage(VALID_HOMEPAGE);
@@ -225,30 +217,48 @@ public class ParserUtilTest {
                 "['\\[\\]']", ""));
 
         //@@author yewshengkai
-        ArrayList<String> invalidHomepage = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
-        assertEquals(expectedHomepage.value, invalidHomepage.toString().replaceAll(
-                "['\\[\\],']", ""));
-
         Phone expectedPhone = new Phone(VALID_PHONE);
         ArrayList<String> phoneList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
         assertEquals(expectedPhone.value, phoneList.toString().replaceAll(
                 "['\\[\\]']", ""));
-        ArrayList<String> invalidPhone = ParserUtil.parseAllDetail(
-                Arrays.asList(INVALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
-        assertEquals(expectedPhone.value, invalidPhone.toString().replaceAll(
-                "['\\[\\],']", ""));
 
         Tag expectedTag = new Tag(VALID_TAG_1);
         ArrayList<String> tagList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_TAG_1), FindCommand.COMMAND_WORD_TAG);
         assertEquals(expectedTag.tagName, tagList.toString().replaceAll(
                 "['\\[\\]']", ""));
+    }
+
+    //@@author yewshengkai
+    @Test
+    public void parseAllDetail_withInValidDetails_throwIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
+        Address expectedAddress = new Address(INVALID_ADDRESS);
+        ArrayList<String> invalidAddress = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
+        assertEquals(expectedAddress.value, invalidAddress.toString().replaceAll(
+                "['\\[\\],']", ""));
+
+        Email expectedEmail = new Email(INVALID_EMAIL);
+        ArrayList<String> invalidEmail = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
+        assertEquals(expectedEmail.value, invalidEmail.toString());
+
+        Homepage expectedHomepage = new Homepage(INVALID_HOMEPAGE);
+        ArrayList<String> invalidHomepage = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
+        assertEquals(expectedHomepage.value, invalidHomepage.toString());
+
+        Phone expectedPhone = new Phone(INVALID_PHONE);
+        ArrayList<String> invalidPhone = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
+        assertEquals(expectedPhone.value, invalidPhone.toString());
+
+        Tag expectedTag = new Tag(INVALID_TAG);
         ArrayList<String> invalidTag = ParserUtil.parseAllDetail(
                 Arrays.asList(INVALID_TAG), FindCommand.COMMAND_WORD_TAG);
-        assertEquals(expectedTag.tagName, invalidTag.toString().replaceAll(
-                "['\\[\\],']", ""));
+        assertEquals(expectedTag.tagName, invalidTag.toString());
     }
     //@@author
 
