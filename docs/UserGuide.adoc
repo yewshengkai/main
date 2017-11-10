@@ -266,12 +266,15 @@ Gives the 1st person in the results of the `find` command a remark.
 //tag::avatar[]
 === Setting an avatar for a contact : `setavatar`, `sa`
 {since v1.3} +
-Sets an avatar for a contact referenced by the index number used in the last person listing. +
-Format: `setavatar INDEX sa/AVATAR_URL` +
-Alias: `sa INDEX sa/AVATAR_URL`
+Sets an avatar for a contact referenced by the index number used in the last person listing.
+If `AVATAR_URL` is empty; i.e `sa INDEX sa/`, the current avatar (if any) will be deleted. +
+Format: `setavatar INDEX sa/[AVATAR_URL]` +
+Alias: `sa INDEX sa/[AVATAR_URL]`
 
 [NOTE]
 This requires an active Internet connection to work, as the application requires an URL to retrieve the image.
+[NOTE]
+This command cannot be undone, if `sa INDEX sa/` is invoked, you will need to add the avatar again with an URL.
 
 ****
 * Sets the avatar for the contact at the specified `INDEX`.
