@@ -91,8 +91,6 @@ public class SetAvatarCommand extends UndoableCommand {
 
         try {
             model.updatePerson(personToSetAvatar, editedPerson);
-            EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true,
-                    lastShownList.get(targetIndex.getZeroBased())));
             EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
