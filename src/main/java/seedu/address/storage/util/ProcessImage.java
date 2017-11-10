@@ -50,7 +50,7 @@ public class ProcessImage {
      */
     private static File getUniqueFile() {
         Random random = new Random();
-        // Using hashCode() + checking if file exists assures uniqueness of name of created file
+        // random.nextInt() + checking if file exists assures uniqueness of name of created file
         File file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
         while (file.exists()) {
             file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");

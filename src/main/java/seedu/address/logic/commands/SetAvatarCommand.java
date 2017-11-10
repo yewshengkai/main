@@ -70,10 +70,8 @@ public class SetAvatarCommand extends Command {
 
         if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
             ProcessImage.removeImageFromStorage(personToSetAvatarPath);
-        } else {
-            if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
-                ProcessImage.removeImageFromStorage(personToSetAvatarPath);
-            }
+        } else if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
         }
 
         if (personToSetAvatar.isHomepageManuallySet()) {
