@@ -5,8 +5,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_AVATAR;
 
 import java.util.List;
 
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.JumpToListRequestEvent;
+import seedu.address.commons.events.ui.PersonSideCardRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Person;
@@ -88,6 +91,9 @@ public class SetAvatarCommand extends UndoableCommand {
 
         try {
             model.updatePerson(personToSetAvatar, editedPerson);
+            EventsCenter.getInstance().post(new PersonSideCardRequestEvent(true,
+                    lastShownList.get(targetIndex.getZeroBased())));
+            EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         } catch (PersonNotFoundException pnfe) {
