@@ -244,6 +244,7 @@ public class ParserUtilTest {
         assertEquals(expectedAddress.value, invalidAddress.toString().replaceAll(
                 "['\\[\\],']", ""));
         ParserUtil.parseAllDetail(invalidAddress, FindCommand.COMMAND_WORD_ADDRESS);
+        assertFalse(INVALID_ADDRESS, Address.isValidAddress(INVALID_ADDRESS));
 
         Email expectedEmail = new Email(INVALID_EMAIL);
         ArrayList<String> invalidEmail = ParserUtil.parseAllDetail(
