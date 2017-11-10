@@ -454,8 +454,8 @@ parses the arguments provided by the user.
 
 The following sequence diagrams shows how the setting of avatar is achieved:
 
-image::SetAvatarCommandParserSequenceDiagram.png[]
-image::SetAvatarCommandSequenceDiagram.png[width="800"]
+image::SetAvatarCommandParserSequenceDiagram.png[width="500"]
+image::SetAvatarCommandSequenceDiagram.png[width="500"]
 
 The arguments needed are `INDEX` and `AVATAR_URL`. +
 An `Avatar` object is created using `AVATAR_URL` before being passed as a parameter into the creation of the `SetAvatarCommand`
@@ -464,7 +464,7 @@ object.
 The `Avatar` class performs a series of validity checks to ensure the URL provided is valid. Validity is defined by having:
 
 1. A valid URL OR is empty
-2. The image must not be larger than 20KB (due to application slowdowns if the file is too big)
+2. The image must not be larger than 50KB (due to application slowdowns if the file is too big)
 
 
 `SetAvatarCommand` also performs a series of checks in order to decide the steps to take before editing the `Person` referenced. +
@@ -477,44 +477,54 @@ Below is the code snippet of `SetAvatarCommand` for the various checks:
 
      // avatar refers to the avatar object created during the construction of SetAvatarCommand
      if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
-         } else {
-             if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
-                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
-             }
-         }
+         ProcessImage.removeImageFromStorage(personToSetAvatarPath);
+     } else if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+         ProcessImage.removeImageFromStorage(personToSetAvatarPath);
      }
  }
 ----
-The utility class `ProcessImageFromUrlToFileForAvatar` is used to process images retrieved from the Internet. It contains
-two methods -- `writeImageToFile(...)` and `removeImageFromStorage(...)` which stores the image into the
+The utility class `ProcessImage` is used to process images retrieved from the Internet. It contains
+methods such as -- `writeImageToStorage(...)` and `removeImageFromStorage(...)` which stores the image into the
 `DEFAULT_AVATAR_FILE_LOCATION` and removes the image respectively. +
-Below is the code snippet of the write method:
+Below is the code snippet of the write method, which calls a helper method `getUniqueFile()` to generate a File with a unique path:
 
 [source,java]
 ----
-void writeImageToFile(String path) {
+void writeImageToStorage(String path) {
     // ... irrelevant ...
 
-    // Using hashCode() + checking if file exists assures uniqueness of name of created file
-    File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
-    while (file.exists()) {
-        file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
-    }
+    URL url = new URL(path);
+    BufferedImage image = ImageIO.read(url);
+
+    File file = getUniqueFile();
     ImageIO.write(image, "jpg", file);
+    logger.info("Image from " + path + " written to to file: " + file.getName());
     return file.getPath().replace('\\', '/');
+}
+
+File getUniqueFile() {
+    Random random = new Random();
+    // random.nextInt() + checking if file exists assures uniqueness of name of created file
+    File file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
+    while (file.exists()) {
+        file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
+    }
+    return file;
 }
 ----
 
-As `SetAvatarCommand` is an `UndoableCommand`, `removeImageFromStorage(...)` only deletes the image when the application exits,
-in order to allow the user to undo the command. +
+As `SetAvatarCommand` is an `Command`, `removeImageFromStorage(...)` deletes the image once invoked. +
 Below is the code snipper of the remove method:
 
 [source,java]
 ----
 void removeImageFromStorage(String path) {
     File file = new File(path);
-    file.deleteOnExit();    // so as to allow undoable command
+    if (file.delete()) {
+         logger.info("File at path: " + path + " is deleted");
+    } else {
+         logger.severe("Failed to delete file at " + path);
+    }
 }
 ----
 
