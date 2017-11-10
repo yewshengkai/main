@@ -63,14 +63,25 @@ public class FindCommandParser implements Parser<FindCommand> {
             } else if (arePrefixesPresent(argMultimap, PREFIX_NONE)) {
                 String trimmedArgs = args.trim();
                 if (trimmedArgs.isEmpty()) {
-                    throw new ParseException(
-                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                    if (isCaseIgnored) {
+                        throw new ParseException(
+                                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE_ANY));
+                    } else {
+                        throw new ParseException(
+                                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                    }
                 }
                 String[] keywords = trimmedArgs.split("\\s+");
                 return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Arrays.asList(keywords), isCaseIgnored));
             } else {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                if (isCaseIgnored) {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE_ANY));
+                } else {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                }
             }
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
