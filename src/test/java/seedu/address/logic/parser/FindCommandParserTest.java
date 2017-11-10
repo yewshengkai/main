@@ -1,6 +1,5 @@
 package seedu.address.logic.parser;
 
-import static org.junit.Assert.assertEquals;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -17,20 +16,10 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Homepage;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
-import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
+
 
 public class FindCommandParserTest {
-
-    private static final String VALID_PHONE = "123456";
-    private static final String VALID_ADDRESS = "123 Main Street #0505";
-    private static final String VALID_EMAIL = "rachel@example.com";
-    private static final String VALID_HOMEPAGE = "http://www.google.com";
-    private static final String VALID_TAG_1 = "friend";
 
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
