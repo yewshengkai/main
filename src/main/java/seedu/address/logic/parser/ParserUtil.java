@@ -116,6 +116,7 @@ public class ParserUtil {
         return tagSet;
     }
 
+    //@@author yewshengkai
     /**
      * Parses a {@code Collection<String> Detail} into an {@code ArrayList<String>}.
      */
@@ -128,12 +129,12 @@ public class ParserUtil {
             string = string.replaceAll("['\\[\\]']", "");
             switch (commandType) {
             case FindCommand.COMMAND_WORD_ADDRESS:
-                if (!Address.isValidAddress(string)) {
+                if (!Address.isValidAddress(string) || string.isEmpty()) {
                     throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
                 }
                 break;
             case FindCommand.COMMAND_WORD_EMAIL:
-                if (!Email.isValidEmail(string)) {
+                if (!Email.isValidEmail(string) || string.isEmpty()) {
                     throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
                 }
                 break;
@@ -159,6 +160,7 @@ public class ParserUtil {
         }
         return detailList;
     }
+    //@@author
 
     //@@author karrui
     /** Parses {@code sortOrder} into a {@code boolean} and returns it.
