@@ -72,8 +72,15 @@ public class FindCommandParserTest {
         keywordsList.add(("Bob").toLowerCase());
         ArrayList<String> arrayList = ParserUtil.parseAllDetail(keywordsList, FindCommand.COMMAND_WORD_ANY);
         FindCommand expectedPerson = new FindCommand(
-                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, false));
+                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, true));
         assertParseSuccess(parser, "bob", expectedPerson);
+
+        Collection<String> keywordsList2 = new ArrayList<String>();
+        keywordsList2.add(("mainstreet").toLowerCase());
+        ArrayList<String> arrayList2 = ParserUtil.parseAllDetail(keywordsList2, FindCommand.COMMAND_WORD_ANY_ADDRESS);
+        FindCommand expectedPerson2 = new FindCommand(
+                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY_ADDRESS, arrayList2, true));
+        assertParseSuccess(parser, "mainstreet", expectedPerson2);
 
         //@@author
         // multiple whitespaces between keywords
@@ -81,46 +88,5 @@ public class FindCommandParserTest {
         assertParseSuccess(parser, " \n wall \n \t michegan  \t", expectedAddressFindCommand);
         assertParseSuccess(parser, " \n heinz@example.com \n \t werner@example.com  \t", expectedEmailFindCommand);
         assertParseSuccess(parser, " \n 95352563 \n \t 9482224  \t", expectedPhoneFindCommand);
-    }
-
-    //@@author yewshengkai
-    @Test
-    public void parse_parseAllDetails() throws Exception {
-        Address expectedAddress = new Address(VALID_ADDRESS);
-        ArrayList<String> addressList = ParserUtil.parseAllDetail(
-                Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
-        assertEquals(expectedAddress.value, addressList.toString().replaceAll(
-                "['\\[\\],']", ""));
-        ParserUtil.parseAllDetail(addressList, FindCommand.COMMAND_WORD_ADDRESS);
-
-        Email expectedEmail = new Email(VALID_EMAIL);
-        ArrayList<String> emailList = ParserUtil.parseAllDetail(Arrays.asList(
-                VALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
-        assertEquals(expectedEmail.value, emailList.toString().replaceAll(
-                "['\\[\\]']", ""));
-        ParserUtil.parseAllDetail(emailList, FindCommand.COMMAND_WORD_EMAIL);
-
-        //@@author karrui
-        Homepage expectedHomepage = new Homepage(VALID_HOMEPAGE);
-        ArrayList<String> homepageList = ParserUtil.parseAllDetail(Arrays.asList(
-                VALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
-        assertEquals(expectedHomepage.value, homepageList.toString().replaceAll(
-                "['\\[\\]']", ""));
-
-        //@@author yewshengkai
-        ParserUtil.parseAllDetail(homepageList, FindCommand.COMMAND_WORD_HOMEPAGE);
-        Phone expectedPhone = new Phone(VALID_PHONE);
-        ArrayList<String> phoneList = ParserUtil.parseAllDetail(Arrays.asList(
-                VALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
-        assertEquals(expectedPhone.value, phoneList.toString().replaceAll(
-                "['\\[\\]']", ""));
-        ParserUtil.parseAllDetail(phoneList, FindCommand.COMMAND_WORD_PHONE);
-
-        Tag expectedTag = new Tag(VALID_TAG_1);
-        ArrayList<String> tagList = ParserUtil.parseAllDetail(Arrays.asList(
-                VALID_TAG_1), FindCommand.COMMAND_WORD_TAG);
-        assertEquals(expectedTag.tagName, tagList.toString().replaceAll(
-                "['\\[\\]']", ""));
-        ParserUtil.parseAllDetail(tagList, FindCommand.COMMAND_WORD_TAG);
     }
 }
