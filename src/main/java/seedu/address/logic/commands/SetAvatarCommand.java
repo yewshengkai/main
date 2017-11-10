@@ -19,7 +19,7 @@ import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
 /**
  * Changes the avatar of an existing person in the address book
  */
-public class SetAvatarCommand extends UndoableCommand {
+public class SetAvatarCommand extends Command {
 
     public static final String COMMAND_WORD = "setavatar";
     public static final String COMMAND_ALIAS = "sa";
@@ -56,7 +56,7 @@ public class SetAvatarCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult execute() throws CommandException {
 
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 

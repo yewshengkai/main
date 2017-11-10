@@ -40,8 +40,8 @@ public class ProcessImageFromUrlToFileForAvatar {
             while (file.exists()) {
                 file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
             }
-            logger.fine("Attempting to write image to file: " + file.getName());
             ImageIO.write(image, "jpg", file);
+            logger.info("Image from " + path + " written to to file: " + file.getName());
             return file.getPath().replace('\\', '/');
         } catch (IOException ioe) {
             logger.info("Failed to create image from path: " + path);
@@ -54,7 +54,10 @@ public class ProcessImageFromUrlToFileForAvatar {
      */
     public static void removeImageFromStorage(String path) {
         File file = new File(path);
-        logger.info("File at path: " + path + " will be deleted from disk on application exit");
-        file.deleteOnExit();    // so as to allow undoable command
+        if (file.delete()) {
+            logger.info("File at path: " + path + " is deleted");
+        } else {
+            logger.severe("Failed to delete file at " + path);
+        }
     }
 }
