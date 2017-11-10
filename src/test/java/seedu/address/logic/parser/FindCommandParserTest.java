@@ -64,13 +64,6 @@ public class FindCommandParserTest {
                 new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, true));
         assertParseSuccess(parser, "bob", expectedPerson);
 
-        Collection<String> keywordsList2 = new ArrayList<String>();
-        keywordsList2.add(("mainstreet").toLowerCase());
-        ArrayList<String> arrayList2 = ParserUtil.parseAllDetail(keywordsList2, FindCommand.COMMAND_WORD_ANY_ADDRESS);
-        FindCommand expectedPerson2 = new FindCommand(
-                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY_ADDRESS, arrayList2, true));
-        assertParseSuccess(parser, "mainstreet", expectedPerson2);
-
         //@@author
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
