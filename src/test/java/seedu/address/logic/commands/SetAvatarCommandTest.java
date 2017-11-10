@@ -1,9 +1,11 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_ONE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_TWO;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_HOMEPAGE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
@@ -14,6 +16,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.util.ArrayList;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
@@ -28,12 +31,18 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.storage.util.ProcessImage;
 import seedu.address.testutil.PersonBuilder;
 
 //@@author karrui
 public class SetAvatarCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model;
+
+    @Before
+    public void setup() {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    }
 
     private ArrayList<String> filesCreated = new ArrayList<>();
 
@@ -46,12 +55,33 @@ public class SetAvatarCommandTest {
 
     @Test
     public void execute_removeAvatar_success() throws Exception {
+        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
-                .withAvatar("").build();
-
-        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getAvatar().path);
+                .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
+        model.updatePerson(firstPerson, editedPerson);
+        filesCreated.add(editedPerson.getAvatar().path);
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, "");
 
         String expectedMessage = String.format(SetAvatarCommand.MESSAGE_REMOVE_AVATAR_SUCCESS, editedPerson);
+        assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(setAvatarCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_removeAvatarWithHomepage_success() throws Exception {
+        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).withBooleanHomepageManuallySet(true).build();
+        model.updatePerson(firstPerson, editedPerson);
+        filesCreated.add(editedPerson.getAvatar().path);
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, "");
+
+        String expectedMessage = String.format(SetAvatarCommand.MESSAGE_REMOVE_AVATAR_SUCCESS, editedPerson);
+        assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
@@ -61,13 +91,14 @@ public class SetAvatarCommandTest {
 
     @Test
     public void execute_setAvatar_success() throws Exception {
+        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
-
-        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getAvatar().path);
+        model.updatePerson(firstPerson, editedPerson);
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, VALID_AVATAR_IMAGE_URL_TWO);
 
         String expectedMessage = String.format(SetAvatarCommand.MESSAGE_SET_AVATAR_SUCCESS, editedPerson);
-
+        assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 

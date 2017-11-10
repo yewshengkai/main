@@ -151,6 +151,11 @@ public class PersonBuilder {
         return this;
     }
 
+    public PersonBuilder withBooleanHomepageManuallySet(boolean isHomepageManuallySet) {
+        this.person.setBooleanIsHomepageManuallySet(isHomepageManuallySet);
+        return this;
+    }
+
     public Person build() {
         return this.person;
     }

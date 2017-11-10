@@ -156,6 +156,10 @@ public class Person implements ReadOnlyPerson {
         return isHomepageManuallySet;
     }
 
+    public void setBooleanIsHomepageManuallySet(boolean isHomepageManuallySet) {
+        this.isHomepageManuallySet = isHomepageManuallySet;
+    }
+
     public ObjectProperty<Homepage> homepageProperty() {
         return homepage;
     }
