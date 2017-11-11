@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -43,11 +44,12 @@ public class Homepage {
      */
     public static boolean isValidHomepage(String test) {
         try {
-            new URL(test);
-        } catch (MalformedURLException e) {
+            URL url = new URL(test);
+            url.toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
             return false;
         }
-        return true;
     }
 
     @Override
