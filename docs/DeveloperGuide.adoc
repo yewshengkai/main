@@ -1078,6 +1078,16 @@ The relevant parameters are then passed to create a `Person` object.
 
 // end::optadd[]
 
+// tag::removetag[]
+=== Remove Tag mechanism
+The removetag command is facilitated by the `RemoveTag` class and is an `UndoableCommand`.
+`RemoveTag` checks for the specified tag from all the entries and calls the relevant
+`CommandResult`.
+The specified tag is then removed from the AddressBook.
+
+The following sequence diagram shows how the find `RemoveTag` operation works:
+image::RemoveTagSequenceDiagram.png[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
