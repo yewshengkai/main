@@ -10,7 +10,7 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-:repoURL: https://github.com/CS2103AUG2017-F11-B3/iungo/tree/master
+:repoURL: https://github.com/CS2103AUG2017-F11-B3/main/tree/master
 
 By: `Team F11-B3`      Since: `Oct 2017`      Licence: `MIT`
 
@@ -68,7 +68,7 @@ Optionally, you can follow the <<UsingCheckstyle#, UsingCheckstyle.adoc>> docume
 
 ==== Updating documentation to match your fork
 
-After forking the repo, links in the documentation will still point to the `se-edu/addressbook-level4` repo. If you plan to develop this as a separate product (i.e. instead of contributing to the `se-edu/addressbook-level4`) , you should replace the URL in the variable `repoURL` in `DeveloperGuide.adoc` and `UserGuide.adoc` with the URL of your fork.
+After forking the repo, links in the documentation will still point to the `CS2103AUG2017-F11-B3/main` repo. If you plan to develop this as a separate product (i.e. instead of contributing to `CS2103AUG2017-F11-B3/main`) , you should replace the URL in the variable `repoURL` in `DeveloperGuide.adoc` and `UserGuide.adoc` with the URL of your fork.
 
 ==== Setting up CI
 
@@ -1459,12 +1459,12 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |redo my commands |redo undone commands
 
-|`* * *` | user |be able to set the link:#homepage[homepage] for a contact | able to customize the details of the
-contact
-
 |`* * *` |user |link:#tag[tag] contacts |I can find people with the same tags easily in a listing
 
 |`* * *` |user with many persons in the address book |sort persons by name |locate a person easily
+
+|`* *` | user |be able to set the link:#homepage[homepage] for a contact | able to customize the details of the
+contact
 
 |`* *` |user |add remarks to contact |store additional information about the contact
 
@@ -1472,7 +1472,6 @@ contact
 
 |`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
 
-|`* *` |user |export address book to other format | I can print out the address book and view it with better program
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
@@ -1485,7 +1484,7 @@ favourite contacts easily
 
 |`* *` |user |add birthdays to contacts |see the birthday of my contact
 
-|`* *` |user |search contact address on google map |see the address of contact
+|`* *` |user |search contact address on Google Maps |see the address of contact
 
 |`* *` |user with many persons in the address book |view my recently searched contacts |refer to who I searched recently
 
@@ -1494,8 +1493,10 @@ favourite contacts easily
 |`* *` |security conscious user |lock the application with a password |view my address book only with a password,
 increasing security
 
-|`*` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
+|`* *` |user with many persons in the address book |have link:#autocomplete[autocomplete] search in the find command
 |locate a contact without their full names
+
+|`*` |user |export address book to other format | I can print out the address book and view it with better program
 
 |`*` |user |see list of upcoming birthdays | I can see at a glance if there are upcoming birthdays
 
@@ -1503,7 +1504,7 @@ increasing security
 
 |`*` |user who likes customization|change the theme of the application |customize the theme to my liking
 
-|`*` |user|see who create the addressbook |let the developer know bugs that I found
+|`*` |user|see the AboutUs page|let the developer get feedback from me
 
 
 
@@ -1787,26 +1788,6 @@ Use case ends.
 Use case ends.
 
 [discrete]
-=== Use case: Recent contacts
-
-*Guarantees:* Only contacts that has been returned by `FindCommand` will be listed.
-
-*MSS*
-
-1. User requests to list recently found contacts.
-2. AddressBook shows a list of contacts recently found.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 1a. The list is empty.
-+
-Use case ends.
-
-
-[discrete]
 === Use case: Help
 
 *Guarantees:* User guide will be displayed.
@@ -1916,7 +1897,7 @@ Use case ends.
 * 3b. The argument provided is `""`
 +
 [none]
-** 3b1. Avatar is set to be deleted on program exit.
+** 3b1. Avatar will be deleted.
 +
 Use case resumes at step 4.
 +
@@ -2148,27 +2129,27 @@ Use case ends.
 
 - Performance
     .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-    .  Search should deliver results within 2 seconds.
+    .  Search should deliver results within 0.5 seconds.
 
 - Reliability
     .  Mean time to recovery: first thing to update to not keep users waiting and changing to another product. Assures users it is only a lapse and the app is reliable.
-    .  Mean time between failures: 1 hour.
+    .  Mean time between failures: 100 hours.
 
 - Recoverability
-    .  Should auto-save information after user is idling for 5 seconds.
-    .  Should be able to stores information in event of crash / internet cut-off.
+    .  Should auto-save information after any changes to the backing list.
+    .  Should be able to store information in event of crash / internet cut-off.
 
 - Robustness
-    .  Should keeping essence of original design whenever making updates. (keeps users who have not used the application in a long time be able to use the application although they may not know the difference in updates)
+    .  Should keep essence of original design whenever making updates. (keeps users who have not used the application in a long time be able to use the application although they may not know the difference in updates)
     .  Be able to use old versions of the application although there is a new update.
 
 - Usability
-    .  Should enable spell-check
     .  Should work with other languages and not restricted to English.
     .  Should allow users to use Emojis within the application.
 
 - Documentation
     . Easily locatable 'Help?' section
+    . Easily locateble 'AboutUs' section
 
 - Notes about project scope
     .  The application is not required to have voice recognition of inputs.
@@ -2176,10 +2157,9 @@ Use case ends.
 - Any other noteworthy points
     .  GUI should be appealing to adults and younger generation.
     .  GUI should not have bright colours to reduce strain on eyes.
-    .  GUI should have toggling sizes for those with differing eyesight capabilities.
+    .  GUI should be able to be resized for users with different screen sizes.
     .  Should keep a log of user actions done (to allow them to keep track of their own actions).
 
-{More to be added}
 
 [appendix]
 == Glossary
@@ -2232,20 +2212,3 @@ Tag
 ....
 Marking a contact with a specified keyword so as to facilitate easy listing or search of contacts with the keyword
 ....
-
-[appendix]
-== Product Survey
-
-*Product Name*
-
-Author: ...
-
-Pros:
-
-* ...
-* ...
-
-Cons:
-
-* ...
-* ...
