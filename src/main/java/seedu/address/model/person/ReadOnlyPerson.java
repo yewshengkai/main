@@ -40,6 +40,7 @@ public interface ReadOnlyPerson {
                 && other.getPhone().equals(this.getPhone())
                 && other.getEmail().equals(this.getEmail())
                 && other.getAddress().equals(this.getAddress()))
+                && other.getHomepage().equals(this.getHomepage())
                 && other.getRemark().equals(this.getRemark());
     }
 
@@ -55,6 +56,8 @@ public interface ReadOnlyPerson {
                 .append(getEmail())
                 .append(" Address: ")
                 .append(getAddress())
+                .append(" Homepage: ")
+                .append(getHomepage())
                 .append(" Remark: ")
                 .append(getRemark())
                 .append(" Tags: ");
