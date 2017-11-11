@@ -156,12 +156,12 @@ Edits the name of the 2nd person to be `Betsy Crower`, sets the homepage to be `
 {find by parameters available since v1.2} +
 Finds persons whose details contain any of the given specified keywords. *Keyword must be exact* +
 Format: +
-`find KEYWORD [MORE_KEYWORDS]` +
-`find [p/PHONE] KEYWORD [MORE_KEYWORDS]` +
-`find [e/EMAIL] KEYWORD [MORE_KEYWORDS]` +
-`find [a/ADDRESS] KEYWORD [MORE_KEYWORDS]` +
-`find [h/HOMEPAGE] KEYWORD [MORE_KEYWORDS]` +
-`find [t/TAG] KEYWORD [MORE_KEYWORDS]`
+`find NAME [MORE_KEYWORDS]` +
+`find [p/PHONE] [MORE_KEYWORDS]` +
+`find [e/EMAIL] [MORE_KEYWORDS]` +
+`find [a/ADDRESS] [MORE_KEYWORDS]` +
+`find [h/HOMEPAGE] [MORE_KEYWORDS]` +
+`find [t/TAG] [MORE_KEYWORDS]`
 
 ****
 * The search is case insensitive. e.g `hans` will match `Hans`
@@ -192,12 +192,12 @@ Returns any person having phone `9123456`, `8123456`
 {since v1.2} +
 Finds persons whose details contain any of the given specified keywords. *Keyword can be partial.* +
 Format: +
-`findany KEYWORD [MORE_KEYWORDS]` +
-`findany [p/PHONE] KEYWORD [MORE_KEYWORDS]` +
-`findany [e/EMAIL] KEYWORD [MORE_KEYWORDS]` +
-`findany [a/ADDRESS] KEYWORD [MORE_KEYWORDS]` +
-`findany [h/HOMEPAGE] KEYWORD [MORE_KEYWORDS]` +
-`findany [t/TAG] KEYWORD [MORE_KEYWORDS]`
+`findany NAME [MORE_KEYWORDS]` +
+`findany [p/PHONE] [MORE_KEYWORDS]` +
+`findany [e/EMAIL] [MORE_KEYWORDS]` +
+`findany [a/ADDRESS] [MORE_KEYWORDS]` +
+`findany [h/HOMEPAGE] [MORE_KEYWORDS]` +
+`findany [t/TAG] [MORE_KEYWORDS]`
 
 ****
 * Keyword used can be partial. e.g. `Han` will match `Hannon`
