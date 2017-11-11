@@ -104,6 +104,7 @@ public class ModelManager extends ComponentManager implements Model {
             indicateAddressBookChanged();
         }
     }
+
     //@@author karrui
     @Override
     public void sortContactList(boolean isDescendingSort) {
