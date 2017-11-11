@@ -55,8 +55,8 @@ include::../UserGuide.adoc[tag=theme]
 
 ==== Justification
 
-The default addressbook application only support one theme which makes the address book looks dull and may not be suitable to be viewed by
-user under certain circumstances (e.g. At certain time or day, user might opt for brighter look and feel on the address book)
+The default address book application only support one theme which makes the address book looks dull and may not be suitable to be viewed by
+user under certain circumstances (e.g. At certain time or day, or user with photophobia (light sensitivity)  might opt for brighter look and feel on the address book)
 
 ==== Implementation
 
@@ -109,7 +109,7 @@ include::../UserGuide.adoc[tag=about]
 
 ==== Justification
 
-Allow user to view the About Us page and contact the developers for bugs and improvement.
+Allow user to view the AboutUs page and suggest feedback, report bugs to developers.
 
 ==== Implementation
 
@@ -151,7 +151,7 @@ include::../DeveloperGuide.adoc[tag=remark]
 ---
 === Justification
 
-User might want to print the contacts of addressbook in hardcopy, or export data to switch usage to other computers.
+User might want to print a contacts of address book in hardcopy, or export data to switch usage to other computers.
 
 === Other contributions
 * Updated the GUI layout and color scheme, logo (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/pull/7[#7], https://github.com/CS2103AUG2017-F11-B3/main/pull/10[#10], https://github.com/CS2103AUG2017-F11-B3/main/pull/15[#15], https://github.com/CS2103AUG2017-F11-B3/main/pull/20[#20], https://github.com/CS2103AUG2017-F11-B3/main/pull/33[#33], https://github.com/CS2103AUG2017-F11-B3/main/pull/63[#63])
@@ -166,5 +166,3 @@ User might want to print the contacts of addressbook in hardcopy, or export data
 
 ==== Helping others with issues
 * Assisted group mate RemoveTag feature (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/pull/14[#14], https://github.com/CS2103AUG2017-F11-B3/main/pull/78[#78])
-
-{To be included in the future}
