@@ -74,16 +74,21 @@ Format: `about`
 `UNDOABLE`
 
 Adds a person to the address book +
-Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...`
+Addable parameters: `name`, `phone`, `email`, `address`, `homepage`, `remark`, `tag` +
+Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [re/REMARK] [t/TAG]...`
 
 [TIP]
 A person can have any number of tags (including 0) +
 [TIP]
-The `EMAIL`, `ADDRESS`, `HOMEPAGE`, and `TAG` parameters are OPTIONAL {since v1.5rc}
+The `EMAIL`, `ADDRESS`, `HOMEPAGE`, `REMARK` and `TAG` parameters are OPTIONAL {since v1.5rc}
+[TIP]
+There is also another way to add a `remark` to a person; refer to the <<remark, Remark>> section
 [NOTE]
 A person will have a default homepage of a Google search of his/her name, if `/h` was not included in the add command
 [NOTE]
-The `HOMEPAGE` provided should be a complete URL, including the `http://` header
+The `HOMEPAGE` provided should be a complete URL, including the `http://` header.
+[NOTE]
+`Avatars` cannot be added with this command, they need to be set separately. Refer to the <<avatar, Set avatar>> section
 
 Examples:
 
@@ -118,7 +123,8 @@ Format: `sort a` or `sort d`
 
 `UNDOABLE` +
 Edits an existing person in the address book. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...`
+Editable parameters: `name`, `phone`, `email`, `address`, `homepage`, `remark`, `tag` +
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [re/REMARK] [t/TAG]...`
 
 ****
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
@@ -132,6 +138,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG
 [NOTE]
 If the name is edited and the contact did not previously have a custom homepage set, the default homepage will switch
  to a Google search of the new name. If there was a custom homepage set, the homepage will not change
+[TIP]
+There is also another way to edit a `remark` of a person; refer to the <<remark, Remark>> section
 
 Examples:
 
@@ -252,6 +260,7 @@ Selects the 2nd person in the address book.
 `s 1` +
 Selects the 1st person in the results of the `find` command.
 
+[[remark]]
 //tag::remark[]
 === Adding a Remark to a person : `remark`, `re`
 
@@ -278,6 +287,7 @@ Gives the 1st person in the results of the `find` command a remark.
 
 // end::remark[]
 
+[[avatar]]
 //tag::avatar[]
 === Setting an avatar for a contact : `setavatar`, `sa`
 {since v1.3} +
