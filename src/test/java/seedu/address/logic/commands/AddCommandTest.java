@@ -141,10 +141,12 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        //@@author basyiro
         @Override
         public void removeTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException {
             fail("This method should not be called.");
         }
+        //@@author
 
         @Override
         public ObservableList<ReadOnlyPerson> getFilteredPersonList() {

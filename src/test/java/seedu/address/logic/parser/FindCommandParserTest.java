@@ -10,13 +10,19 @@ import java.util.Collection;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
+
 public class FindCommandParserTest {
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     private FindCommandParser parser = new FindCommandParser();
 
@@ -55,7 +61,7 @@ public class FindCommandParserTest {
         keywordsList.add(("Bob").toLowerCase());
         ArrayList<String> arrayList = ParserUtil.parseAllDetail(keywordsList, FindCommand.COMMAND_WORD_ANY);
         FindCommand expectedPerson = new FindCommand(
-                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, false));
+                new PersonContainsKeywordsPredicate(FindCommand.COMMAND_WORD_ANY, arrayList, true));
         assertParseSuccess(parser, "bob", expectedPerson);
 
         //@@author
@@ -65,5 +71,4 @@ public class FindCommandParserTest {
         assertParseSuccess(parser, " \n heinz@example.com \n \t werner@example.com  \t", expectedEmailFindCommand);
         assertParseSuccess(parser, " \n 95352563 \n \t 9482224  \t", expectedPhoneFindCommand);
     }
-
 }
