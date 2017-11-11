@@ -52,7 +52,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             Email email = ParserUtil.parseEmail(ParserUtil.parseValues(argMultimap.getValue(PREFIX_EMAIL))).get();
             Address address = ParserUtil.parseAddress(ParserUtil.parseValues(
                     argMultimap.getValue(PREFIX_ADDRESS))).get();
-            Remark remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK)).get();
+            Remark remark = ParserUtil.parseRemark(ParserUtil.parseValues(argMultimap.getValue(PREFIX_REMARK))).get();
             Avatar avatar = new Avatar(""); // add command does not allow adding avatar straight away
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             ReadOnlyPerson person;
