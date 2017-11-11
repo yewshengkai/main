@@ -11,7 +11,7 @@ import seedu.address.model.tag.Tag;
 /**
  * Tag specified will be removed from addressbook.
  */
-public class RemoveTag extends UndoableCommand {
+public class RemoveTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "removetag";
     public static final String COMMAND_ALIAS = "rt";
@@ -28,9 +28,9 @@ public class RemoveTag extends UndoableCommand {
     private Tag tags;
 
     /**
-     * Creates an RemoveTag to remove the specified {@code tag}
+     * Creates an RemoveTagCommand to remove the specified {@code tag}
      */
-    public RemoveTag(Tag tags) {
+    public RemoveTagCommand(Tag tags) {
         this.tags = tags;
     }
 
@@ -50,7 +50,7 @@ public class RemoveTag extends UndoableCommand {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof RemoveTag // instanceof handles nulls
-                && tags.equals(((RemoveTag) other).tags));
+                || (other instanceof RemoveTagCommand // instanceof handles nulls
+                && tags.equals(((RemoveTagCommand) other).tags));
     }
 }
