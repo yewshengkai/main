@@ -13,6 +13,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.testutil.PersonBuilder;
 
+//@@author karrui
 public class FindHistoryTest {
     private final Person alice = new PersonBuilder().build();
     private final Person bob = new PersonBuilder().withName("Bob").build();

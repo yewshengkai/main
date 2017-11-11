@@ -10,6 +10,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_UR
 
 import org.junit.Test;
 
+//@@author karrui
 public class AvatarTest {
     @Test
     public void isValidAvatar() {

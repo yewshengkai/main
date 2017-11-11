@@ -1,18 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<!-- @@author generated -->
+# generated
+###### \resources\view\MainWindow.fxml
+``` fxml
+    <MenuBar fx:id="menuBar" minHeight="30.0" prefHeight="25.0" VBox.vgrow="NEVER">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
+            <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#handleAbout" text="About iungo" />
+        </Menu>
+    </MenuBar>
+```
+###### \resources\view\MainWindow.fxml
+``` fxml
+                        <StackPane fx:id="sidePersonPlaceholder">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="5.0" top="10.0" />
+                           </HBox.margin>
+                        </StackPane>
+```
+###### \resources\view\PersonSideCard.fxml
+``` fxml
 
 <GridPane alignment="CENTER" minWidth="280.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
@@ -148,3 +156,4 @@
       </VBox>
    </children>
 </GridPane>
+```

@@ -30,7 +30,7 @@ import seedu.address.model.tag.Tag;
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
-    private static final String INVALID_ADDRESS = " ";
+    private static final String INVALID_ADDRESS = "%$";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
 
@@ -199,11 +199,13 @@ public class ParserUtilTest {
         assertEquals(expectedEmail.value, emailList.toString().replaceAll(
                 "['\\[\\]']", ""));
 
+        //@@author karrui
         Homepage expectedHomepage = new Homepage(VALID_HOMEPAGE);
         ArrayList<String> homepageList = ParserUtil.parseAllDetail(Arrays.asList(
                 VALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
         assertEquals(expectedHomepage.value, homepageList.toString().replaceAll(
                 "['\\[\\]']", ""));
+        //@@author
 
         Phone expectedPhone = new Phone(VALID_PHONE);
         ArrayList<String> phoneList = ParserUtil.parseAllDetail(Arrays.asList(

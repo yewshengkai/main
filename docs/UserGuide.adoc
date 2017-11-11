@@ -69,18 +69,20 @@ Format: `about`
 === Adding a person: `add`, `a`
 
 Adds a person to the address book +
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS h/HOMEPAGE [t/TAG]...`
+Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...`
 
 [TIP]
 A person can have any number of tags (including 0) +
+[TIP]
+The `EMAIL`, `ADDRESS`, `HOMEPAGE`, and `TAG` parameters are OPTIONAL
 [NOTE]
 A person will have a default homepage of a Google search of his/her name, if `/h` was not included in the add command
 
 Examples:
 
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 h/http://www.johndoe.com`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
-* `a n/Jane Doe p/87654321 e/janede@example.com a/2 Jane Ave`
+* `add n/Betsy Crowe t/friend a/Newgate Prison p/1234567 t/criminal`
+* `a n/Jane Doe p/87654321 e/janede@example.com`
 
 // end::add[]
 
@@ -276,7 +278,7 @@ This requires an active Internet connection to work, as the application requires
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* `1, 2, 3, ...`
 * If `AVATAR_URL` is empty; i.e `""`, the avatar will be removed and the default avatar will be shown
-* The image size *must not be bigger than 20KB*.
+* The image size *must not be bigger than 50KB*.
 ****
 
 Examples:
@@ -369,6 +371,7 @@ Select and load the second theme in the results of the `themelist` command.
 
 // tag::recent[]
 === Display recently searched contacts : `recent`, `rc`
+{since v1.4)
 
 Shows a list of all contacts that was returned by `find` command since application was started. +
 Format: `recent`

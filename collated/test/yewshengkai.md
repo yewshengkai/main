@@ -163,6 +163,52 @@ public class AboutCommandTest {
                 new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Collections.singletonList("second"), false);
 ```
+###### \java\seedu\address\logic\commands\FindCommandTest.java
+``` java
+    /**
+     * Parses {@code userInput} into a {@code FindCommand}.
+     */
+    private FindCommand prepareCommand(String commandPrefix, String userInput) {
+        switch (commandPrefix) {
+
+        case FindCommand.COMMAND_WORD:
+            FindCommand command = new FindCommand(new PersonContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD, Arrays.asList(userInput.split("\\s+")), false));
+            command.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
+            return command;
+        case FindCommand.COMMAND_WORD_ADDRESS:
+            FindCommand command2 = new FindCommand(new PersonContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_ADDRESS, Arrays.asList(userInput.split("\\s+")), false));
+            command2.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
+            return command2;
+        case FindCommand.COMMAND_WORD_EMAIL:
+            FindCommand command3 = new FindCommand(new PersonContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_EMAIL, Arrays.asList(userInput.split("\\s+")), false));
+            command3.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
+            return command3;
+        case FindCommand.COMMAND_WORD_HOMEPAGE:
+            FindCommand command4 = new FindCommand(new PersonContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_HOMEPAGE, Arrays.asList(userInput.split("\\s+")), false));
+            command4.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
+            return command4;
+        case FindCommand.COMMAND_WORD_PHONE:
+            FindCommand command5 = new FindCommand(new PersonContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_PHONE, Arrays.asList(userInput.split("\\s+")), false));
+            command5.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
+            return command5;
+        case FindCommand.COMMAND_WORD_TAG:
+            FindCommand command6 = new FindCommand(new PersonContainsKeywordsPredicate(
+                    FindCommand.COMMAND_WORD_TAG, Arrays.asList(userInput.split("\\s+")), false));
+            command6.setData(model, EMPTY_COMMAND_HISTORY, EMPTY_FIND_HISTORY, EMPTY_STACK);
+            return command6;
+
+        default:
+            break;
+        }
+
+        return null;
+    }
+```
 ###### \java\seedu\address\logic\commands\GmapCommandTest.java
 ``` java
 /**
@@ -276,7 +322,7 @@ public class GmapCommandTest {
      */
     private GmapCommand prepareCommand(Index index) {
         GmapCommand gmapCommand = new GmapCommand(index);
-        gmapCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        gmapCommand.setData(model, new CommandHistory(), new FindHistory(), new UndoRedoStack());
         return gmapCommand;
     }
 }

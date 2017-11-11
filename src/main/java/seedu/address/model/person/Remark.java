@@ -1,8 +1,8 @@
 package seedu.address.model.person;
 
-//@@author yewshengkai-reused
 import static java.util.Objects.requireNonNull;
 
+//@@author yewshengkai-reused
 /**
  * Represents a Person's Groups in the address book.
  * Guarantees: immutable; is always valid
