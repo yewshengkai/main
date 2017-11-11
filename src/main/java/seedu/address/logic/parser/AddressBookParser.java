@@ -21,7 +21,7 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RecentCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.RemarkCommand;
-import seedu.address.logic.commands.RemoveTag;
+import seedu.address.logic.commands.RemoveTagCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.logic.commands.SortCommand;
@@ -142,9 +142,9 @@ public class AddressBookParser {
         case GmapCommand.COMMAND_ALIAS:
             return new GmapCommandParser().parse(arguments);
 
-        case RemoveTag.COMMAND_WORD:
-        case RemoveTag.COMMAND_ALIAS:
-            return new RemoveTagParser().parse(arguments);
+        case RemoveTagCommand.COMMAND_WORD:
+        case RemoveTagCommand.COMMAND_ALIAS:
+            return new RemoveTagCommandParser().parse(arguments);
         //@@author
 
         default:

@@ -46,12 +46,13 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate);
 
+    //@@author basyiro
     /**
      * Remove the tag of person by the given {@code tag}.
      * @throws PersonNotFoundException or DuplicatePersonException if {@code tag} is null or duplicated.
      */
     void removeTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException;
-
+    //@@author
     /**
      * Sorts the current person list in model.
      */
