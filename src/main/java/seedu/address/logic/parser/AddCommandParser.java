@@ -41,7 +41,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG,
                         PREFIX_HOMEPAGE, PREFIX_REMARK);
 
-        // only name and phone are compulsory
+        // only name and phone are mandatory fields
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
