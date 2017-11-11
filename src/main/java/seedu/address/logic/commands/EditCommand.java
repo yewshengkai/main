@@ -110,11 +110,11 @@ public class EditCommand extends UndoableCommand {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        //@@author karrui
         Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
-        Remark updatedRemark = personToEdit.getRemark(); // edit command does not allow editing remarks
+        Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
         Avatar updatedAvatar = personToEdit.getAvatar(); // edit command does not allow editing avatar
 
-        //@@author karrui
         if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
             return new Person(updatedName, updatedPhone, updatedEmail,
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
@@ -159,6 +159,7 @@ public class EditCommand extends UndoableCommand {
         private Address address;
         private Set<Tag> tags;
         private Homepage homepage;
+        private Remark remark;
 
         public EditPersonDescriptor() {}
 
@@ -169,6 +170,7 @@ public class EditCommand extends UndoableCommand {
             this.address = toCopy.address;
             this.tags = toCopy.tags;
             this.homepage = toCopy.homepage;
+            this.remark = toCopy.remark;
         }
 
         /**
@@ -176,7 +178,7 @@ public class EditCommand extends UndoableCommand {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address, this.tags,
-                                               this.homepage);
+                                               this.homepage, this.remark);
         }
 
         public void setName(Name name) {
@@ -227,6 +229,14 @@ public class EditCommand extends UndoableCommand {
         public Optional<Homepage> getHomepage() {
             return Optional.ofNullable(homepage);
         }
+
+        public void setRemark(Remark remark) {
+            this.remark = remark;
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
+        }
         //@@author
 
         @Override
@@ -249,7 +259,8 @@ public class EditCommand extends UndoableCommand {
                     && getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
                     && getTags().equals(e.getTags())
-                    && getHomepage().equals(e.getHomepage());
+                    && getHomepage().equals(e.getHomepage())
+                    && getRemark().equals(e.getRemark());
         }
     }
 }
