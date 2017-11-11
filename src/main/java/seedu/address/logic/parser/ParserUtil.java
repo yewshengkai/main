@@ -14,7 +14,6 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.Address;
-import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Homepage;
 import seedu.address.model.person.Name;
@@ -87,6 +86,7 @@ public class ParserUtil {
         return email.isPresent() ? Optional.of(new Email(email.get())) : Optional.empty();
     }
 
+    //@@author karrui
     /**
      * Parses a {@code Optional<String> Remark} into an {@code Optional<Remark>} if {@code remark} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
@@ -97,17 +97,8 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code Optional<String> email} into an {@code Optional<Email>} if {@code email} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<Avatar> parseAvatar(Optional<String> avatar) throws IllegalValueException {
-        requireNonNull(avatar);
-        return avatar.isPresent() ? Optional.of(new Avatar(avatar.get())) : Optional.empty();
-    }
-
-    //@@author karrui
-    /**
      * Parses a {@code Optional<String> homepage} into an {@code Optional<Homepage>} if {@code homepage} is present.
+     * If {@code homepage} is "", returns default homepage constructor.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
     public static Optional<Homepage> parseHomepage(Optional<String> homepage) throws IllegalValueException {
