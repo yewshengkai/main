@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_HOMEPAGE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
@@ -38,7 +39,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG,
-                        PREFIX_HOMEPAGE);
+                        PREFIX_HOMEPAGE, PREFIX_REMARK);
 
         // only name and phone are compulsory
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)) {
@@ -51,7 +52,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             Email email = ParserUtil.parseEmail(ParserUtil.parseValues(argMultimap.getValue(PREFIX_EMAIL))).get();
             Address address = ParserUtil.parseAddress(ParserUtil.parseValues(
                     argMultimap.getValue(PREFIX_ADDRESS))).get();
-            Remark remark = new Remark(""); // add command does not allow adding remark straight away
+            Remark remark = ParserUtil.parseRemark(ParserUtil.parseValues(argMultimap.getValue(PREFIX_REMARK))).get();
             Avatar avatar = new Avatar(""); // add command does not allow adding avatar straight away
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             ReadOnlyPerson person;

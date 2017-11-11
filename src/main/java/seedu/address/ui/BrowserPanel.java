@@ -45,8 +45,15 @@ public class BrowserPanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
+    /**
+     * Attempts to load a person's homepage, if no person is selected, the default page will load
+     */
     private void loadPersonPage(ReadOnlyPerson person) {
-        loadPage(person.getHomepage().toString());
+        if (person == null) {
+            loadDefaultPage();
+        } else {
+            loadPage(person.getHomepage().toString());
+        }
     }
 
     //@@author yewshengkai

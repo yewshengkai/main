@@ -49,7 +49,6 @@ public abstract class UndoableCommand extends Command {
     protected final void redo() {
         requireNonNull(model);
         try {
-            saveAddressBookSnapshot();
             executeUndoableCommand();
         } catch (CommandException ce) {
             throw new AssertionError("The command has been successfully executed previously; "
