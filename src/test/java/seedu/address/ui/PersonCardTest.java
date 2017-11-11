@@ -10,6 +10,7 @@ import org.junit.Test;
 import guitests.guihandles.PersonCardHandle;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.storage.util.ProcessImage;
 import seedu.address.testutil.PersonBuilder;
 
 public class PersonCardTest extends GuiUnitTest {
@@ -45,10 +46,17 @@ public class PersonCardTest extends GuiUnitTest {
         uiPartRule.setUiPart(personCard);
         assertCardDisplay(personCard, personWithNoAvatar, 1);
 
-        Person personWithAvatar = new PersonBuilder().withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
-        personCard = new PersonCard(personWithAvatar, 1);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, personWithAvatar, 1);
+        Person personWithAvatar = null;
+        try {
+            personWithAvatar = new PersonBuilder().withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
+            personCard = new PersonCard(personWithAvatar, 1);
+            uiPartRule.setUiPart(personCard);
+            assertCardDisplay(personCard, personWithAvatar, 1);
+        } finally {
+            if (personWithAvatar != null) {
+                ProcessImage.removeImageFromStorage(personWithAvatar.getAvatar().path); // cleanup
+            }
+        }
     }
 
     /**
