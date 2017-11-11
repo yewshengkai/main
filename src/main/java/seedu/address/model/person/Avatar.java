@@ -12,7 +12,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
+import seedu.address.storage.util.ProcessImage;
 
 //@@author karrui
 /**
@@ -32,7 +32,7 @@ public class Avatar {
 
     /**
      * Validates given avatar.
-     * Invokes ProcessImageFromUrlToFileForAvatar for processing of storage of avatar
+     * Invokes ProcessImage for processing of storage of avatar
      * @throws IllegalValueException if given path string is invalid.
      */
     public Avatar(String path) throws IllegalValueException {
@@ -42,7 +42,7 @@ public class Avatar {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
         this.initialUrl = trimmedPath;
-        this.path = ProcessImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
+        this.path = ProcessImage.writeImageToStorage(trimmedPath);
     }
 
     /**

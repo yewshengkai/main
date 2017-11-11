@@ -13,13 +13,13 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
+import seedu.address.storage.util.ProcessImage;
 
 //@@author karrui
 /**
  * Changes the avatar of an existing person in the address book
  */
-public class SetAvatarCommand extends UndoableCommand {
+public class SetAvatarCommand extends Command {
 
     public static final String COMMAND_WORD = "setavatar";
     public static final String COMMAND_ALIAS = "sa";
@@ -56,7 +56,7 @@ public class SetAvatarCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult execute() throws CommandException {
 
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 
@@ -69,11 +69,9 @@ public class SetAvatarCommand extends UndoableCommand {
         Person editedPerson;
 
         if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
-        } else {
-            if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
-                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
-            }
+            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
+        } else if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
         }
 
         if (personToSetAvatar.isHomepageManuallySet()) {

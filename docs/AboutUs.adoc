@@ -37,7 +37,7 @@ Responsibilities: Logic, Ui, Model
 
 // TODO: Add profile picture
 === Basyir B Othman
-{empty}[http://github.com/basyiro[github]]
+{empty}[http://github.com/basyiro[github]] +
 Role: Developer
 
 '''
