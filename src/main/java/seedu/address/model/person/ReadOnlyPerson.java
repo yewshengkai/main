@@ -45,24 +45,25 @@ public interface ReadOnlyPerson {
                 && other.getAvatar().equals(this.getAvatar());
     }
 
+    //@@author karrui
     /**
-     * Formats the person as text, showing all contact details.
+     * Formats the person as text, showing all available contact details.
      */
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getName())
-                .append(" Phone: ")
-                .append(getPhone())
-                .append(" Email: ")
-                .append(getEmail())
-                .append(" Address: ")
-                .append(getAddress())
-                .append(" Homepage: ")
-                .append(getHomepage())
-                .append(" Remark: ")
-                .append(getRemark())
-                .append(" Tags: ");
-        getTags().forEach(builder::append);
+                .append(" Phone: ").append(getPhone());
+        if (!"".equals(getEmail().value)) {
+            builder.append(" Email: ").append(getEmail());
+        }
+        if (!"".equals(getAddress().value)) {
+            builder.append(" Address: ").append(getAddress());
+        }
+        builder.append(" Homepage: ").append(getHomepage());
+        if (!getTags().isEmpty()) {
+            builder.append(" Tags: ");
+            getTags().forEach(builder::append);
+        }
         return builder.toString();
     }
 }
