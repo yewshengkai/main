@@ -164,7 +164,7 @@ Find by `Phone`:
 
 * `find p/9123456` +
 Returns any person having phone `9123456`
-* `find p/9123456 8123456` +
+* `f p/9123456 8123456` +
 Returns any person having phone `9123456`, `8123456`
 
 === Locating persons by partial keyword: `findany`, `fa`
@@ -225,7 +225,7 @@ Selects the person identified by the index number used in the last person listin
 Format: `select INDEX`
 
 ****
-* Selects the person and loads the Google search page the person at the specified `INDEX`.
+* Selects the person and loads the homepage of the person at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* `1, 2, 3, ...`
 ****
@@ -365,7 +365,7 @@ Examples:
 `theme 1` +
 Select and load the first theme in the results of the `themelist` command.
 * `t` +
-`theme 2` +
+`t 2` +
 Select and load the second theme in the results of the `themelist` command.
 // end::theme[]
 
