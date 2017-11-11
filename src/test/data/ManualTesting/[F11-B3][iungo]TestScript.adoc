@@ -36,8 +36,8 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 2. add n/Jackson Bin p/98712345 t/friends
 
 *Command output* +
-1. New person added: Michael Jackson Phone: 98765432 Email:  Address: Homepage:http://www.facebook.com Remark:  Tags: +
-2. New person added: Jackson Bin Phone: 98712345 Email:  Address:  Homepage: Remark:  Tags: [friends]
+1. New person added: Michael Jackson Phone: 98765432 Homepage: http://www.facebook.com +
+2. New person added: Jackson Bin Phone: 98712345 Homepage: https://www.google.com.sg/search?safe=off&q=Jackson+Bin&cad=h Tags: [friends]
 
 ==== 3) Add and Edit<Avatar>
 
@@ -51,14 +51,14 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 *Command input* +
 1. select 21 +
 2. setavatar 21 sa/https://pbs.twimg.com/profile_images/637552817234964480/pgA7lU3N.jpg +
-3. setavatar 21 +
-4. setavatar 21 sa/https://pbs.twimg.com/profile_images/637552817234964480/pgA7lU3N.jpg
+3. sa 21 +
+4. sa 21 sa/https://pbs.twimg.com/profile_images/637552817234964480/pgA7lU3N.jpg
 
 *Command output* +
 1. Selected Person: 21 +
-2. `Michael Jackson` avatar updated. +
-3. `Michael Jackson` avatar removed. +
-4. `Michael Jackson` avatar updated.
+2. Set Avatar for Person: Michael Jackson Phone: 98765432 Homepage: http://www.facebook.com +
+3. Removed Avatar for Person: Michael Jackson Phone: 98765432 Homepage: http://www.facebook.com +
+4. Set Avatar for Person: Michael Jackson Phone: 98765432 Homepage: http://www.facebook.com
 
 ==== 4) Add<Remarks>
 
@@ -71,13 +71,13 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 *Command input* +
 1. remark 21 re/Great singer, great career +
-2. remark 21 re/ +
+2. re 21 re/ +
 3. undo +
 4. select 21
 
 *Command output* +
-1. `Michael Jackson` remark updated. +
-2. `Michael Jackson` remark updated. +
+1. Added remark to Person: Michael Jackson Phone: 98765432 Homepage: http://www.facebook.com +
+2. Removed remark from Person: Michael Jackson Phone: 98765432 Homepage: http://www.facebook.com +
 3. Undo success! +
 4. Selected Person: 21
 
