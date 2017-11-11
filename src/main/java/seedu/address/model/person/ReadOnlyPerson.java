@@ -43,6 +43,7 @@ public interface ReadOnlyPerson {
                 && other.getRemark().equals(this.getRemark());
     }
 
+    //@@author karrui
     /**
      * Formats the person as text, showing all contact details.
      */
