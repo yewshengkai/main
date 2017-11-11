@@ -84,44 +84,64 @@ public class RecentCommandTest {
 ###### \java\seedu\address\logic\commands\SetAvatarCommandTest.java
 ``` java
 public class SetAvatarCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-
+    private Model model;
     private ArrayList<String> filesCreated = new ArrayList<>();
+
+    @Before
+    public void setup() {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    }
 
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+            ProcessImage.removeImageFromStorage(path);
         }
     }
 
     @Test
     public void execute_removeAvatar_success() throws Exception {
+        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
-                .withAvatar("").build();
-
-        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getAvatar().path);
+                .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
+        model.updatePerson(firstPerson, editedPerson);
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, "");
 
         String expectedMessage = String.format(SetAvatarCommand.MESSAGE_REMOVE_AVATAR_SUCCESS, editedPerson);
+        assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(setAvatarCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_removeAvatarWithHomepage_success() throws Exception {
+        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).withBooleanHomepageManuallySet(true).build();
+        model.updatePerson(firstPerson, editedPerson);
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, "");
+
+        String expectedMessage = String.format(SetAvatarCommand.MESSAGE_REMOVE_AVATAR_SUCCESS, editedPerson);
+        assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
 
         assertCommandSuccess(setAvatarCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_setAvatar_success() throws Exception {
+        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
-
-        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getAvatar().path);
+        model.updatePerson(firstPerson, editedPerson);
+        SetAvatarCommand setAvatarCommand = prepareCommand(INDEX_FIRST_PERSON, VALID_AVATAR_IMAGE_URL_TWO);
 
         String expectedMessage = String.format(SetAvatarCommand.MESSAGE_SET_AVATAR_SUCCESS, editedPerson);
-
+        assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
-
         assertCommandSuccess(setAvatarCommand, model, expectedMessage, expectedModel);
     }
 
@@ -285,14 +305,6 @@ public class FindHistoryTest {
 ```
 ###### \java\seedu\address\logic\parser\AddCommandParserTest.java
 ``` java
-        // multiple homepages - last homepage accepted
-        assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + HOMEPAGE_DESC_AMY + HOMEPAGE_DESC_BOB + TAG_DESC_FRIEND,
-                new AddCommand(expectedPerson));
-
-```
-###### \java\seedu\address\logic\parser\AddCommandParserTest.java
-``` java
         // all optional fields missing
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withAddress(
                 EMPTY_STRING).withEmail(EMPTY_STRING).withTags().build();
@@ -360,7 +372,7 @@ public class FindHistoryTest {
 
         // cleanup
         for (String path : filesCreated) {
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+            ProcessImage.removeImageFromStorage(path);
         }
     }
 
@@ -394,6 +406,7 @@ public class FindHistoryTest {
                 VALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
         assertEquals(expectedHomepage.value, homepageList.toString().replaceAll(
                 "['\\[\\]']", ""));
+
 ```
 ###### \java\seedu\address\logic\parser\SetAvatarCommandParserTest.java
 ``` java
@@ -404,7 +417,7 @@ public class SetAvatarCommandParserTest {
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+            ProcessImage.removeImageFromStorage(path);
         }
     }
 
@@ -423,14 +436,15 @@ public class SetAvatarCommandParserTest {
     @Test
     public void parse_withParameters_success() throws Exception {
         final Avatar avatarWithParameters = new Avatar(VALID_AVATAR_IMAGE_URL_ONE);
-
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInputWithParameters = targetIndex.getOneBased() + " " + PREFIX_AVATAR.toString()
                 + " " + avatarWithParameters.initialUrl;
 
         SetAvatarCommand expectedCommandWithParameters = new SetAvatarCommand(INDEX_FIRST_PERSON, avatarWithParameters);
         filesCreated.add(expectedCommandWithParameters.getAvatar().path);
-        assertParseSuccess(parser, userInputWithParameters, expectedCommandWithParameters);
+        SetAvatarCommand command = parser.parse(userInputWithParameters);
+        filesCreated.add(command.getAvatar().path);
+        assertEquals(expectedCommandWithParameters, command);
     }
 
     @Test
@@ -541,6 +555,41 @@ public class PersonContainsRecentPredicateTest {
     }
 }
 ```
+###### \java\seedu\address\testutil\PersonBuilder.java
+``` java
+    /**
+     * Sets the {@code Homepage} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withHomepage(String homepage) {
+        try {
+            this.person.setHomepage(new Homepage(homepage));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("homepage is expected to be unique.");
+        }
+        return this;
+    }
+
+    /**
+     * Sets the {@code Avatar} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withAvatar(String avatarPath) {
+        try {
+            this.person.setAvatar(new Avatar(avatarPath));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("avatar is expected to be unique");
+        }
+        return this;
+    }
+
+    /**
+     * Sets the {@code isHomepageManuallySet} boolean of the {@code Person} that we are building.
+     */
+    public PersonBuilder withBooleanHomepageManuallySet(boolean isHomepageManuallySet) {
+        this.person.setBooleanIsHomepageManuallySet(isHomepageManuallySet);
+        return this;
+    }
+
+```
 ###### \java\seedu\address\ui\PersonCardTest.java
 ``` java
     @Test
@@ -550,10 +599,17 @@ public class PersonContainsRecentPredicateTest {
         uiPartRule.setUiPart(personCard);
         assertCardDisplay(personCard, personWithNoAvatar, 1);
 
-        Person personWithAvatar = new PersonBuilder().withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
-        personCard = new PersonCard(personWithAvatar, 1);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, personWithAvatar, 1);
+        Person personWithAvatar = null;
+        try {
+            personWithAvatar = new PersonBuilder().withAvatar(VALID_AVATAR_IMAGE_URL_ONE).build();
+            personCard = new PersonCard(personWithAvatar, 1);
+            uiPartRule.setUiPart(personCard);
+            assertCardDisplay(personCard, personWithAvatar, 1);
+        } finally {
+            if (personWithAvatar != null) {
+                ProcessImage.removeImageFromStorage(personWithAvatar.getAvatar().path); // cleanup
+            }
+        }
     }
 
     /**
