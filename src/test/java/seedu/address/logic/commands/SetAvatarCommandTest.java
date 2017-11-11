@@ -63,7 +63,6 @@ public class SetAvatarCommandTest {
         assertEquals(setAvatarCommand.execute().feedbackToUser, expectedMessage);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(setAvatarCommand, model, expectedMessage, expectedModel);
     }
