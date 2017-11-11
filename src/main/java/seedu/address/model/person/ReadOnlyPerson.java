@@ -45,7 +45,7 @@ public interface ReadOnlyPerson {
 
     //@@author karrui
     /**
-     * Formats the person as text, showing all contact details.
+     * Formats the person as text, showing all available contact details.
      */
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
