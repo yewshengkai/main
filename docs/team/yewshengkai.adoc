@@ -150,9 +150,9 @@ include::../DeveloperGuide.adoc[tag=remark]
 ==== Enhancement Proposed: Import/Export addressbook data to different format (e.g. .xml, .pdf, .xlxs)
 ---
 === Justification
-
 User might want to print a contacts of address book in hardcopy, or export data to switch usage to other computers.
 
+---
 === Other contributions
 * Updated the GUI layout and color scheme, logo (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/pull/7[#7], https://github.com/CS2103AUG2017-F11-B3/main/pull/10[#10], https://github.com/CS2103AUG2017-F11-B3/main/pull/15[#15], https://github.com/CS2103AUG2017-F11-B3/main/pull/20[#20], https://github.com/CS2103AUG2017-F11-B3/main/pull/33[#33], https://github.com/CS2103AUG2017-F11-B3/main/pull/63[#63])
 * Wrote default functionality for developer guide 'Use case' (textual form) (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/pull/10[#10])

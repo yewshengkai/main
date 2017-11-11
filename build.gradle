@@ -221,6 +221,7 @@ task deployOfflineDocs(type: Copy) {
         include 'images/*'
         include 'team/*'
         include 'UserGuide.html'
+        include 'DeveloperGuide.html'
         include 'AboutUs.html'
     }
 }
