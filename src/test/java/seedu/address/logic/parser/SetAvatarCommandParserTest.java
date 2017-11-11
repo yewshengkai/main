@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static org.junit.Assert.assertEquals;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_AVATAR_IMAGE_URL_ONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_AVATAR;
@@ -15,7 +16,7 @@ import org.junit.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.model.person.Avatar;
-import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
+import seedu.address.storage.util.ProcessImage;
 
 //@@author karrui
 public class SetAvatarCommandParserTest {
@@ -25,7 +26,7 @@ public class SetAvatarCommandParserTest {
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+            ProcessImage.removeImageFromStorage(path);
         }
     }
 
@@ -44,14 +45,15 @@ public class SetAvatarCommandParserTest {
     @Test
     public void parse_withParameters_success() throws Exception {
         final Avatar avatarWithParameters = new Avatar(VALID_AVATAR_IMAGE_URL_ONE);
-
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInputWithParameters = targetIndex.getOneBased() + " " + PREFIX_AVATAR.toString()
                 + " " + avatarWithParameters.initialUrl;
 
         SetAvatarCommand expectedCommandWithParameters = new SetAvatarCommand(INDEX_FIRST_PERSON, avatarWithParameters);
         filesCreated.add(expectedCommandWithParameters.getAvatar().path);
-        assertParseSuccess(parser, userInputWithParameters, expectedCommandWithParameters);
+        SetAvatarCommand command = parser.parse(userInputWithParameters);
+        filesCreated.add(command.getAvatar().path);
+        assertEquals(expectedCommandWithParameters, command);
     }
 
     @Test
