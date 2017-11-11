@@ -465,6 +465,8 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Recent* : `recent`
 * *Remark* : `remark INDEX [re/REMARK]`
+* *Remove tag* : `removetag [TAG]`
+e.g. `removetag friend`
 * *Set avatar* : `setavatar`
 * *Change theme* : `theme`
 
@@ -485,5 +487,6 @@ e.g.`select 2`
 * *Redo* : `r`
 * *Recent* : `rc`
 * *Remark* : `re INDEX [re/REMARK]`
+* *Remove tag* : `rt`
 * *Set avatar* : `sa`
 * *Change theme* : `t`
