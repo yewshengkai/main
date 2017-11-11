@@ -10,7 +10,7 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4
+:repoURL: https://github.com/CS2103AUG2017-F11-B3/main
 
 By: `Team F11-B3`      Since: `Oct 2017`      Licence: `MIT`
 
@@ -25,6 +25,7 @@ This app will not work with earlier versions of Java 8.
 .  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
 .  Copy the file to the folder you want to use as the home folder for your Address Book.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
+.. The application will be preloaded with sample contacts. Type `clear` in the command box to reset the addressbook. For more information, look at 5.
 +
 image::Ui.png[width="790"]
 +
@@ -54,6 +55,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 Some commands have `aliases` -- shorter command parameters. If they exist, they will be positioned beside the
 full command in the header title. +
 E.g. Adding a person : `add`, `a`
+[NOTE]
+Some commands can be `undone`. If they exist, an `UNDOABLE` will be positioned below the full command in the header.
 
 === Viewing help : `help`
 
@@ -68,15 +71,24 @@ Format: `about`
 // tag::add[]
 === Adding a person: `add`, `a`
 
+`UNDOABLE`
+
 Adds a person to the address book +
-Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...`
+Addable parameters: `name`, `phone`, `email`, `address`, `homepage`, `remark`, `tag` +
+Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [re/REMARK] [t/TAG]...`
 
 [TIP]
 A person can have any number of tags (including 0) +
 [TIP]
-The `EMAIL`, `ADDRESS`, `HOMEPAGE`, and `TAG` parameters are OPTIONAL
+The `EMAIL`, `ADDRESS`, `HOMEPAGE`, `REMARK` and `TAG` parameters are OPTIONAL {since v1.5rc}
+[TIP]
+There is also another way to add a `remark` to a person; refer to the <<remark, Remark>> section
 [NOTE]
 A person will have a default homepage of a Google search of his/her name, if `/h` was not included in the add command
+[NOTE]
+The `HOMEPAGE` provided should be a complete URL, including the `http://` header.
+[NOTE]
+`Avatars` cannot be added with this command, they need to be set separately. Refer to the <<avatar, Set avatar>> section
 
 Examples:
 
@@ -93,9 +105,11 @@ Format: `list`
 
 // tag::sort[]
 === Sorting the contact list : `sort`
+
+`UNDOABLE` +
 {since v1.2} +
 Sorts the contact list in either [a]scending or [d]escending order and shows the list. +
-Format: `sort [a / d]`
+Format: `sort a` or `sort d`
 
 ****
 * The parameters are OPTIONAL. `sort` on its own will default to a sort in ascending order.
@@ -107,8 +121,10 @@ Format: `sort [a / d]`
 // tag::edit[]
 === Editing a person : `edit`, `e`
 
+`UNDOABLE` +
 Edits an existing person in the address book. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...`
+Editable parameters: `name`, `phone`, `email`, `address`, `homepage`, `remark`, `tag` +
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [re/REMARK] [t/TAG]...`
 
 ****
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
@@ -122,19 +138,22 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG
 [NOTE]
 If the name is edited and the contact did not previously have a custom homepage set, the default homepage will switch
  to a Google search of the new name. If there was a custom homepage set, the homepage will not change
+[TIP]
+There is also another way to edit a `remark` of a person; refer to the <<remark, Remark>> section
 
 Examples:
 
 * `edit 1 p/91234567 e/johndoe@example.com` +
 Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-* `e 2 n/Betsy Crower t/` +
-Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `e 2 n/Betsy Crower h/http://www.google.com t/` +
+Edits the name of the 2nd person to be `Betsy Crower`, sets the homepage to be `http://www.google.com`,  and clears all existing tags.
 
 // end::edit[]
 
 // tag::find[]
 === Locating persons by full keyword: `find`, `f`
 
+{find by parameters available since v1.2} +
 Finds persons whose details contain any of the given specified keywords. *Keyword must be exact* +
 Format: `find KEYWORD [MORE_KEYWORDS]` +
 `[p/PHONE] KEYWORD [MORE_KEYWORDS]` +
@@ -169,6 +188,7 @@ Returns any person having phone `9123456`, `8123456`
 
 === Locating persons by partial keyword: `findany`, `fa`
 
+{since v1.2} +
 Finds persons whose details contain any of the given specified keywords. *Keyword can be partial.* +
 Format: `findany KEYWORD [MORE_KEYWORDS]` +
 `[p/PHONE] KEYWORD [MORE_KEYWORDS]` +
@@ -186,9 +206,9 @@ Examples:
 Find by `Name`:
 
 * `findany john` +
-Returns `Johnson` and `John Doe`
-* `fa Betsy Tim John` +
-Returns any person having names `Betsy`, `Timothy`, or `Johnson`
+Can return `Johnson` and `John Doe`
+* `fa Bets Tim John` +
+Returns any person having names containing `Bets`, `Tim`, or `John`, i.e. `Betsy`, `Timothy`, or `Johnson`.
 
 Find by `Phone`:
 
@@ -201,6 +221,7 @@ Returns any person having phone `9123456`, `8123456`, `8777666`, or `9888555`
 
 === Deleting a person : `delete`, `d`
 
+`UNDOABLE` +
 Deletes the specified person from the address book. +
 Format: `delete INDEX`
 
@@ -239,9 +260,12 @@ Selects the 2nd person in the address book.
 `s 1` +
 Selects the 1st person in the results of the `find` command.
 
+[[remark]]
 //tag::remark[]
-=== Making a Remark to a person : `remark`, `re`
+=== Adding a Remark to a person : `remark`, `re`
 
+`UNDOABLE` +
+{since v1.1} +
 Give a person a remark by the index number used in the last person listing. +
 Format: `remark INDEX re/REMARK`
 
@@ -263,15 +287,19 @@ Gives the 1st person in the results of the `find` command a remark.
 
 // end::remark[]
 
+[[avatar]]
 //tag::avatar[]
 === Setting an avatar for a contact : `setavatar`, `sa`
 {since v1.3} +
-Sets an avatar for a contact referenced by the index number used in the last person listing. +
-Format: `setavatar INDEX sa/AVATAR_URL` +
-Alias: `sa INDEX sa/AVATAR_URL`
+Sets an avatar for a contact referenced by the index number used in the last person listing.
+If `AVATAR_URL` is empty; i.e `sa INDEX sa/`, the current avatar (if any) will be deleted. +
+Format: `setavatar INDEX sa/[AVATAR_URL]` +
+Alias: `sa INDEX sa/[AVATAR_URL]`
 
 [NOTE]
 This requires an active Internet connection to work, as the application requires an URL to retrieve the image.
+[NOTE]
+This command *cannot* be undone, if `sa INDEX sa/` is invoked, you will need to add the avatar again with an URL.
 
 ****
 * Sets the avatar for the contact at the specified `INDEX`.
@@ -350,6 +378,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 // tag::theme[]
 === Selecting a theme : `theme`, `t`
 
+{since v1.3} +
 Selects the theme identified by the index number. +
 Format: `theme INDEX`
 
@@ -371,33 +400,35 @@ Select and load the second theme in the results of the `themelist` command.
 
 // tag::recent[]
 === Display recently searched contacts : `recent`, `rc`
-{since v1.4)
 
+{since v1.4) +
 Shows a list of all contacts that was returned by `find` command since application was started. +
 Format: `recent`
 // end::recent[]
 
 
 // tag::gmap[]
-=== Selecting a person : `gmap`, `gm`
+=== Viewing the address of a contact : `gmap`, `gm`
 
-Selects the person identified by the index number used in the last person listing and map the address to Google Map. +
+{since v1.4} +
+Selects the person identified by the index number used in the last person listing and displays the address found in a webpage using Google Map. +
 Format: `gmap INDEX`
 
 ****
 * Selects the person and loads the Google map search page at the person the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* `1, 2, 3, ...`
+* If the address was not inputted correctly, Google Maps may display an incorrect listing as this command supplies the address field as an input to Google Maps.
 ****
 
 Examples:
 
 * `list` +
 `gmap 2` +
-Selects the 2nd person in the address book and map its address to Google Map.
+Selects the 2nd person in the address book and displays the address in a webpage using Google Maps.
 * `find Betsy` +
 `gm 1` +
-Selects the 1st person in the results of the `find` command and map its address to Google Map.
+Selects the 1st person in the results of the `find` command and displays the address in a webpage using Google Maps.
 // end::gmap[]
 
 === Clearing all entries : `clear`, `c`
@@ -418,27 +449,27 @@ There is no need to save manually.
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
-*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
+*A*: Install the app in the other computer and overwrite the sample data file it creates with the file that contains the data of your previous Address Book folder.
 
 == Command Summary
 
 === Full commands
-* *Add* : `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
+* *Add* : `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-* *Sort* : `sort [a]/[d]`
+* *Sort* : `sort [a]` or `sort [d]`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
+* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [h/HOMEPAGE] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Find exact* : `find KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] KEYWORD [MORE_KEYWORDS]` +
+* *Find whole word* : `find KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] [MORE_KEYWORDS]` +
 +
 e.g. `find John` +
 Returns `john` and `John Doe` but does not return `Johnson`
 +
 e.g. `find e/example@example.com` +
 Returns `example@example.com` only
-* *Find any* : `findany KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] KEYWORD [MORE_KEYWORDS]` +
+* *Find any* : `findany KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] [MORE_KEYWORDS]` +
 +
 e.g. `findany john` +
 Returns `Johnson` and `John Doe`
@@ -454,9 +485,9 @@ e.g.`select 2`
 * *Undo* : `undo`
 * *Redo* : `redo`
 * *Recent* : `recent`
-* *Remark* : `remark INDEX [re/REMARK]`
-* *Set avatar* : `setavatar`
-* *Change theme* : `theme`
+* *Remark* : `remark INDEX re/REMARK`
+* *Set avatar* : `setavatar INDEX sa/AVATAR_URL`
+* *Change theme* : `theme INDEX`
 
 === Alias commands
 * *Add* : `a`
@@ -474,6 +505,6 @@ e.g.`select 2`
 * *Undo* : `u`
 * *Redo* : `r`
 * *Recent* : `rc`
-* *Remark* : `re INDEX [re/REMARK]`
+* *Remark* : `re`
 * *Set avatar* : `sa`
 * *Change theme* : `t`

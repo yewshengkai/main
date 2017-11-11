@@ -119,6 +119,7 @@ public class PersonBuilder {
         return this;
     }
 
+    //@@author karrui
     /**
      * Sets the {@code Homepage} of the {@code Person} that we are building.
      */
@@ -128,14 +129,6 @@ public class PersonBuilder {
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("homepage is expected to be unique.");
         }
-        return this;
-    }
-
-    /**
-     * Sets the {@code Remark} of the {@code Person} that we are building.
-     */
-    public PersonBuilder withRemark(String remark) {
-        this.person.setRemark(new Remark(remark));
         return this;
     }
 
@@ -150,6 +143,25 @@ public class PersonBuilder {
         }
         return this;
     }
+
+    /**
+     * Sets the {@code isHomepageManuallySet} boolean of the {@code Person} that we are building.
+     */
+    public PersonBuilder withBooleanHomepageManuallySet(boolean isHomepageManuallySet) {
+        this.person.setBooleanIsHomepageManuallySet(isHomepageManuallySet);
+        return this;
+    }
+
+    //@@author yewshengkai
+    /**
+     * Sets the {@code Remark} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRemark(String remark) {
+        this.person.setRemark(new Remark(remark));
+        return this;
+    }
+    //@@author
+
 
     public Person build() {
         return this.person;
