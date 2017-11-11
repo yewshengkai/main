@@ -44,7 +44,6 @@ public class SetAvatarCommandTest {
         model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     }
 
-
     @After
     public void cleanup() {
         for (String path : filesCreated) {
