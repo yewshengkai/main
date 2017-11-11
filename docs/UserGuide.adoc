@@ -219,6 +219,16 @@ Deletes the 2nd person in the address book.
 `d 1` +
 Deletes the 1st person in the results of the `find` command.
 
+=== Removing a tag from every person : `removetag`, `rt`
+
+Removes the specified tag from the address book. +
+Format: `removetag TAG`
+
+****
+* Removes the tag `TAG` from the address book.
+* The removetag function is case-sensitive.
+****
+
 === Selecting a person : `select`, `s`
 
 Selects the person identified by the index number used in the last person listing. +

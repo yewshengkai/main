@@ -1460,6 +1460,8 @@ contact
 
 |`* *` |user |add profile picture to contact |I can easily find the contact visually
 
+|`* *` |user |remove a tag |I can easily control the tags of my contacts.
+
 |`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
 
 |`* *` |user |export address book to other format | I can print out the address book and view it with better program
@@ -1643,7 +1645,7 @@ Use case ends.
 [discrete]
 === Use case: Sort contacts
 
-*Guarentees:* List will be sorted in alphabetical order.
+*Guarantees:* List will be sorted in alphabetical order.
 
 *MSS*
 
@@ -1871,11 +1873,33 @@ Use case resumes at step 2.
 Use case ends.
 
 [discrete]
+=== Use case: Remove tags
+
+*Guarantees:* Specified TAG will be removed from address book.
+
+*MSS*
+
+1. User request to remove tag
+2. Tag is removed from AddressBook.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Tag is not removed due to incorrect upper/lower case of `TAG`.
++
+[none]
+** 1a1.AddressBook shows `TAG` has been removed from AddressBook.
++
+Use case ends.
+
+[discrete]
 === Use case: Set avatar
 
 *Preconditions:* AddressBook is not empty.
 
-*Guarentees:* Avatar will be added to specified contact at index.
+*Guarantees:* Avatar will be added to specified contact at index.
 
 *MSS*
 
