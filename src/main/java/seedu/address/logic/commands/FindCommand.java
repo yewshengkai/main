@@ -39,7 +39,7 @@ public class FindCommand extends Command {
             + "specified keywords (non case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD_ANY + " lice bob char\n"
-            + "Example: " + COMMAND_WORD_ANY_ADDRESS + " king some 45\n"
+            + "Example: " + COMMAND_WORD_ANY_ADDRESS + " king some blk\n"
             + "Example: " + COMMAND_WORD_ANY_EMAIL + " alice gmail hot\n"
             + "Example: " + COMMAND_WORD_ANY_HOMEPAGE + " nus git 2103\n"
             + "Example: " + COMMAND_WORD_ANY_PHONE + " 912 812\n"
