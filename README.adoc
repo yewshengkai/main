@@ -25,13 +25,11 @@ _verb_ - latin for _connect_
 ---
 
 * iungo is designed primarily for the young and the sleepless college students who have to juggle both their entertainment
- and work for securing better grades.
+ and work in their quest to secure better grades.
 
-* College students issue:
-** When visiting other college locally or overseas, your exchange program will have meetings and trips where you get to
-meet new friends around the world. Now that you have made friends and get along well, you might wish to save these
-information on a single platform solely build for the purpose of easy accessibility to their personal information.
-** While using other methods to save these information are great (e.g. Mobile phone), however, adding massive information
+* College students' issues:
+** You have meetings and interactions where you meet new contacts. Now that you have made friends and get along well, you might wish to save these interpersonal information on a single application solely built for the purpose of easy accessibility to their personal details!
+** While using other methods to save these information is great (like your mobile phone), adding a massive amount of information
 through the standard click and type method, may seem to be too slow and inefficient.
 ** Sleep deprivation are common among college student who opt for entertainment (e.g. making new friends, travelling) and
 securing good grades.
@@ -39,17 +37,16 @@ securing good grades.
 * Solutions:
 ** iungo specifically targets these young adults who are more adept at using the keyboard, and prefers adding contacts solely
 with the keyboard, rather than using a mouse. As a result, most of the available commands can be done using just a keyboard.
-** iungo understood that college students often have to endure countless sleepless night, hence, iungo specifically enable
-GUi adjustment that is suitable for the already fatigue and tired eyes.
+** iungo understands that college students often have to endure countless sleepless night and have specifically made
+GUI themes that is suitable for both day and nighttime usage.
 
 * Why is iungo addictive?
-** An alternative to facebook that resolve around connecting not just friends but people who you have met recently and
-saving down their details.
-** iungo offers a simple and efficient way to add,edit,sort,avatar,find,list,tag,remarks,delete contacts, lookup their homepage and address.
+** iungo offers a simple and efficient way to add, edit, sort, find, list, tag, add remarks, and delete contacts.
+** iungo offers a quick way to save and look up webpages of a specific contact.
 ** It's the easiest application for remembering people.
 ** It's better than Address Book - Level 4.
 
-=== Current version : `v1.5.0rc`
+=== Current version : `v1.5.0`
 
 == Site Map
 
