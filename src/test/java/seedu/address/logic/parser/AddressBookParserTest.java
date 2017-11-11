@@ -43,7 +43,7 @@ import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.Remark;
-import seedu.address.storage.util.ProcessImageFromUrlToFileForAvatar;
+import seedu.address.storage.util.ProcessImage;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -257,7 +257,7 @@ public class AddressBookParserTest {
 
         // cleanup
         for (String path : filesCreated) {
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(path);
+            ProcessImage.removeImageFromStorage(path);
         }
     }
 
