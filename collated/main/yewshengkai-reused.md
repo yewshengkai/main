@@ -191,11 +191,13 @@ public class Remark {
             int colorRed = asciiSum % 256;
             int colorGreen = (asciiSum / 2) % 256;
             int colorBlue = (asciiSum / 3) % 256;
-            while ((colorRed + colorGreen + colorBlue) > 700) {
+            double luma = 0.2126 * colorRed + 0.7152 * colorGreen + 0.0722 * colorBlue; // per ITU-R BT.709
+            while (luma < 128) {
                 asciiSum = (asciiSum / multiplier) * ++multiplier;
                 colorRed = asciiSum % 256;
                 colorGreen = (asciiSum / 2) % 256;
                 colorBlue = (asciiSum / 3) % 256;
+                luma = 0.2126 * colorRed + 0.7152 * colorGreen + 0.0722 * colorBlue; // per ITU-R BT.709
             }
             String colorString = String.format("#%02x%02x%02x", colorRed, colorGreen, colorBlue);
             tagColors.put(tagValue, colorString);

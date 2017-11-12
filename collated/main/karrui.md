@@ -125,9 +125,9 @@ public class SetAvatarCommand extends Command {
         Person editedPerson;
 
         if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
-            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
+            ProcessImageUtil.removeImageFromStorage(personToSetAvatarPath);
         } else if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
-            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
+            ProcessImageUtil.removeImageFromStorage(personToSetAvatarPath);
         }
 
         if (personToSetAvatar.isHomepageManuallySet()) {
@@ -474,7 +474,7 @@ public class Avatar {
 
     /**
      * Validates given avatar.
-     * Invokes ProcessImage for processing of storage of avatar
+     * Invokes ProcessImageUtil for processing of storage of avatar
      * @throws IllegalValueException if given path string is invalid.
      */
     public Avatar(String path) throws IllegalValueException {
@@ -484,7 +484,7 @@ public class Avatar {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
         this.initialUrl = trimmedPath;
-        this.path = ProcessImage.writeImageToStorage(trimmedPath);
+        this.path = ProcessImageUtil.writeImageToStorage(trimmedPath);
     }
 
     /**
@@ -726,14 +726,14 @@ public class AvatarStorage {
     }
 }
 ```
-###### \java\seedu\address\storage\util\ProcessImage.java
+###### \java\seedu\address\storage\util\ProcessImageUtil.java
 ``` java
 /**
  * Utility class to write an image from an URL to a file for the Avatar class
  */
-public class ProcessImage {
+public class ProcessImageUtil {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
-    private static final Logger logger = LogsCenter.getLogger(ProcessImage.class);
+    private static final Logger logger = LogsCenter.getLogger(ProcessImageUtil.class);
 
     /**
      * Writes the image URL path provided into an image file

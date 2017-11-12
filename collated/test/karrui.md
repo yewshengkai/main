@@ -95,7 +95,7 @@ public class SetAvatarCommandTest {
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImage.removeImageFromStorage(path);
+            ProcessImageUtil.removeImageFromStorage(path);
         }
     }
 
@@ -380,7 +380,7 @@ public class FindHistoryTest {
 
         // cleanup
         for (String path : filesCreated) {
-            ProcessImage.removeImageFromStorage(path);
+            ProcessImageUtil.removeImageFromStorage(path);
         }
     }
 
@@ -424,7 +424,7 @@ public class SetAvatarCommandParserTest {
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImage.removeImageFromStorage(path);
+            ProcessImageUtil.removeImageFromStorage(path);
         }
     }
 
@@ -614,7 +614,7 @@ public class PersonContainsRecentPredicateTest {
             assertCardDisplay(personCard, personWithAvatar, 1);
         } finally {
             if (personWithAvatar != null) {
-                ProcessImage.removeImageFromStorage(personWithAvatar.getAvatar().path); // cleanup
+                ProcessImageUtil.removeImageFromStorage(personWithAvatar.getAvatar().path); // cleanup
             }
         }
     }
