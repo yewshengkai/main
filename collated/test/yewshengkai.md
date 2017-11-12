@@ -405,6 +405,90 @@ public class GmapCommandParserTest {
     }
 }
 ```
+###### \java\seedu\address\logic\parser\ParserUtilTest.java
+``` java
+    @Test
+    public void parseTag_null_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        ParserUtil.parseTag(null);
+    }
+```
+###### \java\seedu\address\logic\parser\ParserUtilTest.java
+``` java
+    @Test
+    public void parseAllDetail_withValidDetails() throws Exception {
+        Address expectedAddress = new Address(VALID_ADDRESS);
+        ArrayList<String> addressList = ParserUtil.parseAllDetail(
+                Arrays.asList(VALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
+        assertEquals(expectedAddress.value, addressList.toString().replaceAll(
+                "['\\[\\],']", ""));
+        ParserUtil.parseAllDetail(addressList, FindCommand.COMMAND_WORD_ADDRESS);
+
+        Email expectedEmail = new Email(VALID_EMAIL);
+        ArrayList<String> emailList = ParserUtil.parseAllDetail(Arrays.asList(
+                VALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
+        assertEquals(expectedEmail.value, emailList.toString().replaceAll(
+                "['\\[\\]']", ""));
+        ParserUtil.parseAllDetail(emailList, FindCommand.COMMAND_WORD_EMAIL);
+
+```
+###### \java\seedu\address\logic\parser\ParserUtilTest.java
+``` java
+        ParserUtil.parseAllDetail(homepageList, FindCommand.COMMAND_WORD_HOMEPAGE);
+        Phone expectedPhone = new Phone(VALID_PHONE);
+        ArrayList<String> phoneList = ParserUtil.parseAllDetail(Arrays.asList(
+                VALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
+        assertEquals(expectedPhone.value, phoneList.toString().replaceAll(
+                "['\\[\\]']", ""));
+        ParserUtil.parseAllDetail(phoneList, FindCommand.COMMAND_WORD_PHONE);
+
+        Tag expectedTag = new Tag(VALID_TAG_1);
+        ArrayList<String> tagList = ParserUtil.parseAllDetail(Arrays.asList(
+                VALID_TAG_1), FindCommand.COMMAND_WORD_TAG);
+        assertEquals(expectedTag.tagName, tagList.toString().replaceAll(
+                "['\\[\\]']", ""));
+        ParserUtil.parseAllDetail(tagList, FindCommand.COMMAND_WORD_TAG);
+    }
+
+```
+###### \java\seedu\address\logic\parser\ParserUtilTest.java
+``` java
+    @Test
+    public void parseAllDetail_invalidValue_throwsIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
+        Address expectedAddress = new Address(INVALID_ADDRESS);
+        ArrayList<String> invalidAddress = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_ADDRESS), FindCommand.COMMAND_WORD_ADDRESS);
+        assertEquals(expectedAddress.value, invalidAddress.toString().replaceAll(
+                "['\\[\\],']", ""));
+        ParserUtil.parseAllDetail(invalidAddress, FindCommand.COMMAND_WORD_ADDRESS);
+        assertFalse(INVALID_ADDRESS, Address.isValidAddress(INVALID_ADDRESS));
+
+        Email expectedEmail = new Email(INVALID_EMAIL);
+        ArrayList<String> invalidEmail = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_EMAIL), FindCommand.COMMAND_WORD_EMAIL);
+        assertEquals(expectedEmail.value, invalidEmail.toString());
+        ParserUtil.parseAllDetail(invalidEmail, FindCommand.COMMAND_WORD_EMAIL);
+
+        Homepage expectedHomepage = new Homepage(INVALID_HOMEPAGE);
+        ArrayList<String> invalidHomepage = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
+        assertEquals(expectedHomepage.value, invalidHomepage.toString());
+        ParserUtil.parseAllDetail(invalidHomepage, FindCommand.COMMAND_WORD_HOMEPAGE);
+
+        Phone expectedPhone = new Phone(INVALID_PHONE);
+        ArrayList<String> invalidPhone = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_PHONE), FindCommand.COMMAND_WORD_PHONE);
+        assertEquals(expectedPhone.value, invalidPhone.toString());
+        ParserUtil.parseAllDetail(invalidPhone, FindCommand.COMMAND_WORD_PHONE);
+
+        Tag expectedTag = new Tag(INVALID_TAG);
+        ArrayList<String> invalidTag = ParserUtil.parseAllDetail(
+                Arrays.asList(INVALID_TAG), FindCommand.COMMAND_WORD_TAG);
+        assertEquals(expectedTag.tagName, invalidTag.toString());
+        ParserUtil.parseAllDetail(invalidTag, FindCommand.COMMAND_WORD_TAG);
+    }
+```
 ###### \java\seedu\address\logic\parser\ThemeCommandParserTest.java
 ``` java
 /**

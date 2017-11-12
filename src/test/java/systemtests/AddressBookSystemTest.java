@@ -193,7 +193,6 @@ public abstract class AddressBookSystemTest {
 
         // Commenting out due to Travis CI failures due to Google redirection
         // assertTrue(getBrowserPanel().getLoadedUrl().toString().contains(expectedUrl.toString()));
-
         assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
     }
 
