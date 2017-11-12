@@ -463,6 +463,14 @@ There is no need to save manually.
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the sample data file it creates with the file that contains the data of your previous Address Book folder.
 
+== Known bugs
+=== Garbled text on a Mac
+The font in `AboutUs` or the browser may appear garbled when using a Mac machine, like:
+
+image::GarbledTextOnMacBugDescription.png[width="400]
+
+This will be fixed in a future update.
+
 == Command Summary
 
 === Full commands
