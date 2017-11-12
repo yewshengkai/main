@@ -51,6 +51,7 @@ public class BrowserPanel extends UiPart<Region> {
     private void loadPersonPage(ReadOnlyPerson person) {
         if (person == null) {
             loadDefaultPage();
+            browser.setOpacity(0);
         } else {
             loadPage(person.getHomepage().toString());
         }
@@ -93,8 +94,8 @@ public class BrowserPanel extends UiPart<Region> {
     @Subscribe
     private void handlePersonSideCardPanelChangedEvent(PersonSideCardRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.targetPerson);
         browser.setOpacity(100);
+        loadPersonPage(event.targetPerson);
     }
 
     @Subscribe

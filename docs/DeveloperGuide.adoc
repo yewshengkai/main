@@ -607,7 +607,7 @@ If no prefixes are present, `find` command will search for the name of `Person` 
 (e.g find [NAME]).
 
 [NOTE]
-`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` whose contains ohn. Result: John, Fohnny, Johnny).
+`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` whose name contains ohn. Result: John, Fohnny, Johnny).
 
 `FindCommandParser` code snippet to determine if user's input contains any parameter:
 [source,java]
@@ -674,7 +674,7 @@ By default if no index are present, theme command will return an invalid message
 (e.g theme "").
 
 [NOTE]
-When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
+When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default `WebView` background color).
 
 `ThemeCommand` code snippet to ensure input index is not more than the specified theme list and calls the relevant `ChangeThemeRequestEvent` handler to switch theme based on the input index:
 [source,java]
@@ -854,6 +854,10 @@ By default if no index are present, gmap command will return an invalid message.
 (e.g gmap "").
 
 [NOTE]
+Using `select [INDEX]` command display the person card panel beside the Web View browser and loads person homepage. +
+Using `select 0` command hides the person card panel beside the Web View browser.
+
+[NOTE]
 Events which triggers `PersonSideCardRequestEvent` handler, set the visibility of `Person` side panel card (Allow more display and exposure to the Web Browser).
 
 `GmapCommand` code snippet to ensure input index is within the PersonList, and calls the relevant `MapToListRequestevent` handler to search `Person` address on Google Map:
@@ -932,8 +936,8 @@ image::GmapCommandParser.png[]
 *Pros:* Better user experience. And ensures that the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
 *Cons:* We could always utilizes library and implement the `PersonSideCard` panel. +
 *Alternative 2:* Load the person address on Google Map on `select` command.  +
-*Pros:* Reduce the need of having extra command to load person address +
-*Cons:* Only able to do one search feature using the web browser +
+*Pros:* Reduce the need of having extra command to load person address. +
+*Cons:* Only able to do one search feature using the `select` command. +
 
 // end::gmap[]
 
