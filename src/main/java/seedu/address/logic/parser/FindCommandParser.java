@@ -63,14 +63,25 @@ public class FindCommandParser implements Parser<FindCommand> {
             } else if (arePrefixesPresent(argMultimap, PREFIX_NONE)) {
                 String trimmedArgs = args.trim();
                 if (trimmedArgs.isEmpty()) {
-                    throw new ParseException(
-                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                    if (!isCaseIgnored) {
+                        throw new ParseException(
+                                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                    } else {
+                        throw new ParseException(
+                                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE_ANY));
+                    }
                 }
                 String[] keywords = trimmedArgs.split("\\s+");
                 return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Arrays.asList(keywords), isCaseIgnored));
             } else {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                if (!isCaseIgnored) {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                } else {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE_ANY));
+                }
             }
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
@@ -85,7 +96,7 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     @Override
     public FindCommand parse(String userInput) throws ParseException {
-        return FindCommandParser.this.parse(userInput, true);
+        return FindCommandParser.this.parse(userInput, false);
     }
     //@@author
 

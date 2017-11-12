@@ -31,6 +31,7 @@ import seedu.address.model.tag.Tag;
  */
 public class AddCommandParser implements Parser<AddCommand> {
 
+    //@@author karrui
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
@@ -41,7 +42,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG,
                         PREFIX_HOMEPAGE, PREFIX_REMARK);
 
-        // only name and phone are compulsory
+        // only name and phone are mandatory fields
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -57,14 +58,12 @@ public class AddCommandParser implements Parser<AddCommand> {
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
             ReadOnlyPerson person;
 
-            //@@author karrui
             if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
                 Homepage homepage = ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).get();
                 person = new Person(name, phone, email, address, remark, avatar, tagList, homepage);
             } else {
                 person = new Person(name, phone, email, address, remark, avatar, tagList);
             }
-            //@@author
 
 
             return new AddCommand(person);
@@ -72,6 +71,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             throw new ParseException(ive.getMessage(), ive);
         }
     }
+    //@@author
 
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given

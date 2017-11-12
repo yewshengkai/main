@@ -155,7 +155,9 @@ include::../DeveloperGuide.adoc[tag=optadd]
 ---
 
 === Other contributions
-==== Wrote user stories for iungo
+==== iungo
+* Wrote user stories
+* Wrote SampleData.xml and TestScript.adoc (Pull requests https://github.com/CS2103AUG2017-F11-B3/main/pull/92[#92])
 
 ==== Volunteering own features for reuse
 

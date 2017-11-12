@@ -190,9 +190,9 @@ public abstract class AddressBookSystemTest {
         } catch (MalformedURLException mue) {
             throw new AssertionError("URL expected to be valid.");
         }
+
         // Commenting out due to Travis CI failures due to Google redirection
         // assertTrue(getBrowserPanel().getLoadedUrl().toString().contains(expectedUrl.toString()));
-
         assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
     }
 
