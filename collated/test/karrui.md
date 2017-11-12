@@ -305,14 +305,6 @@ public class FindHistoryTest {
 ```
 ###### \java\seedu\address\logic\parser\AddCommandParserTest.java
 ``` java
-        // multiple homepages - last homepage accepted
-        assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + HOMEPAGE_DESC_AMY + HOMEPAGE_DESC_BOB + TAG_DESC_FRIEND,
-                new AddCommand(expectedPerson));
-
-```
-###### \java\seedu\address\logic\parser\AddCommandParserTest.java
-``` java
         // all optional fields missing
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withAddress(
                 EMPTY_STRING).withEmail(EMPTY_STRING).withTags().build();
@@ -414,6 +406,7 @@ public class FindHistoryTest {
                 VALID_HOMEPAGE), FindCommand.COMMAND_WORD_HOMEPAGE);
         assertEquals(expectedHomepage.value, homepageList.toString().replaceAll(
                 "['\\[\\]']", ""));
+
 ```
 ###### \java\seedu\address\logic\parser\SetAvatarCommandParserTest.java
 ``` java

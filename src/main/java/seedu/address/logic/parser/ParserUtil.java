@@ -127,6 +127,7 @@ public class ParserUtil {
         return tagSet;
     }
 
+    //@@author yewshengkai
     /**
      * Parses a {@code Collection<String> Detail} into an {@code ArrayList<String>}.
      */
@@ -139,12 +140,12 @@ public class ParserUtil {
             string = string.replaceAll("['\\[\\]']", "");
             switch (commandType) {
             case FindCommand.COMMAND_WORD_ADDRESS:
-                if (!Address.isValidAddress(string)) {
+                if (!Address.isValidAddress(string) || string.isEmpty()) {
                     throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
                 }
                 break;
             case FindCommand.COMMAND_WORD_EMAIL:
-                if (!Email.isValidEmail(string)) {
+                if (!Email.isValidEmail(string) || string.isEmpty()) {
                     throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
                 }
                 break;
@@ -170,6 +171,7 @@ public class ParserUtil {
         }
         return detailList;
     }
+    //@@author
 
     //@@author karrui
     /** Parses {@code sortOrder} into a {@code boolean} and returns it.
@@ -197,7 +199,7 @@ public class ParserUtil {
 
     //@@author yewshengkai
     /**
-     * Parse parameters tag, if exist, return value. If tag does not exist, return empty string.
+     * Parse parameters tag (singular), if exist, return value. If tag does not exist, return empty string.
      */
     public static Optional<Tag> parseTag(Optional<String> tag) throws IllegalValueException {
         requireNonNull(tag);
