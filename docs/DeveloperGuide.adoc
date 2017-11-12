@@ -483,8 +483,8 @@ Below is the code snippet of `SetAvatarCommand` for the various checks:
      }
  }
 ----
-The utility class `ProcessImage` is used to process images retrieved from the Internet. It contains
-methods such as -- `writeImageToStorage(...)` and `removeImageFromStorage(...)` which stores the image into the
+The utility class `ProcessImageUtil` is used to process images retrieved from the Internet. It contains
+methods such as `writeImageToStorage(...)` and `removeImageFromStorage(...)` which stores the image into the
 `DEFAULT_AVATAR_FILE_LOCATION` and removes the image respectively. +
 Below is the code snippet of the write method, which calls a helper method `getUniqueFile()` to generate a File with a unique path:
 
@@ -513,8 +513,8 @@ File getUniqueFile() {
 }
 ----
 
-As `SetAvatarCommand` is an `Command`, `removeImageFromStorage(...)` deletes the image once invoked. +
-Below is the code snipper of the remove method:
+As `SetAvatarCommand` is a `Command`, `removeImageFromStorage(...)` deletes the image once invoked. +
+Below is the code snippet of the remove method:
 
 [source,java]
 ----
