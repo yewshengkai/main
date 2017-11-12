@@ -426,6 +426,16 @@ public class ThemeCommandParserTest {
     }
 }
 ```
+###### \java\seedu\address\testutil\PersonBuilder.java
+``` java
+    /**
+     * Sets the {@code Remark} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withRemark(String remark) {
+        this.person.setRemark(new Remark(remark));
+        return this;
+    }
+```
 ###### \java\seedu\address\ui\AboutWindowTest.java
 ``` java
 public class AboutWindowTest extends GuiUnitTest {
