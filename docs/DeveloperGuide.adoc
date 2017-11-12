@@ -1092,6 +1092,16 @@ The relevant parameters are then passed to create a `Person` object.
 
 // end::optadd[]
 
+// tag::removetag[]
+=== Remove Tag mechanism
+The removetag command is facilitated by the `RemoveTag` class and is an `UndoableCommand`.
+`RemoveTag` checks for the specified tag from all the entries and calls the relevant
+`CommandResult`.
+The specified tag is then removed from the AddressBook.
+
+The following sequence diagram shows how the find `RemoveTag` operation works:
+image::RemoveTagSequenceDiagram.png[]
+
 == Documentation
 
 We use asciidoc for writing documentation.
@@ -1474,6 +1484,8 @@ contact
 
 |`* *` |user |add profile picture to contact |I can easily find the contact visually
 
+|`* *` |user |remove a tag |I can easily control the tags of my contacts.
+
 |`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
 
 
@@ -1658,7 +1670,7 @@ Use case ends.
 [discrete]
 === Use case: Sort contacts
 
-*Guarentees:* List will be sorted in alphabetical order.
+*Guarantees:* List will be sorted in alphabetical order.
 
 *MSS*
 
@@ -1866,11 +1878,33 @@ Use case resumes at step 2.
 Use case ends.
 
 [discrete]
+=== Use case: Remove tags
+
+*Guarantees:* Specified TAG will be removed from address book.
+
+*MSS*
+
+1. User request to remove tag
+2. Tag is removed from AddressBook.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Tag is not removed due to incorrect upper/lower case of `TAG`.
++
+[none]
+** 1a1.AddressBook shows `TAG` has been removed from AddressBook.
++
+Use case ends.
+
+[discrete]
 === Use case: Set avatar
 
 *Preconditions:* AddressBook is not empty.
 
-*Guarentees:* Avatar will be added to specified contact at index.
+*Guarantees:* Avatar will be added to specified contact at index.
 
 *MSS*
 
