@@ -106,8 +106,10 @@ public class AddressBookParser {
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
 
+        //@@author yewshengkai
         case AboutCommand.COMMAND_WORD:
             return new AboutCommand();
+        //@@author
 
         case UndoCommand.COMMAND_WORD:
         case UndoCommand.COMMAND_ALIAS:

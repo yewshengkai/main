@@ -16,7 +16,7 @@ import org.junit.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.SetAvatarCommand;
 import seedu.address.model.person.Avatar;
-import seedu.address.storage.util.ProcessImage;
+import seedu.address.storage.util.ProcessImageUtil;
 
 //@@author karrui
 public class SetAvatarCommandParserTest {
@@ -26,7 +26,7 @@ public class SetAvatarCommandParserTest {
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImage.removeImageFromStorage(path);
+            ProcessImageUtil.removeImageFromStorage(path);
         }
     }
 

@@ -483,8 +483,8 @@ Below is the code snippet of `SetAvatarCommand` for the various checks:
      }
  }
 ----
-The utility class `ProcessImage` is used to process images retrieved from the Internet. It contains
-methods such as -- `writeImageToStorage(...)` and `removeImageFromStorage(...)` which stores the image into the
+The utility class `ProcessImageUtil` is used to process images retrieved from the Internet. It contains
+methods such as `writeImageToStorage(...)` and `removeImageFromStorage(...)` which stores the image into the
 `DEFAULT_AVATAR_FILE_LOCATION` and removes the image respectively. +
 Below is the code snippet of the write method, which calls a helper method `getUniqueFile()` to generate a File with a unique path:
 
@@ -513,8 +513,8 @@ File getUniqueFile() {
 }
 ----
 
-As `SetAvatarCommand` is an `Command`, `removeImageFromStorage(...)` deletes the image once invoked. +
-Below is the code snipper of the remove method:
+As `SetAvatarCommand` is a `Command`, `removeImageFromStorage(...)` deletes the image once invoked. +
+Below is the code snippet of the remove method:
 
 [source,java]
 ----
@@ -607,7 +607,7 @@ If no prefixes are present, `find` command will search for the name of `Person` 
 (e.g find [NAME]).
 
 [NOTE]
-`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` whose contains ohn. Result: John, Fohnny, Johnny).
+`findany` command is able to search a portion of the `Person` details (e.g. `findany` ohn, returns a list of `Person` whose name contains ohn. Result: John, Fohnny, Johnny).
 
 `FindCommandParser` code snippet to determine if user's input contains any parameter:
 [source,java]
@@ -674,7 +674,7 @@ By default if no index are present, theme command will return an invalid message
 (e.g theme "").
 
 [NOTE]
-When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default background color).
+When the application is first initialize, `BrowserPanel` will `.setOpacity` to 0% and when `handlePersonPanelSelectionChangedEvent` is triggered, `BrowserPanel` will `.setOpacity` to 100% (this is done to prevent `WebView` from displaying the default `WebView` background color).
 
 `ThemeCommand` code snippet to ensure input index is not more than the specified theme list and calls the relevant `ChangeThemeRequestEvent` handler to switch theme based on the input index:
 [source,java]
@@ -854,6 +854,10 @@ By default if no index are present, gmap command will return an invalid message.
 (e.g gmap "").
 
 [NOTE]
+Using `select [INDEX]` command display the person card panel beside the Web View browser and loads person homepage. +
+Using `select 0` command hides the person card panel beside the Web View browser.
+
+[NOTE]
 Events which triggers `PersonSideCardRequestEvent` handler, set the visibility of `Person` side panel card (Allow more display and exposure to the Web Browser).
 
 `GmapCommand` code snippet to ensure input index is within the PersonList, and calls the relevant `MapToListRequestevent` handler to search `Person` address on Google Map:
@@ -932,8 +936,8 @@ image::GmapCommandParser.png[]
 *Pros:* Better user experience. And ensures that the web browser won't be obstruct by `PersonSideCard` panel with another event handler that controls the visibility. +
 *Cons:* We could always utilizes library and implement the `PersonSideCard` panel. +
 *Alternative 2:* Load the person address on Google Map on `select` command.  +
-*Pros:* Reduce the need of having extra command to load person address +
-*Cons:* Only able to do one search feature using the web browser +
+*Pros:* Reduce the need of having extra command to load person address. +
+*Cons:* Only able to do one search feature using the `select` command. +
 
 // end::gmap[]
 
@@ -1087,6 +1091,16 @@ public static Optional<String> parseValues(Optional<String> value) {
 The relevant parameters are then passed to create a `Person` object.
 
 // end::optadd[]
+
+// tag::removetag[]
+=== Remove Tag mechanism
+The removetag command is facilitated by the `RemoveTag` class and is an `UndoableCommand`.
+`RemoveTag` checks for the specified tag from all the entries and calls the relevant
+`CommandResult`.
+The specified tag is then removed from the AddressBook.
+
+The following sequence diagram shows how the find `RemoveTag` operation works:
+image::RemoveTagSequenceDiagram.png[]
 
 == Documentation
 
@@ -1470,6 +1484,8 @@ contact
 
 |`* *` |user |add profile picture to contact |I can easily find the contact visually
 
+|`* *` |user |remove a tag |I can easily control the tags of my contacts.
+
 |`* *` |user |add birthday of contact| I can be more conscious of my contact's birthday
 
 
@@ -1654,7 +1670,7 @@ Use case ends.
 [discrete]
 === Use case: Sort contacts
 
-*Guarentees:* List will be sorted in alphabetical order.
+*Guarantees:* List will be sorted in alphabetical order.
 
 *MSS*
 
@@ -1862,11 +1878,33 @@ Use case resumes at step 2.
 Use case ends.
 
 [discrete]
+=== Use case: Remove tags
+
+*Guarantees:* Specified TAG will be removed from address book.
+
+*MSS*
+
+1. User request to remove tag
+2. Tag is removed from AddressBook.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. Tag is not removed due to incorrect upper/lower case of `TAG`.
++
+[none]
+** 1a1.AddressBook shows `TAG` has been removed from AddressBook.
++
+Use case ends.
+
+[discrete]
 === Use case: Set avatar
 
 *Preconditions:* AddressBook is not empty.
 
-*Guarentees:* Avatar will be added to specified contact at index.
+*Guarantees:* Avatar will be added to specified contact at index.
 
 *MSS*
 

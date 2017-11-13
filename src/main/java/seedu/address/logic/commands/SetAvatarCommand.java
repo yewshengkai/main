@@ -13,7 +13,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.storage.util.ProcessImage;
+import seedu.address.storage.util.ProcessImageUtil;
 
 //@@author karrui
 /**
@@ -69,9 +69,9 @@ public class SetAvatarCommand extends Command {
         Person editedPerson;
 
         if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
-            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
+            ProcessImageUtil.removeImageFromStorage(personToSetAvatarPath);
         } else if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
-            ProcessImage.removeImageFromStorage(personToSetAvatarPath);
+            ProcessImageUtil.removeImageFromStorage(personToSetAvatarPath);
         }
 
         if (personToSetAvatar.isHomepageManuallySet()) {

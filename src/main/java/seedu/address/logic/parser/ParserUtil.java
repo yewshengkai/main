@@ -199,7 +199,7 @@ public class ParserUtil {
 
     //@@author yewshengkai
     /**
-     * Parse parameters tag, if exist, return value. If tag does not exist, return empty string.
+     * Parse parameters tag (singular), if exist, return value. If tag does not exist, return empty string.
      */
     public static Optional<Tag> parseTag(Optional<String> tag) throws IllegalValueException {
         requireNonNull(tag);

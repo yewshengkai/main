@@ -19,9 +19,9 @@ import seedu.address.commons.exceptions.IllegalValueException;
 /**
  * Utility class to write an image from an URL to a file for the Avatar class
  */
-public class ProcessImage {
+public class ProcessImageUtil {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
-    private static final Logger logger = LogsCenter.getLogger(ProcessImage.class);
+    private static final Logger logger = LogsCenter.getLogger(ProcessImageUtil.class);
 
     /**
      * Writes the image URL path provided into an image file

@@ -155,12 +155,13 @@ Edits the name of the 2nd person to be `Betsy Crower`, sets the homepage to be `
 
 {find by parameters available since v1.2} +
 Finds persons whose details contain any of the given specified keywords. *Keyword must be exact* +
-Format: `find KEYWORD [MORE_KEYWORDS]` +
-`[p/PHONE] KEYWORD [MORE_KEYWORDS]` +
-`[e/EMAIL] KEYWORD [MORE_KEYWORDS]` +
-`[a/ADDRESS] KEYWORD [MORE_KEYWORDS]` +
-`[h/HOMEPAGE] KEYWORD [MORE_KEYWORDS]` +
-`[t/TAG] KEYWORD [MORE_KEYWORDS]`
+Format: +
+`find NAME [MORE_KEYWORDS]` +
+`find [p/PHONE] [MORE_KEYWORDS]` +
+`find [e/EMAIL] [MORE_KEYWORDS]` +
+`find [a/ADDRESS] [MORE_KEYWORDS]` +
+`find [h/HOMEPAGE] [MORE_KEYWORDS]` +
+`find [t/TAG] [MORE_KEYWORDS]`
 
 ****
 * The search is case insensitive. e.g `hans` will match `Hans`
@@ -190,12 +191,13 @@ Returns any person having phone `9123456`, `8123456`
 
 {since v1.2} +
 Finds persons whose details contain any of the given specified keywords. *Keyword can be partial.* +
-Format: `findany KEYWORD [MORE_KEYWORDS]` +
-`[p/PHONE] KEYWORD [MORE_KEYWORDS]` +
-`[e/EMAIL] KEYWORD [MORE_KEYWORDS]` +
-`[a/ADDRESS] KEYWORD [MORE_KEYWORDS]` +
-`[h/HOMEPAGE] KEYWORD [MORE_KEYWORDS]` +
-`[t/TAG] KEYWORD [MORE_KEYWORDS]`
+Format: +
+`findany NAME [MORE_KEYWORDS]` +
+`findany [p/PHONE] [MORE_KEYWORDS]` +
+`findany [e/EMAIL] [MORE_KEYWORDS]` +
+`findany [a/ADDRESS] [MORE_KEYWORDS]` +
+`findany [h/HOMEPAGE] [MORE_KEYWORDS]` +
+`findany [t/TAG] [MORE_KEYWORDS]`
 
 ****
 * Keyword used can be partial. e.g. `Han` will match `Hannon`
@@ -239,6 +241,16 @@ Deletes the 2nd person in the address book.
 * `find Betsy` +
 `d 1` +
 Deletes the 1st person in the results of the `find` command.
+
+=== Removing a tag from every person : `removetag`, `rt`
+
+Removes the specified tag from the address book. +
+Format: `removetag TAG`
+
+****
+* Removes the tag `TAG` from the address book.
+* The removetag function is case-sensitive.
+****
 
 === Selecting a person : `select`, `s`
 
@@ -392,10 +404,10 @@ Examples:
 
 * `theme` +
 `theme 1` +
-Select and load the first theme in the results of the `themelist` command.
+Select and load the first theme in the results of the `theme` command.
 * `t` +
 `t 2` +
-Select and load the second theme in the results of the `themelist` command.
+Select and load the second theme in the results of the `theme` command.
 // end::theme[]
 
 // tag::recent[]
@@ -451,6 +463,14 @@ There is no need to save manually.
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the sample data file it creates with the file that contains the data of your previous Address Book folder.
 
+== Known bugs
+=== Garbled text on a Mac
+The font in `AboutUs` or the browser may appear garbled when using a Mac machine, like:
+
+image::GarbledTextOnMacBugDescription.png[width="400]
+
+This will be fixed in a future update.
+
 == Command Summary
 
 === Full commands
@@ -469,10 +489,10 @@ Returns `john` and `John Doe` but does not return `Johnson`
 +
 e.g. `find e/example@example.com` +
 Returns `example@example.com` only
-* *Find any* : `findany KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] [MORE_KEYWORDS]` +
+* *Find portion of word* : `findany KEYWORD or [p/PHONE],[e/EMAIL], [a/ADDRESS], [h/HOMEPAGE], [t/TAG] [MORE_KEYWORDS]` +
 +
-e.g. `findany john` +
-Returns `Johnson` and `John Doe`
+e.g. `findany john mic` +
+Returns `Johnson`, `John Doe`, `Michael Jackson`
 +
 e.g. `findany p/123` +
 Returns `123456`, `567123`, `967123456`
@@ -486,7 +506,10 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Recent* : `recent`
 * *Remark* : `remark INDEX re/REMARK`
+* *Remove tag* : `removetag [TAG]`
+e.g. `removetag friend`
 * *Set avatar* : `setavatar INDEX sa/AVATAR_URL`
+* *Google Map* : `gmap INDEX`
 * *Change theme* : `theme INDEX`
 
 === Alias commands
@@ -505,6 +528,8 @@ e.g.`select 2`
 * *Undo* : `u`
 * *Redo* : `r`
 * *Recent* : `rc`
+* *Remove tag* : `rt`
 * *Remark* : `re`
 * *Set avatar* : `sa`
+* *Google Map* : `gm INDEX`
 * *Change theme* : `t`

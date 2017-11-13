@@ -154,6 +154,11 @@ public class FindCommand extends Command {
     public static final String COMMAND_ALIAS = "f";
 
     public static final String COMMAND_WORD_ANY = "findany";
+    public static final String COMMAND_WORD_ANY_ADDRESS = "findany a/";
+    public static final String COMMAND_WORD_ANY_EMAIL = "findany e/";
+    public static final String COMMAND_WORD_ANY_HOMEPAGE = "findany h/";
+    public static final String COMMAND_WORD_ANY_PHONE = "findany p/";
+    public static final String COMMAND_WORD_ANY_TAG = "findany t/";
     public static final String COMMAND_ALIAS_ANY = "fa";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose contacts contain any of "
@@ -165,6 +170,17 @@ public class FindCommand extends Command {
             + "Example: " + COMMAND_WORD_HOMEPAGE + " nus.com github 2103\n"
             + "Example: " + COMMAND_WORD_PHONE + " 91234567 81234567\n"
             + "Example: " + COMMAND_WORD_TAG + " friends family";
+
+    public static final String MESSAGE_USAGE_ANY = COMMAND_WORD_ANY + ": Finds all persons whose contacts contain a "
+            + "portion of any "
+            + "specified keywords (non case-sensitive) and displays them as a list with index numbers.\n"
+            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "Example: " + COMMAND_WORD_ANY + " lice bob char\n"
+            + "Example: " + COMMAND_WORD_ANY_ADDRESS + " king some blk\n"
+            + "Example: " + COMMAND_WORD_ANY_EMAIL + " alice gmail hot\n"
+            + "Example: " + COMMAND_WORD_ANY_HOMEPAGE + " nus git 2103\n"
+            + "Example: " + COMMAND_WORD_ANY_PHONE + " 912 812\n"
+            + "Example: " + COMMAND_WORD_ANY_TAG + " friends frie";
 
     private final PersonContainsKeywordsPredicate predicate;
 
@@ -218,12 +234,12 @@ public class GmapCommand extends Command {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\RemoveTag.java
+###### \java\seedu\address\logic\commands\RemoveTagCommand.java
 ``` java
 /**
  * Tag specified will be removed from addressbook.
  */
-public class RemoveTag extends UndoableCommand {
+public class RemoveTagCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "removetag";
     public static final String COMMAND_ALIAS = "rt";
@@ -240,9 +256,9 @@ public class RemoveTag extends UndoableCommand {
     private Tag tags;
 
     /**
-     * Creates an RemoveTag to remove the specified {@code tag}
+     * Creates an RemoveTagCommand to remove the specified {@code tag}
      */
-    public RemoveTag(Tag tags) {
+    public RemoveTagCommand(Tag tags) {
         this.tags = tags;
     }
 
@@ -262,8 +278,8 @@ public class RemoveTag extends UndoableCommand {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof RemoveTag // instanceof handles nulls
-                && tags.equals(((RemoveTag) other).tags));
+                || (other instanceof RemoveTagCommand // instanceof handles nulls
+                && tags.equals(((RemoveTagCommand) other).tags));
     }
 }
 ```
@@ -342,6 +358,11 @@ public class ThemeCommand extends Command {
 ```
 ###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
+        case AboutCommand.COMMAND_WORD:
+            return new AboutCommand();
+```
+###### \java\seedu\address\logic\parser\AddressBookParser.java
+``` java
         case ThemeCommand.COMMAND_WORD:
         case ThemeCommand.COMMAND_ALIAS:
             return new ThemeCommandParser().parse(arguments);
@@ -350,9 +371,23 @@ public class ThemeCommand extends Command {
         case GmapCommand.COMMAND_ALIAS:
             return new GmapCommandParser().parse(arguments);
 
-        case RemoveTag.COMMAND_WORD:
-        case RemoveTag.COMMAND_ALIAS:
-            return new RemoveTagParser().parse(arguments);
+        case RemoveTagCommand.COMMAND_WORD:
+        case RemoveTagCommand.COMMAND_ALIAS:
+            return new RemoveTagCommandParser().parse(arguments);
+```
+###### \java\seedu\address\logic\parser\ArgumentMultimap.java
+``` java
+    /**
+     * Returns all values of {@code prefix}.
+     * If the prefix does not exist or has no values, this will return an empty list.
+     * Modifying the returned list will not affect the underlying data structure of the ArgumentMultimap.
+     */
+    public List<String> getAllValues(Prefix prefix) {
+        if (!argMultimap.containsKey(prefix)) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(argMultimap.get(prefix));
+    }
 ```
 ###### \java\seedu\address\logic\parser\FindCommandParser.java
 ``` java
@@ -395,14 +430,25 @@ public class ThemeCommand extends Command {
             } else if (arePrefixesPresent(argMultimap, PREFIX_NONE)) {
                 String trimmedArgs = args.trim();
                 if (trimmedArgs.isEmpty()) {
-                    throw new ParseException(
-                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                    if (!isCaseIgnored) {
+                        throw new ParseException(
+                                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                    } else {
+                        throw new ParseException(
+                                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE_ANY));
+                    }
                 }
                 String[] keywords = trimmedArgs.split("\\s+");
                 return new FindCommand(new PersonContainsKeywordsPredicate(
                         FindCommand.COMMAND_WORD, Arrays.asList(keywords), isCaseIgnored));
             } else {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                if (!isCaseIgnored) {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                } else {
+                    throw new ParseException(
+                            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE_ANY));
+                }
             }
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);
@@ -417,7 +463,7 @@ public class ThemeCommand extends Command {
      */
     @Override
     public FindCommand parse(String userInput) throws ParseException {
-        return FindCommandParser.this.parse(userInput, true);
+        return FindCommandParser.this.parse(userInput, false);
     }
 ```
 ###### \java\seedu\address\logic\parser\GmapCommandParser.java
@@ -446,7 +492,53 @@ public class GmapCommandParser implements Parser<GmapCommand> {
 ###### \java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
-     * Parse parameters tag, if exist, return value. If tag does not exist, return empty string.
+     * Parses a {@code Collection<String> Detail} into an {@code ArrayList<String>}.
+     */
+    public static ArrayList<String> parseAllDetail(Collection<String> detail, String commandType)
+            throws IllegalValueException {
+        requireNonNull(detail);
+        ArrayList<String> detailList = new ArrayList<String>();
+        String[] detailString = detail.toString().split("\\s+");
+        for (String string : detailString) {
+            string = string.replaceAll("['\\[\\]']", "");
+            switch (commandType) {
+            case FindCommand.COMMAND_WORD_ADDRESS:
+                if (!Address.isValidAddress(string) || string.isEmpty()) {
+                    throw new IllegalValueException(Address.MESSAGE_ADDRESS_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_EMAIL:
+                if (!Email.isValidEmail(string) || string.isEmpty()) {
+                    throw new IllegalValueException(Email.MESSAGE_EMAIL_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_PHONE:
+                if (!Phone.isValidPhone(string)) {
+                    throw new IllegalValueException(Phone.MESSAGE_PHONE_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_HOMEPAGE:
+                if (!Homepage.isValidHomepage(string)) {
+                    throw new IllegalValueException(Homepage.MESSAGE_HOMEPAGE_CONSTRAINTS);
+                }
+                break;
+            case FindCommand.COMMAND_WORD_TAG:
+                if (!Tag.isValidTagName(string)) {
+                    throw new IllegalValueException(Tag.MESSAGE_TAG_CONSTRAINTS);
+                }
+                break;
+            default:
+                break;
+            }
+            detailList.add(string);
+        }
+        return detailList;
+    }
+```
+###### \java\seedu\address\logic\parser\ParserUtil.java
+``` java
+    /**
+     * Parse parameters tag (singular), if exist, return value. If tag does not exist, return empty string.
      */
     public static Optional<Tag> parseTag(Optional<String> tag) throws IllegalValueException {
         requireNonNull(tag);
@@ -458,27 +550,27 @@ public class GmapCommandParser implements Parser<GmapCommand> {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\RemoveTagParser.java
+###### \java\seedu\address\logic\parser\RemoveTagCommandParser.java
 ``` java
 /**
- * Parses input arguments and creates a new RemoveTag object
+ * Parses input arguments and creates a new RemoveTagCommand object
  */
-public class RemoveTagParser implements Parser<RemoveTag> {
+public class RemoveTagCommandParser implements Parser<RemoveTagCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the RemoveTag
-     * and returns an RemoveTag object for execution.
+     * Parses the given {@code String} of arguments in the context of the RemoveTagCommand
+     * and returns an RemoveTagCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public RemoveTag parse(String args) throws ParseException {
+    public RemoveTagCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NONE);
         try {
             Tag tag = ParserUtil.parseTag(argMultimap.getValue(PREFIX_NONE)).get();
-            return new RemoveTag(tag);
+            return new RemoveTagCommand(tag);
         } catch (IllegalValueException ive) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveTag.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveTagCommand.MESSAGE_USAGE));
         }
     }
 

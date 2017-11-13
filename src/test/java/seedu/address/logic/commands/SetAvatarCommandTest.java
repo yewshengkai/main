@@ -31,7 +31,7 @@ import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Avatar;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.storage.util.ProcessImage;
+import seedu.address.storage.util.ProcessImageUtil;
 import seedu.address.testutil.PersonBuilder;
 
 //@@author karrui
@@ -47,7 +47,7 @@ public class SetAvatarCommandTest {
     @After
     public void cleanup() {
         for (String path : filesCreated) {
-            ProcessImage.removeImageFromStorage(path);
+            ProcessImageUtil.removeImageFromStorage(path);
         }
     }
 

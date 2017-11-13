@@ -161,16 +161,13 @@ include::../DeveloperGuide.adoc[tag=optadd]
 
 ==== Volunteering own features for reuse
 
-*Recent command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/168[forum post]] +
-*Sort functionality:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/117[forum post]] +
-*Avatar command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/120#issuecomment-339020868[forum post]]
+* *Recent command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/168[forum post]] +
+* *Sort functionality:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/117[forum post]] +
+* *Avatar command:* [https://github.com/nus-cs2103-AY1718S1/forum/issues/120#issuecomment-339020868[forum post]]
 
 ==== Helped in finding bugs
-Bug discovered in AB4: [https://github.com/se-edu/addressbook-level4/issues/727[forum post]] +
-Bugs discovered in Planno: [https://github.com/CS2103AUG2017-W14-B4/main/issues/created_by/karrui[issues page]]
+* Bug discovered in AB4: [https://github.com/se-edu/addressbook-level4/issues/727[forum post]] +
+* Bugs discovered in Planno: [https://github.com/CS2103AUG2017-W14-B4/main/issues/created_by/karrui[issues page]]
 
 ==== Helping others with issues
-Posts: [https://github.com/nus-cs2103-AY1718S1/forum/issues?utf8=%E2%9C%93&q=is%3Aissue%20commenter%3Akarrui[issues page]]
-
-
-{To be included in the future}
+* Posts: [https://github.com/nus-cs2103-AY1718S1/forum/issues?utf8=%E2%9C%93&q=is%3Aissue%20commenter%3Akarrui[issues page]]

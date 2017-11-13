@@ -1,6 +1,10 @@
 # karrui
 ###### \java\seedu\address\logic\commands\EditCommand.java
 ``` java
+        Homepage updatedHomepage = editPersonDescriptor.getHomepage().orElse(personToEdit.getHomepage());
+        Remark updatedRemark = editPersonDescriptor.getRemark().orElse(personToEdit.getRemark());
+        Avatar updatedAvatar = personToEdit.getAvatar(); // edit command does not allow editing avatar
+
         if (updatedHomepage.value.equals(RESET_HOMEPAGE)) {
             return new Person(updatedName, updatedPhone, updatedEmail,
                     updatedAddress, updatedRemark, updatedAvatar, updatedTags);
@@ -22,6 +26,14 @@
 
         public Optional<Homepage> getHomepage() {
             return Optional.ofNullable(homepage);
+        }
+
+        public void setRemark(Remark remark) {
+            this.remark = remark;
+        }
+
+        public Optional<Remark> getRemark() {
+            return Optional.ofNullable(remark);
         }
 ```
 ###### \java\seedu\address\logic\commands\RecentCommand.java
@@ -63,7 +75,7 @@ public class RecentCommand extends Command {
 /**
  * Changes the avatar of an existing person in the address book
  */
-public class SetAvatarCommand extends UndoableCommand {
+public class SetAvatarCommand extends Command {
 
     public static final String COMMAND_WORD = "setavatar";
     public static final String COMMAND_ALIAS = "sa";
@@ -100,7 +112,7 @@ public class SetAvatarCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult execute() throws CommandException {
 
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 
@@ -113,11 +125,9 @@ public class SetAvatarCommand extends UndoableCommand {
         Person editedPerson;
 
         if ("".equals(avatar.path) && !"".equals(personToSetAvatarPath)) { // delete image from storage
-            ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
-        } else {
-            if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
-                ProcessImageFromUrlToFileForAvatar.removeImageFromStorage(personToSetAvatarPath);
-            }
+            ProcessImageUtil.removeImageFromStorage(personToSetAvatarPath);
+        } else if (!"".equals(personToSetAvatarPath)) {   // has a previously set avatar, remove first before processing
+            ProcessImageUtil.removeImageFromStorage(personToSetAvatarPath);
         }
 
         if (personToSetAvatar.isHomepageManuallySet()) {
@@ -262,12 +272,45 @@ public class FindHistory {
 ```
 ###### \java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
+    /**
+     * Parses the given {@code String} of arguments in the context of the AddCommand
+     * and returns an AddCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public AddCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG,
+                        PREFIX_HOMEPAGE, PREFIX_REMARK);
+
+        // only name and phone are mandatory fields
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME)).get();
+            Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE)).get();
+            Email email = ParserUtil.parseEmail(ParserUtil.parseValues(argMultimap.getValue(PREFIX_EMAIL))).get();
+            Address address = ParserUtil.parseAddress(ParserUtil.parseValues(
+                    argMultimap.getValue(PREFIX_ADDRESS))).get();
+            Remark remark = ParserUtil.parseRemark(ParserUtil.parseValues(argMultimap.getValue(PREFIX_REMARK))).get();
+            Avatar avatar = new Avatar(""); // add command does not allow adding avatar straight away
+            Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+            ReadOnlyPerson person;
+
             if (arePrefixesPresent(argMultimap, PREFIX_HOMEPAGE)) {
                 Homepage homepage = ParserUtil.parseHomepage(argMultimap.getValue(PREFIX_HOMEPAGE)).get();
                 person = new Person(name, phone, email, address, remark, avatar, tagList, homepage);
             } else {
                 person = new Person(name, phone, email, address, remark, avatar, tagList);
             }
+
+
+            return new AddCommand(person);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
+        }
+    }
 ```
 ###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
@@ -287,7 +330,17 @@ public class FindHistory {
 ###### \java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
+     * Parses a {@code Optional<String> Remark} into an {@code Optional<Remark>} if {@code remark} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Remark> parseRemark(Optional<String> remark) throws IllegalValueException {
+        requireNonNull(remark);
+        return remark.map(Remark::new);
+    }
+
+    /**
      * Parses a {@code Optional<String> homepage} into an {@code Optional<Homepage>} if {@code homepage} is present.
+     * If {@code homepage} is "", returns default homepage constructor.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
     public static Optional<Homepage> parseHomepage(Optional<String> homepage) throws IllegalValueException {
@@ -397,25 +450,6 @@ public class SortCommandParser implements Parser<SortCommand> {
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
-    public void removeTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException {
-        for (int i = 0; i < addressBook.getPersonList().size(); i++) {
-            ReadOnlyPerson oldPerson = addressBook.getPersonList().get(i);
-
-            Person newPerson;
-            if (oldPerson.isHomepageManuallySet()) {
-                newPerson = new Person(oldPerson, oldPerson.getHomepage());
-            } else {
-                newPerson = new Person(oldPerson);
-            }
-            Set<Tag> newTags = new HashSet<Tag>(newPerson.getTags());
-            newTags.remove(tag);
-            newPerson.setTags(newTags);
-            addressBook.updatePerson(oldPerson, newPerson);
-            indicateAddressBookChanged();
-        }
-    }
-
-    @Override
     public void sortContactList(boolean isDescendingSort) {
         addressBook.sortAddressBook(isDescendingSort);
         indicateAddressBookChanged();
@@ -440,7 +474,7 @@ public class Avatar {
 
     /**
      * Validates given avatar.
-     * Invokes ProcessImageFromUrlToFileForAvatar for processing of storage of avatar
+     * Invokes ProcessImageUtil for processing of storage of avatar
      * @throws IllegalValueException if given path string is invalid.
      */
     public Avatar(String path) throws IllegalValueException {
@@ -450,7 +484,7 @@ public class Avatar {
             throw new IllegalValueException(MESSAGE_IMAGE_CONSTRAINTS);
         }
         this.initialUrl = trimmedPath;
-        this.path = ProcessImageFromUrlToFileForAvatar.writeImageToFile(trimmedPath);
+        this.path = ProcessImageUtil.writeImageToStorage(trimmedPath);
     }
 
     /**
@@ -574,11 +608,12 @@ public class Homepage {
      */
     public static boolean isValidHomepage(String test) {
         try {
-            new URL(test);
-        } catch (MalformedURLException e) {
+            URL url = new URL(test);
+            url.toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
             return false;
         }
-        return true;
     }
 
     @Override
@@ -627,6 +662,30 @@ public class PersonContainsRecentPredicate implements Predicate<ReadOnlyPerson> 
     }
 }
 ```
+###### \java\seedu\address\model\person\ReadOnlyPerson.java
+``` java
+    /**
+     * Formats the person as text, showing all available contact details.
+     */
+    default String getAsText() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(getName())
+                .append(" Phone: ").append(getPhone());
+        if (!"".equals(getEmail().value)) {
+            builder.append(" Email: ").append(getEmail());
+        }
+        if (!"".equals(getAddress().value)) {
+            builder.append(" Address: ").append(getAddress());
+        }
+        builder.append(" Homepage: ").append(getHomepage());
+        if (!getTags().isEmpty()) {
+            builder.append(" Tags: ");
+            getTags().forEach(builder::append);
+        }
+        return builder.toString();
+    }
+}
+```
 ###### \java\seedu\address\storage\AvatarStorage.java
 ``` java
 /**
@@ -667,35 +726,30 @@ public class AvatarStorage {
     }
 }
 ```
-###### \java\seedu\address\storage\util\ProcessImageFromUrlToFileForAvatar.java
+###### \java\seedu\address\storage\util\ProcessImageUtil.java
 ``` java
 /**
  * Utility class to write an image from an URL to a file for the Avatar class
  */
-public class ProcessImageFromUrlToFileForAvatar {
+public class ProcessImageUtil {
     public static final String MESSAGE_FILE_NOT_FOUND = "%s: no such" + " file or directory%n";
-    private static final Logger logger = LogsCenter.getLogger(ProcessImageFromUrlToFileForAvatar.class);
+    private static final Logger logger = LogsCenter.getLogger(ProcessImageUtil.class);
 
     /**
      * Writes the image URL path provided into an image file
      */
-    public static String writeImageToFile(String path) throws IllegalValueException {
+    public static String writeImageToStorage(String path) throws IllegalValueException {
         String standardPath = path.replace('\\', '/');
         if ("".equals(standardPath) || standardPath.startsWith(DEFAULT_AVATAR_FILE_LOCATION)) {
             return standardPath;
         }
         try {
-            int i = 1;
             URL url = new URL(path);
             BufferedImage image = ImageIO.read(url);
 
-            // Using hashCode() + checking if file exists assures uniqueness of name of created file
-            File file = new File(DEFAULT_AVATAR_FILE_LOCATION + path.hashCode() + ".jpg");
-            while (file.exists()) {
-                file = new File(DEFAULT_AVATAR_FILE_LOCATION + (path.hashCode() + ++i) + ".jpg");
-            }
-            logger.fine("Attempting to write image to file: " + file.getName());
+            File file = getUniqueFile();
             ImageIO.write(image, "jpg", file);
+            logger.info("Image from " + path + " written to to file: " + file.getName());
             return file.getPath().replace('\\', '/');
         } catch (IOException ioe) {
             logger.info("Failed to create image from path: " + path);
@@ -704,12 +758,28 @@ public class ProcessImageFromUrlToFileForAvatar {
     }
 
     /**
+     * Returns a File with an unique file path by using {@code Random} class.
+     */
+    private static File getUniqueFile() {
+        Random random = new Random();
+        // random.nextInt() + checking if file exists assures uniqueness of name of created file
+        File file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
+        while (file.exists()) {
+            file = new File(DEFAULT_AVATAR_FILE_LOCATION + random.nextInt() + ".jpg");
+        }
+        return file;
+    }
+
+    /**
      * Removes the image file currently in storage
      */
     public static void removeImageFromStorage(String path) {
         File file = new File(path);
-        logger.info("File at path: " + path + " will be deleted from disk on application exit");
-        file.deleteOnExit();    // so as to allow undoable command
+        if (file.delete()) {
+            logger.info("File at path: " + path + " is deleted");
+        } else {
+            logger.severe("Failed to delete file at " + path);
+        }
     }
 }
 ```
